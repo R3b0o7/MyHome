@@ -1,20 +1,20 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting Started
+# Antes de comenzar
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+>**Nota**: Asegurese de haber completado las [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instrucciones hasta el punto "Creating a new application" antes de proceder.
 
-## Step 1: Start the Metro Server
+## Paso 1: Iniciar el Servidor Metro
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+Primero, vas a necesitar iniciar **Metro**, El _empaquetador_ de JavaScript que se envía _con_ React Native.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Para iniciar Metro, corre el siguiente commando desde la _ruta_ de tu proyecto React Native:
 
 ```bash
-# using npm
+# usando npm
 npm start
 
-# OR using Yarn
+# O usando Yarn
 yarn start
 ```
 

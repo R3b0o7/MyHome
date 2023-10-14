@@ -76,7 +76,7 @@ function App(): JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Primer Paso">
+          <Section title="Primer Pasooo">
             Cambiar <Text style={styles.highlight}>App.tsx</Text> para actualizar esta página y crear la app MyHome.
           </Section>
           <Section title="Recargar">

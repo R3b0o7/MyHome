@@ -5,9 +5,11 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Platform,
+  PlatformColor,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -24,6 +26,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+import SplashScreen from 'react-native-splash-screen'
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -57,6 +61,17 @@ function Section({children, title}: SectionProps): JSX.Element {
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+
+  useEffect(() => {
+    // Muestra la pantalla de inicio al inicio de la aplicación.
+    SplashScreen.show();
+
+    // Simula un retraso de 2 segundos (puedes personalizar esto según tus necesidades).
+    setTimeout(() => {
+      // Oculta la pantalla de inicio cuando tu aplicación esté lista.
+      SplashScreen.hide();
+    }, 2000);
+  }, []);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,

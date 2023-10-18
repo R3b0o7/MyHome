@@ -27,7 +27,14 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+//import SPLASH
 import SplashScreen from 'react-native-splash-screen'
+
+//import strings
+import I18n from './assets/strings/I18';
+
+//import assets
+import IMAGES from './assets/images/Images';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -91,7 +98,7 @@ function App(): JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Primer Pasooo">
+          <Section title={I18n.t('welcome')}>
             Cambiar <Text style={styles.highlight}>App.tsx</Text> para actualizar esta página y crear la app MyHome.
           </Section>
           <Section title="Recargar">

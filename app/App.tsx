@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React, { useEffect } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
@@ -35,6 +28,8 @@ import I18n from './assets/strings/I18';
 
 //import assets
 import IMAGES from './assets/images/Images';
+
+import RootNavigator from './navigation/RootNavigator';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -84,37 +79,7 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title={I18n.t('welcome')}>
-            Cambiar <Text style={styles.highlight}>App.tsx</Text> para actualizar esta página y crear la app MyHome.
-          </Section>
-          <Section title="Recargar">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Estudien Loco...">
-            Aprendan React Native asi no la recursamos
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  return <RootNavigator/>;
 }
 
 const styles = StyleSheet.create({

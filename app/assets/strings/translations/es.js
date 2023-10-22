@@ -1,6 +1,7 @@
 export default {
     appName: 'Demo1',
     welcome: 'Bienvenido a React Native',
+    login: 'Logueo',
     imageType:{
         svg:'SVG File',
         png:'PNG File',

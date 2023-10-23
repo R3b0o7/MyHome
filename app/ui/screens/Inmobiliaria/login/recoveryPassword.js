@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import CustomButton from '../../components/customButton';
-import CustomTextInput from '../../components/customTextInput';
-import I18n from '../../../assets/strings/I18';
+import CustomButton from '../../../components/customButton';
+import CustomTextInput from '../../../components/customTextInput';
+import I18n from '../../../../assets/strings/I18';
 import { useNavigation } from '@react-navigation/native';
 
 const ReCoveryScreen = () => {

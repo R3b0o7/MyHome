@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import type {PropsWithChildren} from 'react';
+
 import {
   Platform,
   PlatformColor,

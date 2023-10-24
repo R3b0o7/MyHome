@@ -33,7 +33,7 @@ const LoginScreen = () => {
                 />
             </View>
             <View style={styles.componentsContainer}>
-                <CustomTextInput label="Usuario o Correo" icon={require('../../../../assets/images/icons/message.png')}/>
+                <CustomTextInput label="Usuario o Correo" icon={require('../../../../assets/images/Icons/message.png')}/>
                 <CustomTextInput placeholder="Contraseña" secureTextEntry={true} />
                 <CustomButton title="Ingresar" color="blue" onPress={handleLogin} style={styles.loginButton} />
                 <CustomButton title="Registrarse" color="green" onPress={handleRegister} />

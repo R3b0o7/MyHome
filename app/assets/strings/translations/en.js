@@ -5,6 +5,7 @@ export default {
     register: 'Registro',
     recoveryPassword: 'Recupero de contraseña',
     recoveryPasswordButton: 'Recuperar Contraseña',
+    userEmail: 'Usuario o Correo',
     profile: "Perfil",
     imageType:{
         svg:'SVG File',

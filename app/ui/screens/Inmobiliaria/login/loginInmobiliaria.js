@@ -33,10 +33,10 @@ const LoginScreen = () => {
                 />
             </View>
             <View style={styles.componentsContainer}>
-                <CustomTextInput label="Usuario o Correo" icon={require('../../../../assets/images/Icons/message.png')}/>
-                <CustomTextInput placeholder="Contraseña" secureTextEntry={true} />
-                <CustomButton title="Ingresar" color="blue" onPress={handleLogin} style={styles.loginButton} />
-                <CustomButton title="Registrarse" color="green" onPress={handleRegister} />
+                <CustomTextInput label={I18n.t('userEmail')} icon={require('../../../../assets/images/Icons/message.png')} style={styles.customTextInput}/>
+                <CustomTextInput label={I18n.t('password')} secureTextEntry={true} icon={require('../../../../assets/images/Icons/message.png')}/>
+                <CustomButton title={I18n.t('ingresar')} color="blue" onPress={handleLogin} style={styles.loginButton} />
+                <CustomButton title={I18n.t('registrarse')} color="green" onPress={handleRegister} />
                 <CustomButton title={I18n.t('recoveryPasswordButton')} color="gray" onPress={handlePasswordRecovery} style={styles.passwordRecoveryButton} />
             </View>
         </View>
@@ -57,13 +57,18 @@ const styles = StyleSheet.create({
         // Agregar estilos necesarios para el contenedor superior aquí
     },
     componentsContainer: {
-        flex: 2, // Este contenedor ocupará la mitad inferior de la pantalla
+        flex: 2,
         width: '100%',
-        justifyContent: 'center',
+        justifyContent: 'flex-start', // Cambiar a 'flex-start' para reducir la distancia
         alignItems: 'center',
+        paddingTop: 20, // Ajustar el valor según tu preferencia
     },
     loginButton: {
         marginBottom: 45, // Establece la distancia solo para el botón "Ingresar"
+        marginTop: 30,
+    },
+    passwordRecoveryButton: {
+        marginTop: 23, // Establece la distancia solo para el botón "Recuperar Contraseña"
     },
     passwordRecoveryButton: {
         marginTop: 23, // Establece la distancia solo para el botón "Recuperar Contraseña"

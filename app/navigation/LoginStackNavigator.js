@@ -5,7 +5,7 @@ import registerInmobilaria from "../ui/screens/Inmobiliaria/login/registerInmobi
 import NavigatorConstant from "./NavigatorConstant";
 import I18n from "../assets/strings/I18";
 import recoveryPassword from "../ui/screens/Inmobiliaria/login/recoveryPassword";
-
+import ProfileScreen from "../ui/screens/Inmobiliaria/login/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,8 +14,8 @@ export default LoginNavigator = () => {
         <Stack.Navigator initialRouteName={NavigatorConstant.LOGIN_STACK.LOGIN}>
             <Stack.Screen
                 name={NavigatorConstant.LOGIN_STACK.LOGIN}
-                component={loginInmobiliaria}
-                options={{ title: I18n.t('login') }}
+                component={ProfileScreen}
+                options={{ title: I18n.t('profile') }}
             />
             <Stack.Screen
                 name={NavigatorConstant.LOGIN_STACK.REGISTER}

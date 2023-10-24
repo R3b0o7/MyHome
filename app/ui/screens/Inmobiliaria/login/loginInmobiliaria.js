@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import CustomButton from '../../../components/customButton';
-import CustomTextInput from '../../../components/customTextInput';
+import CustomTextInput from '../../../components/OldCustomTextInput';
 import { useNavigation } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import I18n from '../../../../assets/strings/I18';

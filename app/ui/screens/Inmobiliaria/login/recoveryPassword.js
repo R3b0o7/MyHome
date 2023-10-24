@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import CustomButton from '../../../components/customButton';
-import CustomTextInput from '../../../components/OldCustomTextInput';
+import CustomTextInput from '../../../components/customTextInput';
 import I18n from '../../../../assets/strings/I18';
 import { useNavigation } from '@react-navigation/native';
 
@@ -18,8 +18,8 @@ const ReCoveryScreen = () => {
         <View style={styles.container}>
 
             <View style={styles.componentsContainer}>
-                <CustomTextInput placeholder="Nombre de usuario" />
-                <CustomTextInput placeholder="Correo" />
+                <CustomTextInput label={I18n.t('userName')} icon={require('../../../../assets/images/Icons/message.png')}/>
+                <CustomTextInput label={I18n.t('mail')} icon={require('../../../../assets/images/Icons/message.png')}/>
                 <CustomButton title={I18n.t('recoveryPasswordButton')} color="green" onPress={handleRescoveryPassword} style={styles.rescoveryPasswordButton} />
             </View>
         </View>

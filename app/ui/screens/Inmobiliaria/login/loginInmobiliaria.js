@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import CustomButton from '../../../components/customButton';
-import CustomTextInput from '../../../components/OldCustomTextInput';
+import CustomTextInput from '../../../components/customTextInput';
 import { useNavigation } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import I18n from '../../../../assets/strings/I18';
@@ -33,7 +33,7 @@ const LoginScreen = () => {
                 />
             </View>
             <View style={styles.componentsContainer}>
-                <CustomTextInput placeholder="Usuario" />
+                <CustomTextInput placeholder="Usuario" label="Correo" icon={require('../../../../assets/images/icons/message.png')}/>
                 <CustomTextInput placeholder="Contraseña" secureTextEntry={true} />
                 <CustomButton title="Ingresar" color="blue" onPress={handleLogin} style={styles.loginButton} />
                 <CustomButton title="Registrarse" color="green" onPress={handleRegister} />

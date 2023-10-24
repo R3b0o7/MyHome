@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet} from "react-native";
-import CustomTextInput from '../../../components/CustomTextInput';
+import CustomTextInput from '../../../components/OldCustomTextInput';
 
 const ProfileScreen = () => {
     return (
@@ -8,7 +8,7 @@ const ProfileScreen = () => {
 
             <CustomTextInput 
                 label="Correo"
-                icon={require('../../../../assets/images/Icons/message.png')}
+                icon={require('../../../../assets/images/icons/message.png')}
             />
             <CustomTextInput 
                 label="Correo Visible"

@@ -18,8 +18,8 @@ const ReCoveryScreen = () => {
         <View style={styles.container}>
 
             <View style={styles.componentsContainer}>
-                <CustomTextInput label={I18n.t('userName')} icon={require('../../../../assets/images/Icons/message.png')}/>
-                <CustomTextInput label={I18n.t('mail')} icon={require('../../../../assets/images/Icons/message.png')}/>
+                <CustomTextInput label={I18n.t('userName')} icon={require('../../../../assets/images/Icons/black/perfil.png')}/>
+                <CustomTextInput label={I18n.t('mail')} icon={require('../../../../assets/images/Icons/black/email.png')}/>
                 <CustomButton title={I18n.t('recoveryPasswordButton')} color="green" onPress={handleRescoveryPassword} style={styles.rescoveryPasswordButton} />
             </View>
         </View>

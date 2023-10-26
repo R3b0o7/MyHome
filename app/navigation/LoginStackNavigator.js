@@ -1,11 +1,12 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import loginInmobiliaria from "../ui/screens/Inmobiliaria/login/loginInmobiliaria";
-import registerInmobilaria from "../ui/screens/Inmobiliaria/login/registerInmobilaria";
+import LoginInmobiliaria from "../ui/screens/Inmobiliaria/login/LoginInmobiliaria";
+import RegisterInmobilaria from "../ui/screens/Inmobiliaria/login/RegisterInmobilaria";
 import NavigatorConstant from "./NavigatorConstant";
 import I18n from "../assets/strings/I18";
-import recoveryPassword from "../ui/screens/Inmobiliaria/login/recoveryPassword";
-import profileScreen from "../ui/screens/Inmobiliaria/login/profileScreen";
+import RecoveryPassword from "../ui/screens/Inmobiliaria/login/RecoveryPassword";
+import ProfileScreen from "../ui/screens/Inmobiliaria/login/ProfileScreen";
+import HomeScreen from "../ui/screens/Inmobiliaria/home/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,17 +15,17 @@ export default LoginNavigator = () => {
         <Stack.Navigator initialRouteName={NavigatorConstant.LOGIN_STACK.LOGIN}>
             <Stack.Screen
                 name={NavigatorConstant.LOGIN_STACK.LOGIN}
-                component={loginInmobiliaria}
+                component={LoginInmobiliaria}
                 options={{ title: I18n.t('login') }}
             />
             <Stack.Screen
                 name={NavigatorConstant.LOGIN_STACK.REGISTER}
-                component={registerInmobilaria}
+                component={RegisterInmobilaria}
                 options={{ title: I18n.t('register') }}
             />
             <Stack.Screen
                 name={NavigatorConstant.LOGIN_STACK.PASSWORD_RECOVERY}
-                component={recoveryPassword}
+                component={RecoveryPassword}
                 options={{ title: I18n.t('recoveryPassword') }}
             />
         </Stack.Navigator >

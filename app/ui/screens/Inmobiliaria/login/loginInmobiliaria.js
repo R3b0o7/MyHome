@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import CustomButton from '../../../components/customButton';
-import CustomTextInput from '../../../components/customTextInput';
+import CustomButton from '../../../components/CustomButton';
+import CustomTextInput from '../../../components/CustomTextInput';
 import { useNavigation } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import I18n from '../../../../assets/strings/I18';
@@ -11,7 +11,7 @@ const LoginScreen = () => {
 
     // Función vacía para manejar la acción de inicio de sesión
     const handleLogin = () => {
-        // No hace nada por el momento
+        navigation.replace(NavigatorConstant.LANDING_STACK.HOME)
     };
 
     // Función vacía para manejar la acción de registro

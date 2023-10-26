@@ -12,8 +12,10 @@ export default {
     userEmail: 'Usuario o Correo',
     userName: 'Nombre de usuario',
     profile: "Perfil",
+    properties: 'Propiedades',
     mail: "Correo",
     visibleMail: 'Correo visible',
+    home: 'Inicio',
     imageType:{
         svg:'SVG File',
         png:'PNG File',

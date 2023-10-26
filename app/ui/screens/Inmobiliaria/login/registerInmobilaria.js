@@ -22,11 +22,11 @@ const RegisterScreen = () => {
         <View style={styles.container}>
 
             <View style={styles.componentsContainer}>
-                <CustomTextInput label={I18n.t('userName')} icon={require('../../../../assets/images/Icons/message.png')} />
-                <CustomTextInput label={I18n.t('mail')} icon={require('../../../../assets/images/Icons/message.png')}/>
-                <CustomTextInput label={I18n.t('visibleMail')} icon={require('../../../../assets/images/Icons/message.png')} />
-                <CustomTextInput label={I18n.t('password')} secureTextEntry={true} icon={require('../../../../assets/images/Icons/message.png')} />
-                <CustomTextInput label={I18n.t('confirmPassword')} secureTextEntry={true} icon={require('../../../../assets/images/Icons/message.png')}/>
+                <CustomTextInput label={I18n.t('userName')} icon={require('../../../../assets/images/Icons/black/perfil.png')} />
+                <CustomTextInput label={I18n.t('mail')} icon={require('../../../../assets/images/Icons/black/email.png')}/>
+                <CustomTextInput label={I18n.t('visibleMail')} icon={require('../../../../assets/images/Icons/black/email.png')} />
+                <CustomTextInput label={I18n.t('password')} secureTextEntry={true} icon={require('../../../../assets/images/Icons/black/key.png')} />
+                <CustomTextInput label={I18n.t('confirmPassword')} secureTextEntry={true} icon={require('../../../../assets/images/Icons/black/key.png')}/>
                 <CustomButton title="Registrarse" color="green" onPress={handleRegister} style={styles.registerButton} />
             </View>
         </View>

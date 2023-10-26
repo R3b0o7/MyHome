@@ -8,7 +8,7 @@ const ProfileScreen = () => {
 
             <CustomTextInput 
                 label="Correo"
-                icon={require('../../../../assets/images/icons/message.png')}
+                //icon={require('../../../../assets/images/icons/black/message.png')}
             />
             <CustomTextInput 
                 label="Correo Visible"

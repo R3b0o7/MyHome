@@ -16,6 +16,7 @@ export default {
     mail: "Correo",
     visibleMail: 'Correo visible',
     home: 'Inicio',
+    view:'  Ver  ',
     imageType:{
         svg:'SVG File',
         png:'PNG File',

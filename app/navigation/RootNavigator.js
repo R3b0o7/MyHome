@@ -2,7 +2,7 @@ import LoginStackNavigator from "./LoginStackNavigator";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NavigatorConstant from './NavigatorConstant';
-import LandingTabNavigatror from "./LandingTabNavigatror";
+import LandingTabNavigator from "./LandingTabNavigator";
 
 const Stack = createNativeStackNavigator();
 export default RootNavigator = () => {
@@ -18,7 +18,7 @@ export default RootNavigator = () => {
                 />
                 <Stack.Screen
                     name={NavigatorConstant.LANDING_STACK.HOME}
-                    component={LandingTabNavigatror}
+                    component={LandingTabNavigator}
                 />
 
             </Stack.Navigator>

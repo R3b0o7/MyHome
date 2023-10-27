@@ -5,8 +5,6 @@ import RegisterInmobilaria from "../ui/screens/Inmobiliaria/login/RegisterInmobi
 import NavigatorConstant from "./NavigatorConstant";
 import I18n from "../assets/strings/I18";
 import RecoveryPassword from "../ui/screens/Inmobiliaria/login/RecoveryPassword";
-import ProfileScreen from "../ui/screens/Inmobiliaria/login/ProfileScreen";
-import HomeScreen from "../ui/screens/Inmobiliaria/home/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 

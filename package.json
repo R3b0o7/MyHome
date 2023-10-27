@@ -10,9 +10,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.16",
+    "deprecated-react-native-prop-types": "^5.0.0",
+    "expo-font": "^11.6.0",
     "fluidbottomnavigation-rn": "^0.1.1",
     "i18n-js": "^4.3.2",
     "react": "18.2.0",
@@ -22,8 +25,10 @@
     "react-native-reanimated": "^3.5.4",
     "react-native-safe-area-context": "^4.7.4",
     "react-native-screens": "^3.27.0",
+    "react-native-snap-carousel": "^3.9.1",
     "react-native-splash-screen": "^3.3.0",
-    "react-native-svg": "^13.14.0"
+    "react-native-svg": "^13.14.0",
+    "react-native-vector-icons": "^10.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

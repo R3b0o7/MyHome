@@ -19,7 +19,7 @@ const ProfileScreen = () => {
     };
 
     const handleSettings = () => {
-      navigation.push(NavigatorConstant.PROFILE_SCREEN.SETTINGS);
+      navigation.push(NavigatorConstant.PROFILE_STACK.SETTINGS);
     };
 
     const pressHandler = () => {

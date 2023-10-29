@@ -21,10 +21,6 @@ export default RootNavigator = () => {
                     name={NavigatorConstant.LANDING_STACK.HOME}
                     component={LandingTabNavigator}
                 />
-                <Stack.Screen
-                    name={NavigatorConstant.PROFILE_SCREEN.SETTINGS}
-                    component={ProfileStackNavigator}
-                />
             </Stack.Navigator>
         </NavigationContainer>
     );

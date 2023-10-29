@@ -1,14 +1,14 @@
 import react from "react";
 import { View, Text, StyleSheet} from "react-native";
 
-const comentsScreen = () => {
+function ComentsScreen() {
     return (
         <View>
             <Text> Pantalla de Comentarios </Text>
         </View>
-    ); 
-};
+    );
+}
 
 const styles = StyleSheet.create({});
 
-export default comentsScreen;
+export default ComentsScreen;

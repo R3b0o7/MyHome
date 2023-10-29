@@ -22,7 +22,7 @@ const TAB_STACK = {
 const DRAWER_SCREEN = {
     PROFILE: 'PROFILE',
 };
-const PROFILE_SCREEN = {
+const PROFILE_STACK = {
     PROFILE: 'PROFILE',
     SETTINGS: 'SETTINGS',
     COMENTS: 'COMENTS'
@@ -33,5 +33,5 @@ export default {
     LANDING_STACK,
     TAB_STACK,
     DRAWER_SCREEN,
-    PROFILE_SCREEN
+    PROFILE_STACK
 };

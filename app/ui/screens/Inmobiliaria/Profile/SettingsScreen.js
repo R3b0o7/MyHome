@@ -9,7 +9,7 @@ import CustomButton from '../../../components/CustomButton';
 
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 
-const settingsScreen = () => {
+const SettingsScreen = () => {
 
     return (
         <View>
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
       }
 });
 
-export default settingsScreen;
+export default SettingsScreen;

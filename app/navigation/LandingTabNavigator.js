@@ -6,6 +6,7 @@ import I18n from '../assets/strings/I18';
 import ProfileScreen from '../ui/screens/Inmobiliaria/TabNavigator/ProfileScreen';
 import PropertiesScreen from '../ui/screens/Inmobiliaria/TabNavigator/PropertiesScreen';
 import { Image } from 'react-native';
+import ProfileStackNavigator from './ProfileStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,7 +43,7 @@ export default LandingStackNavigator = () => {
       />
       <Tab.Screen
         name={NavigatorConstant.LANDING_STACK.PROFILE}
-        component={ProfileScreen}
+        component={ProfileStackNavigator}
         options={{
           title: I18n.t('profile'),
           headerShown: false,

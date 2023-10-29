@@ -58,6 +58,7 @@ export default {
     orientOeste: 'Orientación Oeste',
     contrafrente: 'Contra frente',
     antiguedad: 'Antigüedad',
+    delete: 'Eliminar Cuenta',
     imageType:{
         svg:'SVG File',
         png:'PNG File',

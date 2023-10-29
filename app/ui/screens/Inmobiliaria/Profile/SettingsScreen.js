@@ -1,13 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { Avatar, Text } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { View, StyleSheet } from 'react-native';
+import { Avatar, Switch  } from 'react-native-paper';
 
 import I18n from '../../../../assets/strings/I18';
 import CustomTextInput from '../../../components/CustomTextInput';
 import CustomButton from '../../../components/CustomButton';
 
-import NavigatorConstant from '../../../../navigation/NavigatorConstant';
+
 
 const SettingsScreen = () => {
 
@@ -37,23 +36,28 @@ const SettingsScreen = () => {
           </View>
     
           <View style={{
-            marginTop: 30,
-            marginLeft: 40,
-            marginRight: 40,
-        }}>
+              marginTop: 80,
+              marginLeft: 120,
+              marginRight: 120,
+          }}>
+            <CustomButton style={styles.buttons} title={I18n.t('delete')}/>
+          </View>
+          
+          <View style={{
+              marginTop: 50, 
+              alignSelf: 'center'}}>
+            {/* No hace nada el Switch, pero tampoco esta hecho el modo oscuro*/}
+            <Switch value='light mode' color='#000000'/> 
+          </View>
 
         </View>
-    
-    </View>
     );
 };
     
 
 const styles = StyleSheet.create({
-    buttons: {
-        marginTop: 30
-      },
-      shadow: {
+
+    shadow: {
         alignSelf: 'center',
         elevation: 8,
         shadowColor: '#000',

@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NavigatorConstant from './NavigatorConstant';
 import LandingTabNavigator from "./LandingTabNavigator";
+import ProfileStackNavigator from "./ProfileStackNavigator";
 
 const Stack = createNativeStackNavigator();
 export default RootNavigator = () => {
@@ -20,7 +21,6 @@ export default RootNavigator = () => {
                     name={NavigatorConstant.LANDING_STACK.HOME}
                     component={LandingTabNavigator}
                 />
-
             </Stack.Navigator>
         </NavigationContainer>
     );

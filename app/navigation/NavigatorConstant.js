@@ -1,7 +1,7 @@
 export const NAVIGATOR = {
     START: 'NAVIGATOR_START',
     LOGIN: 'NAVIGATOR_LOGIN',
-    DRAWER: 'NAVIGATOR_DRAWER',
+    DRAWER: 'NAVIGATOR_DRAWER'
 };
 const LOGIN_STACK = {
     LOGIN: 'LOGIN',
@@ -26,6 +26,11 @@ const TAB_STACK = {
 const DRAWER_SCREEN = {
     PROFILE: 'PROFILE',
 };
+const PROFILE_STACK = {
+    PROFILE: 'PROFILE',
+    SETTINGS: 'SETTINGS',
+    COMENTS: 'COMENTS'
+};
 export default {
     NAVIGATOR,
     LOGIN_STACK,
@@ -33,4 +38,5 @@ export default {
     PROPERTIES_STACK,
     TAB_STACK,
     DRAWER_SCREEN,
+    PROFILE_STACK
 };

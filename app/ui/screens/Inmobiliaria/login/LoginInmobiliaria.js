@@ -16,7 +16,7 @@ const LoginScreen = () => {
 
     // Función vacía para manejar la acción de registro
     const handleRegister = () => {
-        navigation.push(NavigatorConstant.LOGIN_STACK.REGISTER);
+        navigation.push(NavigatorConstant.NAVIGATOR.START);
     };
 
     // Función vacía para manejar la acción de recuperación de contraseña

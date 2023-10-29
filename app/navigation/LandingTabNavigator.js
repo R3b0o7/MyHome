@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../ui/screens/Inmobiliaria/TabNavigator/HomeScreen';
 import NavigatorConstant from './NavigatorConstant';
 import I18n from '../assets/strings/I18';
-import ProfileScreen from '../ui/screens/Inmobiliaria/login/ProfileScreen';
+import ProfileScreen from '../ui/screens/Inmobiliaria/TabNavigator/ProfileScreen';
 import PropertiesScreen from '../ui/screens/Inmobiliaria/TabNavigator/PropertiesScreen';
 import { Image } from 'react-native';
 

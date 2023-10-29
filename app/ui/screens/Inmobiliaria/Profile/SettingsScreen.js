@@ -41,9 +41,7 @@ const SettingsScreen = () => {
             marginLeft: 40,
             marginRight: 40,
         }}>
-            <CustomButton style={styles.buttons} title={I18n.t('comments')} />
-            <CustomButton style={styles.buttons} title={I18n.t('settings')} onPress={handleSettings}/>
-            <CustomButton style={styles.buttons} title={I18n.t('closeSesion')} onPress={()=> pressHandler()} />
+
         </View>
     
     </View>

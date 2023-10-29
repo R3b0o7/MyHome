@@ -14,7 +14,7 @@ const ProfileScreen = () => {
 
     const navigation = useNavigation();
 
-    const handleLogin = () => {
+    const handleLogOut = () => {
       navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN)
     };
 
@@ -22,15 +22,19 @@ const ProfileScreen = () => {
       navigation.push(NavigatorConstant.PROFILE_STACK.SETTINGS);
     };
 
+    const handleComents = () => {
+      navigation.push(NavigatorConstant.PROFILE_STACK.COMENTS);
+    };
+
     const pressHandler = () => {
         Alert.alert("Cerrar Sesión", "Estás seguro que desas cerrar la sesión?",[
-            {text: "Sí", onPress: ()=> handleLogin()},
+            {text: "Sí", onPress: ()=> handleLogOut()},
             {text: "No"}
         ])
     }
 
   return (
-    <View>
+    <View showsVerticalScrollIndicator={false}>
       <View style={{ marginTop: 39, alignSelf: 'center' }}>
         <Avatar.Image
           style={styles.shadow}
@@ -64,7 +68,7 @@ const ProfileScreen = () => {
         marginLeft: 40,
         marginRight: 40,
       }}>
-        <CustomButton style={styles.buttons} title={I18n.t('comments')} />
+        <CustomButton style={styles.buttons} title={I18n.t('comments')} onPress={handleComents} />
         <CustomButton style={styles.buttons} title={I18n.t('settings')} onPress={handleSettings}/>
         <CustomButton style={styles.buttons} title={I18n.t('closeSesion')} onPress={()=> pressHandler()} />
       </View>

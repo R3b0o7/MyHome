@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, ScrollView } from 'react-native';
 import { Avatar, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
@@ -34,7 +34,8 @@ const ProfileScreen = () => {
     }
 
   return (
-    <View showsVerticalScrollIndicator={false}>
+    <View>
+      <ScrollView>
       <View style={{ marginTop: 39, alignSelf: 'center' }}>
         <Avatar.Image
           style={styles.shadow}
@@ -72,7 +73,7 @@ const ProfileScreen = () => {
         <CustomButton style={styles.buttons} title={I18n.t('settings')} onPress={handleSettings}/>
         <CustomButton style={styles.buttons} title={I18n.t('closeSesion')} onPress={()=> pressHandler()} />
       </View>
-
+      </ScrollView>
     </View>
   );
 };

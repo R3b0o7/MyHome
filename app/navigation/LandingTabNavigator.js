@@ -22,7 +22,7 @@ export default LandingStackNavigator = () => {
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
-              source={focused ? require('../assets/images/Icons/lightMode/perfil.png') : require('../assets/images/Icons/lightMode/perfil.png')}
+              source={focused ? require('../assets/images/Icons/TabNavigator/propiedades1.png') : require('../assets/images/Icons/TabNavigator/propiedades1.png')}
               style={{ width: 24, height: 24 }}
             />
           ),
@@ -36,7 +36,7 @@ export default LandingStackNavigator = () => {
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
-              source={focused ? require('../assets/images/Icons/lightMode/perfil.png') : require('../assets/images/Icons/lightMode/perfil.png')}
+              source={focused ? require('../assets/images/Icons/TabNavigator/inicio1.png') : require('../assets/images/Icons/TabNavigator/inicio1.png')}
               style={{ width: 24, height: 24 }}
             />
           ),
@@ -50,7 +50,7 @@ export default LandingStackNavigator = () => {
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
-              source={focused ? require('../assets/images/Icons/lightMode/perfil.png') : require('../assets/images/Icons/lightMode/perfil.png')}
+              source={focused ? require('../assets/images/Icons/TabNavigator/perfil1.png') : require('../assets/images/Icons/TabNavigator/perfil1.png')}
               style={{ width: 24, height: 24 }}
             />
           ),

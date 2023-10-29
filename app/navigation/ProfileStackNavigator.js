@@ -15,17 +15,17 @@ export default ProfileStackNavigator = () => {
             <Stack.Screen
                 name={NavigatorConstant.PROFILE_STACK.PROFILE}
                 component={ProfileScreen}
-                options={{ title: I18n.t('profile') }}
+                options={{ title: I18n.t('profile'), headerShown: false  }}
             />
             <Stack.Screen
                 name={NavigatorConstant.PROFILE_STACK.SETTINGS}
                 component={SettingsScreen}
-                options={{ title: I18n.t('settings') }}
+                options={{ title: I18n.t('settings')}}
             />
             <Stack.Screen
                 name={NavigatorConstant.PROFILE_STACK.COMENTS}
                 component={ComentsScreen}
-                options={{ title: I18n.t('coments') }}
+                options={{ title: I18n.t('coments')}}
             />
         </Stack.Navigator >
     );

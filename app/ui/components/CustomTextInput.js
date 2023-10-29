@@ -17,8 +17,8 @@ const CustomTextInput = (props) => {
       style={{
         fontSize: 17,
         margin: 8,
-        marginLeft: 48,
-        marginRight: 48,
+        marginLeft: 40,
+        marginRight: 40,
         backgroundColor: '#E0E4F2', // Fondo
         borderBottomColor: '#203562', // Borde inferior
         color: '#1D1B20', // Color del texto del input

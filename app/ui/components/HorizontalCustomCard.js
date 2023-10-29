@@ -12,7 +12,7 @@ const HorizontalCustomCard = ({ address, operation, coverUrl, onPress }) => {
                         <Text style={styles.operation}>{operation}</Text>
                     </View>
                     <Avatar.Image
-                        size={60}
+                        size={65}
                         source={{ uri: coverUrl }}
                         style={styles.avatar}
                     />

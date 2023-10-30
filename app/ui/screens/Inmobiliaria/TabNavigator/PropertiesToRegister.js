@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Title, Text } from 'react-native-paper';
 import I18n from '../../../../assets/strings/I18';
 import CheckBox from '@react-native-community/checkbox';
+import CustomSwitch from '../../../components/CustomSwitch';
 
 const PropertiesToRegister = () => {
     const navigation = useNavigation();
@@ -215,7 +216,9 @@ const PropertiesToRegister = () => {
 
                 <CustomButton title={I18n.t('uploadVideo')} onPress={handleUploadVideo} style={styles.uploadphotoButton} />
 
-                <Title style={styles.title}>DOLAR O PESO</Title>
+                <Title style={styles.title}>DOLAR <CustomSwitch/> PESO</Title>
+
+                
 
                 <CustomTextInput label={I18n.t('expenses')} />
 

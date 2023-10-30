@@ -18,7 +18,7 @@ const HomeScreen = () => {
     const handleCardHorizontalPress = () => {
         // Define aquí la lógica de navegación
 
-        navigation.push(NavigatorConstant.PROPERTIES_STACK.PROPPERTIES); // Navega a la pantalla 'Detalle'
+        navigation.push(NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_VIEW); // Navega a la pantalla 'Detalle'
 
     };
 

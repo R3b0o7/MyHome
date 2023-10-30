@@ -1,6 +1,6 @@
-import react from "react";
-import { View, StyleSheet, FlatList, Dimensions} from "react-native";
-import { Chip, Divider, Text  } from 'react-native-paper';
+import React from "react";
+import { View, StyleSheet, FlatList, Dimensions, ScrollView} from "react-native";
+import { Chip, Divider, Text } from 'react-native-paper';
 import ImagePop from "../../../components/ImagePop";
 import Carousel from 'react-native-snap-carousel';
 import I18n from '../../../../assets/strings/I18';
@@ -69,8 +69,7 @@ const IndividualPropertieScreen = () => {
 
 
     return (
-        <View>
-
+        <ScrollView>
             <View style={styles.carouselContainer}>
                 <Carousel
                     data={carouselItems}
@@ -91,7 +90,7 @@ const IndividualPropertieScreen = () => {
             <Divider style={styles.divider}/>
 
             <View>
-                <Text style={{fontSize: 30,  alignSelf: 'center'}}>Platita</Text>
+                <Text style={{ fontSize: 30, alignSelf: 'center' }}>Platita</Text>
             </View>
 
             <Divider style={styles.divider}/>
@@ -100,35 +99,39 @@ const IndividualPropertieScreen = () => {
                 Caracteristicas
             </Text>
 
-            <FlatList
-                data={chipsData}
-                style={{alignSelf: 'center', margin:5, marginTop:0}}
-                renderItem={({ item }) => (
-                    <Chip style={styles.chipStyle} icon={item.icon}>
-                        {item.label}
-                    </Chip>
-                 )}
-                numColumns={2} // Establece el número de columnas en 2
-            />
+            <ScrollView horizontal>
+                <FlatList
+                    data={chipsData}
+                    style={{alignSelf: 'center', marginLeft:80, marginTop: 0}}
+                    renderItem={({ item }) => (
+                        <Chip style={styles.chipStyle} icon={item.icon}>
+                            {item.label}
+                        </Chip>
+                    )}
+                    numColumns={2} // Establece el número de columnas en 2
+                />
+            </ScrollView>
 
             <Text variant="headlineSmall" style={styles.subtitle}>
                 Amenities
             </Text>
 
-            <FlatList
-                data={chipsDataAmenities}
-                style={{alignSelf: 'center', margin:5, marginTop:0}}
-                renderItem={({ item }) => (
-                    <Chip style={styles.chipStyle}>
-                        {item.label}
-                    </Chip>
-                 )}
-                numColumns={2} // Establece el número de columnas en 2
-            />
+            <ScrollView horizontal>
+                <FlatList
+                    data={chipsDataAmenities}
+                    style={{alignSelf: 'center', marginLeft:80, marginTop: 0}}
+                    renderItem={({ item }) => (
+                        <Chip style={styles.chipStyle}>
+                            {item.label}
+                        </Chip>
+                    )}
+                    numColumns={2} // Establece el número de columnas en 2
+                />
+            </ScrollView>
 
-            <Divider style={{marginTop:5, marginBottom: 0,}}/>
+            <Divider style={{marginTop: 5, marginBottom: 0}}/>
 
-        </View>
+        </ScrollView>
     ); 
 };
 

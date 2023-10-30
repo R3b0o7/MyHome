@@ -1,6 +1,6 @@
 import react from "react";
 import { View, StyleSheet, FlatList, Dimensions} from "react-native";
-import { Chip, Divider, Title  } from 'react-native-paper';
+import { Chip, Divider, Text  } from 'react-native-paper';
 import ImagePop from "../../../components/ImagePop";
 import CustomCard from '../../../components/CustomCard';
 import Carousel from 'react-native-snap-carousel';
@@ -81,20 +81,25 @@ const IndividualPropertieScreen = () => {
                 />
             </View>
 
-            <View style={styles.titleContainer}>
-                <Title style={{fontSize: 20, marginBottom: 15}}>Acevedo 500</Title>
-                <Title style={{fontSize: 15, marginTop:-10,lineHeight: 18}}>Departamento en Venta en Villa Crespo, Capital Federal</Title>
-            </View>
+            <Text variant="headlineMedium" style={styles.title}>
+                Acevedo 500
+            </Text>
+                
+            <Text numberOfLines={3} style={styles.description}>
+                Departamento en Venta en Villa Crespo, Capital Federal 
+            </Text> 
 
-            <Divider style={{marginTop: 0, marginBottom: 10,}}/>
+            <Divider style={styles.divider}/>
 
             <View>
-                <Title style={{fontSize: 30,  alignSelf: 'center'}}>Platita</Title>
+                <Text style={{fontSize: 30,  alignSelf: 'center'}}>Platita</Text>
             </View>
 
-            <Divider style={{marginTop:5, marginBottom: 0,}}/>
+            <Divider style={styles.divider}/>
 
-            <Title style={styles.titleContainer}>Caracteristicas</Title>
+            <Text variant="headlineSmall" style={styles.subtitle}>
+                Caracteristicas
+            </Text>
 
             <FlatList
                 data={chipsData}
@@ -107,7 +112,9 @@ const IndividualPropertieScreen = () => {
                 numColumns={2} // Establece el número de columnas en 2
             />
 
-            <Title style={styles.titleContainer}>Amenities</Title>
+            <Text variant="headlineSmall" style={styles.subtitle}>
+                Amenities
+            </Text>
 
             <FlatList
                 data={chipsDataAmenities}
@@ -138,11 +145,26 @@ const styles = StyleSheet.create({
         marginTop: 20,
         alignItems: 'center',
     },
-    titleContainer: {
-        justifyContent: 'flex-start',
-        marginLeft: 20,
-        marginRight: 20,
-        marginVertical: 10,
+    title: {
+        fontWeight: 'bold', 
+        marginTop: 20,
+        marginLeft: 40
+    },
+    subtitle: {
+        marginTop: 20,
+        marginLeft: 40
+    },
+    description: {
+        fontSize: 14,
+        marginTop: 5,
+        marginLeft: 40,
+        marginRight: 40
+    },
+    divider: {
+        marginTop: 10,
+        marginLeft:25,
+        marginRight:25,
+        height:2
     },
 });
 

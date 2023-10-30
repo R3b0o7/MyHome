@@ -75,7 +75,7 @@ const HomeScreen = () => {
             coverUrl: 'https://picsum.photos/704',
         }
     ];
-    
+
 
     const renderItem = ({ item, index }) => {
         return (
@@ -92,7 +92,8 @@ const HomeScreen = () => {
     };
 
     return (
-        <View style={styles.container}>
+
+        <ScrollView>
             <View style={styles.carouselContainer}>
                 <Title style={styles.title}>Mis destacadas</Title>
                 <Carousel
@@ -103,8 +104,8 @@ const HomeScreen = () => {
                 />
             </View>
             <View style={styles.cardsContainer}>
-            <Title style={styles.title2}>Propiedades reservadas</Title>
-                <ScrollView>
+                <Title style={styles.title2}>Propiedades reservadas</Title>
+                
                     {horizontalCardData.map((data, index) => (
                         <HorizontalCustomCard
                             key={index}
@@ -114,10 +115,11 @@ const HomeScreen = () => {
                             onPress={handleCardHorizontalPress}
                         />
                     ))}
-                </ScrollView>
+                
 
             </View>
-        </View>
+        </ScrollView>
+
     );
 };
 
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     title2: {
         fontSize: 20,
         marginVertical: 10,
-        marginTop: 0,
+        marginTop: 10,
     },
     recoveryPasswordButton: {
         marginTop: 20,

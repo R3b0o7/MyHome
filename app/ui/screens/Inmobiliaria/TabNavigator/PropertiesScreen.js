@@ -11,15 +11,12 @@ import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 const HomeScreen = () => {
     const navigation = useNavigation();
 
-    // Función vacía para manejar la acción de recuperación de contraseña
     const handleToRegister = () => {
-        navigation.push(NavigatorConstant.PROPERTIES_STACK.TOREGISTER);
+        navigation.push(NavigatorConstant.PROPERTIES_STACK.TOREGISTER); // Navega a la pantalla de crear propiedad
     };
+    
     const handleCardHorizontalPress = () => {
-        // Define aquí la lógica de navegación
-
         navigation.push(NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_VIEW); // Navega a la pantalla 'Detalle'
-
     };
 
     const horizontalCardData = [
@@ -107,7 +104,7 @@ const styles = StyleSheet.create({
         // Puedes agregar estilos adicionales según tus necesidades
     },
     lowerContainer: {
-        flex: 1, // Este contenedor ocupará 1/4 de la pantalla
+        flex: 0.5, // Este contenedor ocupará 1/4 de la pantalla
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',

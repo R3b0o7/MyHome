@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import I18n from '../../../../assets/strings/I18';
 import CustomTextInput from '../../../components/CustomTextInput';
-import CustomButton from '../../../components/CustomButton';
+import ImageCustomButton from '../../../components/ImageCustomButton';
 import Stars from '../../../components/Stars';
 
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
@@ -60,18 +60,30 @@ const ProfileScreen = () => {
         />
       </View>
 
-      <View style={{ marginTop: 30 }}>
+      <View style={{ marginTop: 10}}>
         <Stars />
       </View>
 
       <View style={{
-        marginTop: 30,
-        marginLeft: 40,
-        marginRight: 40,
+        marginTop: 15,
+        marginLeft: 45,
+        marginRight: 45,
       }}>
-        <CustomButton style={styles.buttons} title={I18n.t('comments')} onPress={handleComents} />
-        <CustomButton style={styles.buttons} title={I18n.t('settings')} onPress={handleSettings}/>
-        <CustomButton style={styles.buttons} title={I18n.t('closeSesion')} onPress={()=> pressHandler()} />
+        <ImageCustomButton 
+          style={styles.buttons} 
+          title={I18n.t('comments')}
+          imageSource={require('../../../../assets/images/Icons/lightMode/message.png')}
+          onPress={handleComents} />
+        <ImageCustomButton 
+          style={styles.buttons} 
+          title={I18n.t('settings')}
+          imageSource={require('../../../../assets/images/Icons/lightMode/settings.png')} 
+          onPress={handleSettings}/>
+        <ImageCustomButton 
+          style={styles.buttons} 
+          title={I18n.t('closeSesion')} 
+          imageSource={require('../../../../assets/images/Icons/lightMode/cancel.png')}
+          onPress={()=> pressHandler()} />
       </View>
       </ScrollView>
     </View>
@@ -80,7 +92,8 @@ const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   buttons: {
-    marginTop: 30
+    height:50,
+    marginTop: 25
   },
   shadow: {
     alignSelf: 'center',

@@ -1,6 +1,6 @@
 import React, { useState }  from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Avatar, Switch } from 'react-native-paper';
+import { View, StyleSheet, } from 'react-native';
+import { Avatar, Switch, } from 'react-native-paper';
 
 import I18n from '../../../../assets/strings/I18';
 import CustomTextInput from '../../../components/CustomTextInput';
@@ -63,7 +63,7 @@ const SettingsScreen = () => {
               icon={require('../../../../assets/images/Icons/lightMode/mail.png')}
             />
           </View>
-    
+              
           <View style={{
               marginTop: 80,
               marginLeft: 120,
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         height:40,
         width:40,
         padding: 6
-      }
+      },
 });
 
 export default SettingsScreen;

@@ -13,7 +13,7 @@ export default ProfileStackNavigator = () => {
     return (
         <Stack.Navigator initialRouteName={NavigatorConstant.PROFILE_STACK.PROFILE}>
             <Stack.Screen
-                name={NavigatorConstant.PROFILE_STACK.PROFILE}
+                name={NavigatorConstant.PROFILE_STACK.PROFILE_MAIN}
                 component={ProfileScreen}
                 options={{ title: I18n.t('profile'), headerShown: false  }}
             />

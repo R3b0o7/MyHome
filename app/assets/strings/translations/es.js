@@ -59,6 +59,8 @@ export default {
     contrafrente: 'Contra frente',
     antiguedad: 'Antigüedad',
     delete: 'Eliminar Cuenta',
+    cancel: 'Cancelar',
+    confirm: 'Confirmar',
     imageType:{
         svg:'SVG File',
         png:'PNG File',

@@ -2,7 +2,6 @@ import react from "react";
 import { View, StyleSheet, FlatList, Dimensions} from "react-native";
 import { Chip, Divider, Text  } from 'react-native-paper';
 import ImagePop from "../../../components/ImagePop";
-import CustomCard from '../../../components/CustomCard';
 import Carousel from 'react-native-snap-carousel';
 import I18n from '../../../../assets/strings/I18';
 

@@ -7,6 +7,7 @@ import { Title, Text } from 'react-native-paper';
 import I18n from '../../../../assets/strings/I18';
 import CheckBox from '@react-native-community/checkbox';
 import CustomSwitch from '../../../components/CustomSwitch';
+import CustomHelperText from '../../../components/CustomHelperText';
 
 const PropertiesToRegister = () => {
     const navigation = useNavigation();
@@ -65,6 +66,7 @@ const PropertiesToRegister = () => {
     const [orientTypes, setOrientTypes] = useState(initialOrientTypes);
     const [amenities, setAmenities] = useState(initialAmenities);
     const [stateTypes, setStateTypes] = useState(initialState);
+    const [isDollar, setIsDollar] = useState(false);
 
     //TIPO DE PROPIEDAD
     const handlePropertyTypeChange = (propertyType) => {
@@ -103,6 +105,10 @@ const PropertiesToRegister = () => {
         const updatedamenities = { ...amenities };
         updatedamenities[count] = !amenities[count];
         setAmenities(updatedamenities);
+    };
+
+    const handleDollarChange = (value) => {
+        setIsDollar(value);
     };
 
 
@@ -150,6 +156,8 @@ const PropertiesToRegister = () => {
                 ))}
 
                 <Title style={styles.title}>{I18n.t('characteristics')}</Title>
+
+                <CustomHelperText/>
 
                 <CustomTextInput label={I18n.t('m2cubiert')} />
                 <CustomTextInput label={I18n.t('m2semidescubiert')} />
@@ -216,7 +224,7 @@ const PropertiesToRegister = () => {
 
                 <CustomButton title={I18n.t('uploadVideo')} onPress={handleUploadVideo} style={styles.uploadphotoButton} />
 
-                <Title style={styles.title}>DOLAR <CustomSwitch/> PESO</Title>
+                <Title style={styles.title}>DOLAR <CustomSwitch value={isDollar} onValueChange={handleDollarChange} /> PESO</Title>
 
                 
 

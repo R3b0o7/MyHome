@@ -1,6 +1,6 @@
 import react from "react";
 import { View, StyleSheet, FlatList, Dimensions} from "react-native";
-import { Chip } from 'react-native-paper';
+import { Chip, Divider, Title  } from 'react-native-paper';
 import ImagePop from "../../../components/ImagePop";
 import CustomCard from '../../../components/CustomCard';
 import Carousel from 'react-native-snap-carousel';
@@ -44,7 +44,16 @@ const IndividualPropertieScreen = () => {
         { icon: require('../../../../assets/images/Icons/black/m2.png'), label: '118m2' },
         { icon: require('../../../../assets/images/Icons/black/ambientes.png'), label: '4' },
         { icon: require('../../../../assets/images/Icons/black/bed.png'), label: '3 dorm.' },
+        { icon: require('../../../../assets/images/Icons/black/bano.png'), label: '4 baño' },
         { icon: require('../../../../assets/images/Icons/black/calendar.png'), label: '15 años' },
+        { icon: require('../../../../assets/images/Icons/black/car.png'), label: '1 cochera' },
+     ];
+
+     const chipsDataAmenities = [
+        { label: 'Sum' },
+        { label: 'Parrilla' },
+        { label: 'Solarium' },
+        { label: 'Calefacción' },
      ];
 
     const renderItem = ({ item, index }) => {
@@ -71,10 +80,25 @@ const IndividualPropertieScreen = () => {
                     itemWidth={250} // Ancho de cada tarjeta en el carrusel
                 />
             </View>
-            
+
+            <View style={styles.titleContainer}>
+                <Title style={{fontSize: 20, marginBottom: 15}}>Acevedo 500</Title>
+                <Title style={{fontSize: 15, marginTop:-10,lineHeight: 18}}>Departamento en Venta en Villa Crespo, Capital Federal</Title>
+            </View>
+
+            <Divider style={{marginTop: 0, marginBottom: 10,}}/>
+
+            <View>
+                <Title style={{fontSize: 30,  alignSelf: 'center'}}>Platita</Title>
+            </View>
+
+            <Divider style={{marginTop:5, marginBottom: 0,}}/>
+
+            <Title style={styles.titleContainer}>Caracteristicas</Title>
+
             <FlatList
                 data={chipsData}
-                style={{alignSelf: 'center', margin:5, marginTop:20}}
+                style={{alignSelf: 'center', margin:5, marginTop:0}}
                 renderItem={({ item }) => (
                     <Chip style={styles.chipStyle} icon={item.icon}>
                         {item.label}
@@ -82,6 +106,21 @@ const IndividualPropertieScreen = () => {
                  )}
                 numColumns={2} // Establece el número de columnas en 2
             />
+
+            <Title style={styles.titleContainer}>Amenities</Title>
+
+            <FlatList
+                data={chipsDataAmenities}
+                style={{alignSelf: 'center', margin:5, marginTop:0}}
+                renderItem={({ item }) => (
+                    <Chip style={styles.chipStyle}>
+                        {item.label}
+                    </Chip>
+                 )}
+                numColumns={2} // Establece el número de columnas en 2
+            />
+
+            <Divider style={{marginTop:5, marginBottom: 0,}}/>
 
         </View>
     ); 
@@ -93,15 +132,17 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         margin:5,
         borderRadius: 20,
-        width: 100
+        width: 110
     },
     carouselContainer: {
         marginTop: 20,
         alignItems: 'center',
     },
-    title: {
-        fontSize: 20,
-        marginVertical: 20,
+    titleContainer: {
+        justifyContent: 'flex-start',
+        marginLeft: 20,
+        marginRight: 20,
+        marginVertical: 10,
     },
 });
 

@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Title, Text } from 'react-native-paper';
 import I18n from '../../../../assets/strings/I18';
 import CheckBox from '@react-native-community/checkbox';
+import CustomSwitch from '../../../components/CustomSwitch';
+import CustomHelperText from '../../../components/CustomHelperText';
 
 const PropertiesToRegister = () => {
     const navigation = useNavigation();
@@ -39,35 +41,87 @@ const PropertiesToRegister = () => {
         orientOeste: false,
     };
 
+    const initialAmenities = {
+        sum: false,
+        pool: false,
+        quincho: false,
+        solarium: false,
+        sauna: false,
+        roomgames: false,
+        calefaccion: false,
+        coworking: false,
+        microcine: false,
+    };
+
+    const initialState = {
+        alquiler: false,
+        venta: false,
+        reservada: false,
+        alquiladaVendida: false,
+    };
+
     const [propertyTypes, setPropertyTypes] = useState(initialPropertyTypes);
     const [characteristicsProp, setBathroomCount] = useState(initialCharacteristics);
     const [frenteTypes, setFrenteTypes] = useState(initialFrenteTypes);
     const [orientTypes, setOrientTypes] = useState(initialOrientTypes);
+    const [amenities, setAmenities] = useState(initialAmenities);
+    const [stateTypes, setStateTypes] = useState(initialState);
+    const [isDollar, setIsDollar] = useState(false);
 
-    //que solo se pueda marcar un tipo de propiedad
+    //TIPO DE PROPIEDAD
     const handlePropertyTypeChange = (propertyType) => {
         const updatedPropertyTypes = { ...initialPropertyTypes };
         updatedPropertyTypes[propertyType] = !propertyTypes[propertyType];
         setPropertyTypes(updatedPropertyTypes);
     };
-    //que se puedan marcar varias a la vez
+    //ESTADO DE LA PROPIEDAD
+    const handleStateChange = (stateType) => {
+        const updateState = { ...initialState };
+        updateState[stateType] = !stateTypes[stateType];
+        setStateTypes(updateState);
+    };
+    //CARACTERISTICAS
     const handleCharacteristicsPropChange = (count) => {
         const updatedcharacteristicsProp = { ...characteristicsProp };
         updatedcharacteristicsProp[count] = !characteristicsProp[count];
         setBathroomCount(updatedcharacteristicsProp);
     };
 
-    //que solo se pueda marcar frente o contra frente
+    //FRENTE O CONTRAFRENTE
     const handleFrenteChange = (frenteType) => {
         const updatedFrente = { ...initialFrenteTypes };
         updatedFrente[frenteType] = !frenteTypes[frenteType];
         setFrenteTypes(updatedFrente);
     };
-    //que solo se pueda marcar una orientacion
+    //ORIENTACION
     const handleOrientChange = (orientType) => {
         const updatedOrient = { ...initialOrientTypes };
         updatedOrient[orientType] = !orientTypes[orientType];
         setOrientTypes(updatedOrient);
+    };
+
+    //AMENITIES
+    const handleAmenitiesChange = (count) => {
+        const updatedamenities = { ...amenities };
+        updatedamenities[count] = !amenities[count];
+        setAmenities(updatedamenities);
+    };
+
+    const handleDollarChange = (value) => {
+        setIsDollar(value);
+    };
+
+
+    //MANEJO DE BOTONES
+
+    
+    const handleUploadPhoto = () => {
+
+    };
+
+    
+    const handleUploadVideo = () => {
+
     };
 
     // Función vacía para manejar la acción de registro
@@ -103,11 +157,15 @@ const PropertiesToRegister = () => {
 
                 <Title style={styles.title}>{I18n.t('characteristics')}</Title>
 
+                <CustomHelperText/>
+
                 <CustomTextInput label={I18n.t('m2cubiert')} />
                 <CustomTextInput label={I18n.t('m2semidescubiert')} />
                 <CustomTextInput label={I18n.t('m2descubiert')} />
                 <CustomTextInput label={I18n.t('cantambient')} />
                 <CustomTextInput label={I18n.t('cantcuartos')} />
+
+                <Text />
 
                 {Object.keys(characteristicsProp).map((count) => (
                     <View style={styles.checkboxRow} key={count}>
@@ -142,12 +200,50 @@ const PropertiesToRegister = () => {
                         />
                     </View>
                 ))}
-                <Text />
 
+                <Text />
 
                 <CustomTextInput label={I18n.t('antiguedad')} />
 
-                <CustomButton title={I18n.t('toRegister')} onPress={handleRegister} style={styles.registerButton} />
+                <Title style={styles.title}>{I18n.t('amenities')}</Title>
+
+                {Object.keys(amenities).map((count) => (
+                    <View style={styles.checkboxRow} key={count}>
+                        <Text style={styles.checkboxText}>{I18n.t(count)}</Text>
+                        <CheckBox
+                            value={amenities[count]}
+                            onValueChange={() => handleAmenitiesChange(count)}
+                        />
+                    </View>
+                ))}
+
+                <Title style={styles.title}>{I18n.t('description')}</Title>
+
+                <CustomButton title={I18n.t('uploadphoto')} onPress={handleUploadPhoto} style={styles.uploadphotoButton} />
+                <Title style={styles.titleUpload}>{I18n.t('requeredPhoto')}</Title>
+
+                <CustomButton title={I18n.t('uploadVideo')} onPress={handleUploadVideo} style={styles.uploadphotoButton} />
+
+                <Title style={styles.title}>DOLAR <CustomSwitch value={isDollar} onValueChange={handleDollarChange} /> PESO</Title>
+
+                
+
+                <CustomTextInput label={I18n.t('expenses')} />
+
+                <Title style={styles.title}>{I18n.t('statePropertie')}</Title>
+
+                {Object.keys(stateTypes).map((type) => (
+                    <View style={styles.checkboxRow} key={type}>
+                        <Text style={styles.checkboxText}>{I18n.t(type)}</Text>
+                        <CheckBox
+                            value={stateTypes[type]}
+                            onValueChange={() => handleStateChange(type)}
+                        />
+                    </View>
+                ))}
+
+                <CustomButton title={I18n.t('postPropertie')} onPress={handleRegister} style={styles.registerButton} />
+
             </ScrollView>
         </View>
     );
@@ -164,6 +260,10 @@ const styles = StyleSheet.create({
         marginTop: 20,
         textAlign: 'center',
     },
+    titleUpload: {
+        fontSize: 10,
+        textAlign: 'center',
+    },
     checkboxRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -177,6 +277,10 @@ const styles = StyleSheet.create({
     registerButton: {
         marginTop: 100,
         margin: 70,
+        marginLeft: 120,
+        marginRight: 120,
+    },
+    uploadphotoButton: {
         marginLeft: 150,
         marginRight: 150,
     },

@@ -1,0 +1,30 @@
+###
+POST http://localhost:9000/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+    "userName": "Pueba2",
+    "email": "email@email.com",
+    "visibleEmail": "visibleEmail@email.com",
+    "password": "12346578"
+}
+
+###
+GET http://localhost:9000/api/users HTTP/1.1
+
+###
+GET http://localhost:9000/api/users/654135d3a770ec375f3546c6 HTTP/1.1
+
+###
+PUT http://localhost:9000/api/users/65413950469062854f43e15d HTTP/1.1
+Content-Type: application/json
+
+{
+    "userName": "ACTUALIZADO",
+    "email": "email@email.com",
+    "visibleEmail": "visibleEmail@email.com",
+    "password": "12346578"
+}
+
+###
+DELETE  http://localhost:9000/api/users/65413950469062854f43e15d HTTP/1.1

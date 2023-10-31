@@ -8,9 +8,23 @@ import I18n from '../../../../assets/strings/I18';
 import CheckBox from '@react-native-community/checkbox';
 import CustomSwitch from '../../../components/CustomSwitch';
 import CustomHelperText from '../../../components/CustomHelperText';
+import UpdateImageModal from '../../../components/UpdateImageModal';
+import ImageCustomButton from '../../../components/ImageCustomButton';
 
 const PropertiesToRegister = () => {
     const navigation = useNavigation();
+
+    const [updateImageModalVisible, setUpdateImageModalVisible] = useState(false);
+    const openUpdateImageModal = () => {
+        setUpdateImageModalVisible(true);
+    };
+    const closeUpdateImageModal = () => {
+        setUpdateImageModalVisible(false);
+    };
+    const hasCustomErrors = (text) => {
+        const isNumber = /^[0-9]+$/.test(text); //SOLO RECIBA NUMEROS
+        return !isNumber;
+    };
 
     const initialPropertyTypes = {
         house: false,
@@ -114,12 +128,12 @@ const PropertiesToRegister = () => {
 
     //MANEJO DE BOTONES
 
-    
+
     const handleUploadPhoto = () => {
 
     };
 
-    
+
     const handleUploadVideo = () => {
 
     };
@@ -157,7 +171,12 @@ const PropertiesToRegister = () => {
 
                 <Title style={styles.title}>{I18n.t('characteristics')}</Title>
 
-                <CustomHelperText/>
+                <CustomHelperText
+                    label={I18n.t('m2cubiert')}
+                    type='error'
+                    messageError='Solo se aceptan caracteres numericos'
+                    validate={hasCustomErrors}
+                />
 
                 <CustomTextInput label={I18n.t('m2cubiert')} />
                 <CustomTextInput label={I18n.t('m2semidescubiert')} />
@@ -219,14 +238,22 @@ const PropertiesToRegister = () => {
 
                 <Title style={styles.title}>{I18n.t('description')}</Title>
 
-                <CustomButton title={I18n.t('uploadphoto')} onPress={handleUploadPhoto} style={styles.uploadphotoButton} />
+                <CustomButton title={I18n.t('uploadphoto')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
+                <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
                 <Title style={styles.titleUpload}>{I18n.t('requeredPhoto')}</Title>
 
-                <CustomButton title={I18n.t('uploadVideo')} onPress={handleUploadVideo} style={styles.uploadphotoButton} />
+                <CustomButton title={I18n.t('uploadVideo')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
+                <Text/>
+                <CustomHelperText
+                    label='Precio de venta o alquiler'
+                    type='error'
+                    messageError='Solo se aceptan caracteres numericos'
+                    validate={hasCustomErrors}
+                />
 
                 <Title style={styles.title}>DOLAR <CustomSwitch value={isDollar} onValueChange={handleDollarChange} /> PESO</Title>
 
-                
+
 
                 <CustomTextInput label={I18n.t('expenses')} />
 

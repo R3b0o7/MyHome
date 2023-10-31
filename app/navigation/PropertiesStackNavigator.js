@@ -26,6 +26,7 @@ export default PropertiesNavigator = () => {
              <Stack.Screen
                 name={NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_VIEW}
                 component={IndividualPropertieScreen}
+                options={{ title: ''}}
                 // options={{
                 //     headerShown: false,
                 //   }}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import CustomTextInput from '../../../components/CustomTextInput';
@@ -6,13 +6,39 @@ import { useNavigation } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import I18n from '../../../../assets/strings/I18';
 import axios from 'axios';
+import { SERVER_URL } from '../../../../config/config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = () => {
     const navigation = useNavigation();
 
+    const [userData, setUserData] = useState({
+        userNameOrEmail: '', // Nombre de usuario o correo electrónico
+        password: '',
+    });
+
     // Función vacía para manejar la acción de inicio de sesión
-    const handleLogin = () => {
-        navigation.replace(NavigatorConstant.LANDING_STACK.HOME)
+    const handleLogin = async () => {
+        try {
+            // Realizar la solicitud de inicio de sesión al servidor
+            const response = await axios.post(`${SERVER_URL}/api/users/login`, userData);
+
+            if (response.status === 200) {
+                // Almacenar el token de autenticación en el dispositivo
+               const token = response.data.token; // Asumiendo que el servidor envía un token
+                await AsyncStorage.setItem('authToken', token); // Almacena el token en AsyncStorage
+
+                // Redirigir al usuario a la pantalla de inicio o a donde sea necesario
+                navigation.replace(NavigatorConstant.LANDING_STACK.HOME);
+            } else {
+                // Manejar otros escenarios de respuesta (por ejemplo, credenciales inválidas)
+                alert('Credenciales inválidas');
+            }
+        } catch (error) {
+            // Manejar errores de red u otros errores
+            console.error('Error en el inicio de sesión:', error);
+            alert('Error en el inicio de sesión');
+        }
     };
 
     // Función vacía para manejar la acción de registro
@@ -34,8 +60,20 @@ const LoginScreen = () => {
                 />
             </View>
             <View style={styles.componentsContainer}>
-                <CustomTextInput label={I18n.t('userEmail')}  icon={require('../../../../assets/images/Icons/black/perfil.png')}style={styles.customTextInput}/>
-                <CustomTextInput label={I18n.t('password')} secureTextEntry={true} icon={require('../../../../assets/images/Icons/black/key.png')}/>
+                <CustomTextInput
+                    label={I18n.t('userEmail')}
+                    icon={require('../../../../assets/images/Icons/black/perfil.png')}
+                    style={styles.customTextInput}
+                    value={userData.userNameOrEmail}
+                    onChangeText={(text) => setUserData({ ...userData, userNameOrEmail: text })}
+                />
+                <CustomTextInput
+                    label={I18n.t('password')}
+                    secureTextEntry={true}
+                    icon={require('../../../../assets/images/Icons/black/key.png')}
+                    value={userData.password}
+                    onChangeText={(text) => setUserData({ ...userData, password: text })}
+                />
                 <CustomButton title={I18n.t('ingresar')} color="blue" onPress={handleLogin} style={styles.loginButton} />
                 <CustomButton title={I18n.t('registrarse')} color="green" onPress={handleRegister} />
                 <CustomButton title={I18n.t('recoveryPasswordButton')} color="gray" onPress={handlePasswordRecovery} style={styles.passwordRecoveryButton} />

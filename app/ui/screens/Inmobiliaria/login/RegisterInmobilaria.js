@@ -29,7 +29,7 @@ const RegisterScreen = () => {
 
         try {
             // Realizar la solicitud de registro al backend
-            const response = await axios.post(`http://192.168.0.12:9000/api/users/register`, {
+            const response = await axios.post(`${SERVER_URL}/api/users/register`, {
                 userName: userData.userName,
                 email: userData.email,
                 visibleEmail: userData.visibleEmail,

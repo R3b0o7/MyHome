@@ -5,6 +5,7 @@ import CustomTextInput from '../../../components/CustomTextInput';
 import { useNavigation } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import I18n from '../../../../assets/strings/I18';
+import axios from 'axios';
 
 const LoginScreen = () => {
     const navigation = useNavigation();

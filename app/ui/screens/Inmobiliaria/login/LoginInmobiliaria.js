@@ -13,12 +13,14 @@ const LoginScreen = () => {
     const navigation = useNavigation();
 
     const [userData, setUserData] = useState({
-        userNameOrEmail: '', // Nombre de usuario o correo electrónico
+        
+        email: '', // Nombre de usuario
         password: '',
     });
 
     // Función vacía para manejar la acción de inicio de sesión
     const handleLogin = async () => {
+        
         try {
             // Realizar la solicitud de inicio de sesión al servidor
             const response = await axios.post(`${SERVER_URL}/api/users/login`, userData);
@@ -61,18 +63,18 @@ const LoginScreen = () => {
             </View>
             <View style={styles.componentsContainer}>
                 <CustomTextInput
-                    label={I18n.t('userEmail')}
+                    label={I18n.t('mail')}
                     icon={require('../../../../assets/images/Icons/black/perfil.png')}
                     style={styles.customTextInput}
-                    value={userData.userNameOrEmail}
-                    onChangeText={(text) => setUserData({ ...userData, userNameOrEmail: text })}
+                    value={userData.email}
+                    onChangeText={(text) => setUserData({ ...userData, email: text })}
                 />
                 <CustomTextInput
                     label={I18n.t('password')}
                     secureTextEntry={true}
                     icon={require('../../../../assets/images/Icons/black/key.png')}
                     value={userData.password}
-                    onChangeText={(text) => setUserData({ ...userData, password: text })}
+                    onChangeText={(text) => setUserData({ ...userData, password: text } )}
                 />
                 <CustomButton title={I18n.t('ingresar')} color="blue" onPress={handleLogin} style={styles.loginButton} />
                 <CustomButton title={I18n.t('registrarse')} color="green" onPress={handleRegister} />

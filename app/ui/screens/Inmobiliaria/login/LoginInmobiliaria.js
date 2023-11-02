@@ -13,7 +13,6 @@ const LoginScreen = () => {
     const navigation = useNavigation();
 
     const [userData, setUserData] = useState({
-        
         email: '', // Nombre de usuario
         password: '',
     });

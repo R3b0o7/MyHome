@@ -2,6 +2,7 @@ export default {
     appName: 'Demo1',
     welcome: 'Bienvenido a React Native',
     login: 'Logueo',
+    precioVentaAlqui: 'Precio de venta o alquiler',
     register: 'Registro',
     password: 'Contraseña',
     confirmPassword: 'Confirmar contraseña',

@@ -3,14 +3,14 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import I18n from '../../../../assets/strings/I18';
 import { useNavigation } from '@react-navigation/native';
-import { Title } from 'react-native-paper';
+import { Text, Title } from 'react-native-paper';
 import HorizontalCustomCard from '../../../components/HorizontalCustomCard';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 
-const HomeScreen = () => {
+const PropertiesScreen = () => {
     const navigation = useNavigation();
 
     const [userProperties, setUserProperties] = useState([]); // Estado para almacenar las propiedades del usuario
@@ -35,41 +35,56 @@ const HomeScreen = () => {
     };
 
     useEffect(() => {
-        fetchUserProperties(); // Llama a la función para obtener las propiedades cuando el componente se monta
-    }, []);
+        const unsubscribe = navigation.addListener('focus', () => {
+            // Este código se ejecutará cada vez que la pantalla esté en primer plano
+            fetchUserProperties();
+        });
+
+        return unsubscribe;
+    }, [navigation]);
 
     const handleToRegister = () => {
         navigation.push(NavigatorConstant.PROPERTIES_STACK.TOREGISTER); // Navega a la pantalla de crear propiedad
     };
 
-    const handleCardHorizontalPress = () => {
-        navigation.push(NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_VIEW); // Navega a la pantalla 'Detalle'
+    const handleCardHorizontalPress = (propertyId) => {
+        // Navega a la pantalla 'Detalle' y pasa el ID de la propiedad como parámetro
+        navigation.push(NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_VIEW, {
+            propertyId: propertyId,
+        });
     };
+
 
     return (
         <View style={styles.container}>
             <View style={styles.upperContainer}>
                 <Title style={styles.title}>{I18n.t('myProperties')}</Title>
                 <ScrollView>
-                    {userProperties.map((data, index) => (
-                        <HorizontalCustomCard
-                            key={index}
-                            address={data.address}
-                            operation={
-                                data.alquiler
-                                    ? 'Alquiler'
-                                    : data.venta
-                                    ? 'Venta'
-                                    : data.reservada
-                                    ? 'Reservada'
-                                    : data.alquiladaVendida
-                                    ? 'Alquilada o Vendida'
-                                    : '' // Añade una operación predeterminada si ninguna está en true
-                            }
-                            coverUrl={data.coverUrl}
-                            onPress={handleCardHorizontalPress}
-                        />
-                    ))}
+                    {userProperties.length === 0 ? (
+                        <Text style={styles.noPropertiesText}>
+                            {I18n.t('noPropertiesCreated')}
+                        </Text>
+                    ) : (
+                        userProperties.map((data, index) => (
+                            <HorizontalCustomCard
+                                key={index}
+                                address={data.calle + ' ' + data.numero + ' ' + data.piso + ' ' + data.departamento}
+                                operation={
+                                    data.alquiler
+                                        ? 'Alquiler'
+                                        : data.venta
+                                        ? 'Venta'
+                                        : data.reservada
+                                        ? 'Reservada'
+                                        : data.alquiladaVendida
+                                        ? 'Alquilada o Vendida'
+                                        : '' // Añade una operación predeterminada si ninguna está en true
+                                }
+                                coverUrl={'https://picsum.photos/701'}
+                                onPress={() => handleCardHorizontalPress(data._id)} // Pasa el ID de la propiedad al presionar
+                            />
+                        ))
+                    )}
                 </ScrollView>
             </View>
             <View style={styles.lowerContainer}>
@@ -109,4 +124,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen;
+export default PropertiesScreen;

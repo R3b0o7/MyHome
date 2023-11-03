@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
 import { Avatar, Text } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 import I18n from '../../../../assets/strings/I18';
@@ -14,44 +14,44 @@ import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
   const [userData, setUserData] = useState({
     userName: '',
     email: '',
     visibleEmail: '',
   });
 
-  const getToken = async () => {
+  const fetchUserData = async () => {
     try {
+      // Obtiene el token de AsyncStorage
       const token = await AsyncStorage.getItem('authToken');
-      return token;
+      
+      // Realiza una solicitud GET para obtener los datos del usuario desde tu backend
+      const response = await axios.get(`${SERVER_URL}/api/users/me`, {
+        headers: {
+          'Authorization': token,
+        },
+      });
+
+      if (response.status === 200) {
+        const userDataFromAPI = response.data;
+        setUserData({
+          userName: userDataFromAPI.userName,
+          email: userDataFromAPI.email,
+          visibleEmail: userDataFromAPI.visibleEmail,
+        });
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Error al obtener los datos del usuario:', error);
     }
   };
 
   useEffect(() => {
-    getToken()
-      .then((token) => {
-        axios.get(`${SERVER_URL}/api/users/me`, {
-          headers: {
-            'Authorization': token,
-          },
-        })
-          .then((response) => {
-            setUserData({
-              userName: response.data.userName,
-              email: response.data.email,
-              visibleEmail: response.data.visibleEmail,
-            });
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    if (isFocused) {
+      fetchUserData();
+    }
+  }, [isFocused]);
 
   const handleLogOut = () => {
     navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
@@ -66,7 +66,7 @@ const ProfileScreen = () => {
   };
 
   const pressHandler = () => {
-    Alert.alert("Cerrar Sesión", "Estás seguro que desas cerrar la sesión?", [
+    Alert.alert("Cerrar Sesión", "Estás seguro que deseas cerrar la sesión?", [
       { text: "Sí", onPress: () => handleLogOut() },
       { text: "No" }
     ])

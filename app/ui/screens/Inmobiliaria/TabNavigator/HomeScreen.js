@@ -1,14 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import CustomCard from '../../../components/CustomCard';
 import I18n from '../../../../assets/strings/I18';
 import { useNavigation } from '@react-navigation/native';
-import { Title } from 'react-native-paper';
+import { Text, Title } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel';
 import HorizontalCustomCard from '../../../components/HorizontalCustomCard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { SERVER_URL } from '../../../../config/config';
 
 const HomeScreen = () => {
     const navigation = useNavigation();
+
+    const [userProperties, setUserProperties] = useState([]); // Estado para almacenar las propiedades del usuario
+
+    const fetchUserProperties = async () => {
+        // Obtén el token de AsyncStorage
+        const authToken = await AsyncStorage.getItem('authToken');
+
+        // Realiza una solicitud GET para obtener las propiedades del usuario desde tu backend
+        try {
+            const response = await axios.get(`${SERVER_URL}/api/properties/user-properties`, {
+                headers: {
+                    Authorization: authToken,
+                }
+            });
+            if (response.status === 200) {
+                setUserProperties(response.data);
+            }
+        } catch (error) {
+            console.error('Error al obtener las propiedades del usuario:', error);
+        }
+    };
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            // Este código se ejecutará cada vez que la pantalla esté en primer plano
+            fetchUserProperties();
+        });
+
+        return unsubscribe;
+    }, [navigation]);
+
 
     const handleCardHorizontalPress = () => {
         // Define aquí la lógica de navegación
@@ -105,17 +139,35 @@ const HomeScreen = () => {
             </View>
             <View style={styles.cardsContainer}>
                 <Title style={styles.title2}>Propiedades reservadas</Title>
-                
-                    {horizontalCardData.map((data, index) => (
+
+                {userProperties
+                    .filter((data) => data.reservada)
+                    .map((data, index) => (
                         <HorizontalCustomCard
                             key={index}
-                            address={data.address}
-                            operation={data.operation}
-                            coverUrl={data.coverUrl}
-                            onPress={handleCardHorizontalPress}
+                            address={data.calle + ' ' + data.numero + ' ' + data.piso + ' ' + data.departamento}
+                            operation={
+                                data.alquiler
+                                    ? 'Alquiler'
+                                    : data.venta
+                                    ? 'Venta'
+                                    : data.reservada
+                                    ? 'Reservada'
+                                    : data.alquiladaVendida
+                                    ? 'Alquilada o Vendida'
+                                    : '' // Añade una operación predeterminada si ninguna está en true
+                            }
+                            coverUrl={'https://picsum.photos/701'}
+                            onPress={() => handleCardHorizontalPress(data._id)} // Pasa el ID de la propiedad al presionar
                         />
-                    ))}
-                
+                    ))
+                }
+                {userProperties.filter((data) => data.reservada).length === 0 && (
+                    <Text style={styles.noPropertiesText}>
+                        No tienes propiedades reservadas.
+                    </Text>
+                )}
+
 
             </View>
         </ScrollView>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import I18n from '../../../../assets/strings/I18';
@@ -6,68 +6,66 @@ import { useNavigation } from '@react-navigation/native';
 import { Title } from 'react-native-paper';
 import HorizontalCustomCard from '../../../components/HorizontalCustomCard';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { SERVER_URL } from '../../../../config/config';
 
 const HomeScreen = () => {
     const navigation = useNavigation();
 
+    const [userProperties, setUserProperties] = useState([]); // Estado para almacenar las propiedades del usuario
+
+    const fetchUserProperties = async () => {
+        // Obtén el token de AsyncStorage
+        const authToken = await AsyncStorage.getItem('authToken');
+
+        // Realiza una solicitud GET para obtener las propiedades del usuario desde tu backend
+        try {
+            const response = await axios.get(`${SERVER_URL}/api/properties/user-properties`, {
+                headers: {
+                    Authorization: authToken,
+                }
+            });
+            if (response.status === 200) {
+                setUserProperties(response.data);
+            }
+        } catch (error) {
+            console.error('Error al obtener las propiedades del usuario:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserProperties(); // Llama a la función para obtener las propiedades cuando el componente se monta
+    }, []);
+
     const handleToRegister = () => {
         navigation.push(NavigatorConstant.PROPERTIES_STACK.TOREGISTER); // Navega a la pantalla de crear propiedad
     };
-    
+
     const handleCardHorizontalPress = () => {
         navigation.push(NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_VIEW); // Navega a la pantalla 'Detalle'
     };
-
-    const horizontalCardData = [
-        {
-            id: 1,
-            address: '123 Main St',
-            operation: 'Venta',
-            coverUrl: 'https://picsum.photos/701',
-        },
-        {
-            id: 2,
-            address: '456 Elm St',
-            operation: 'Venta',
-            coverUrl: 'https://picsum.photos/702',
-        },
-        {
-            id: 3,
-            address: '789 Oak St',
-            operation: 'Venta',
-            coverUrl: 'https://picsum.photos/703',
-        },
-        {
-            id: 4,
-            address: '789 Oak St',
-            operation: 'Venta',
-            coverUrl: 'https://picsum.photos/703',
-        },
-        {
-            id: 5,
-            address: '789 Oak St',
-            operation: 'Venta',
-            coverUrl: 'https://picsum.photos/703',
-        },
-        {
-            id: 6,
-            address: '987 Elm St',
-            operation: 'Alquiler',
-            coverUrl: 'https://picsum.photos/704',
-        }
-    ];
 
     return (
         <View style={styles.container}>
             <View style={styles.upperContainer}>
                 <Title style={styles.title}>{I18n.t('myProperties')}</Title>
                 <ScrollView>
-                    {horizontalCardData.map((data, index) => (
+                    {userProperties.map((data, index) => (
                         <HorizontalCustomCard
                             key={index}
                             address={data.address}
-                            operation={data.operation}
+                            operation={
+                                data.alquiler
+                                    ? 'Alquiler'
+                                    : data.venta
+                                    ? 'Venta'
+                                    : data.reservada
+                                    ? 'Reservada'
+                                    : data.alquiladaVendida
+                                    ? 'Alquilada o Vendida'
+                                    : '' // Añade una operación predeterminada si ninguna está en true
+                            }
                             coverUrl={data.coverUrl}
                             onPress={handleCardHorizontalPress}
                         />

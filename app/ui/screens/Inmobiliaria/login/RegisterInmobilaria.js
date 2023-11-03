@@ -25,8 +25,6 @@ const RegisterScreen = () => {
             return; // Detener el proceso de registro
         }
 
-        //console.log('Datos de userData:', userData);
-
         try {
             // Realizar la solicitud de registro al backend
             const response = await axios.post(`${SERVER_URL}/api/users/register`, {

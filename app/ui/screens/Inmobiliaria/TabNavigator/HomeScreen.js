@@ -9,6 +9,7 @@ import HorizontalCustomCard from '../../../components/HorizontalCustomCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
+import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 
 const HomeScreen = () => {
     const navigation = useNavigation();
@@ -52,9 +53,7 @@ const HomeScreen = () => {
     };
 
     const handleCardPress = () => {
-        // Define aquí la lógica de navegación
-
-        //navigation.push(NavigatorConstant.LOGIN_STACK.REGISTER); // Navega a la pantalla 'Detalle'
+        
 
     };
 

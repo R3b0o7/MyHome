@@ -9,12 +9,13 @@ const ComentsScreen = () => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image
-                    source={require('../../../../assets/images/Icons/lightMode/message.png')}
+                    source={require('../../../../assets/images/PaginaEnConstruccion.png')}
+                    // source={require('../../../../assets/images/Icons/lightMode/message.png')}
                     style={styles.image}
                 />
-                <Text style={styles.title}>Histórico de Comentarios</Text>
+                {/* <Text style={styles.title}>Histórico de Comentarios</Text> */}
             </View>
-            <CustomCommentsCard />
+            {/* <CustomCommentsCard /> */}
         </View>
     );
 };
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
         //flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop:20,
+        marginTop:200,
         paddingHorizontal: 20, // Espacio horizontal dentro del contenedor
     },
     header: {
@@ -38,9 +39,9 @@ const styles = StyleSheet.create({
         marginBottom: 10, // Espacio inferior
     },
     image: {
-        width: 25, // Ancho de la imagen
-        height: 25, // Altura de la imagen
-        marginRight: 10, // Espacio entre la imagen y el título
+        width: 300, // Ancho de la imagen
+        height: 350, // Altura de la imagen
+        //marginRight: 10, // Espacio entre la imagen y el título
     },
 });
 

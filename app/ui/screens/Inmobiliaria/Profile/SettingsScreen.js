@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Avatar, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { SERVER_URL } from '../../../../config/config';
+import axios from 'axios';
+
 import I18n from '../../../../assets/strings/I18';
 import CustomTextInput from '../../../components/CustomTextInput';
 import CustomButton from '../../../components/CustomButton';
@@ -9,8 +12,6 @@ import ImageCustomButton from '../../../components/ImageCustomButton';
 import UpdateImageModal from '../../../components/UpdateImageModal';
 import DeleteCustomModal from '../../../components/DeleteCustomModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SERVER_URL } from '../../../../config/config';
-import axios from 'axios';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 
 const SettingsScreen = () => {
@@ -144,6 +145,10 @@ const SettingsScreen = () => {
     ])
   }
 
+  const handleChangePasword = () => {
+    navigation.push(NavigatorConstant.PROFILE_STACK.CHANGE_PASWORD);
+  };
+
   return (
     <ScrollView>
       <View style={{ marginTop: 39, alignSelf: 'center' }}>
@@ -185,30 +190,40 @@ const SettingsScreen = () => {
       </View>
 
       <View style={{
-        marginTop: 80,
-        marginLeft: 120,
-        marginRight: 120,
+        marginTop: 10,
+        marginLeft: 100,
+        marginRight: 100,
       }}>
 
         <CustomButton
+          style={styles.buttons} 
+          title={I18n.t('changePasword')}
+          onPress={() => handleChangePasword()}
+        />
+
+        <CustomButton
+          style={styles.buttons} 
           title={I18n.t('saveChanges')}
           onPress={() => pressHandler()}
         />
+       
+        <CustomButton 
+          style={styles.buttons} 
+          title={I18n.t('delete')} 
+          onPress={pressDeleteAccount} 
+        />
 
-        <Text />
-
-        <CustomButton style={styles.buttons} title={I18n.t('delete')} onPress={pressDeleteAccount} />
       </View>
 
       <DeleteCustomModal visible={deleteCustomModalVisible} onClose={closeDeleteCustomModal} />
 
-      <View style={{
+      {/* <View style={{
         marginTop: 50,
         alignSelf: 'center'
       }}>
-        {/* No hace nada el Switch, pero tampoco esta hecho el modo oscuro
-        <Switch value='light mode' color='#000000' />*/}
-      </View>
+        No hace nada el Switch, pero tampoco esta hecho el modo oscuro
+        <Switch value='light mode' color='#000000' />
+      </View> */}
 
     </ScrollView>
   );
@@ -230,6 +245,10 @@ const styles = StyleSheet.create({
     width: 40,
     padding: 6
   },
+  buttons: {
+    marginTop: 20,
+    marginBottom: 20
+  }
 });
 
 export default SettingsScreen;

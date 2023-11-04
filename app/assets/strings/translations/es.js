@@ -87,6 +87,8 @@ export default {
     reservada: 'Reservada',
     alquiladaVendida: 'Alquilada o Vendida',
     statePropertie: 'Estado de la Propiedad',
+    changePasword: 'Cambiar Contraseña',
+    favorite: 'Destacado',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

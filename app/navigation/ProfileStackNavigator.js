@@ -6,6 +6,7 @@ import NavigatorConstant from "./NavigatorConstant";
 import ProfileScreen from "../ui/screens/Inmobiliaria/TabNavigator/ProfileScreen";
 import SettingsScreen from "../ui/screens/Inmobiliaria/Profile/SettingsScreen";
 import ComentsScreen from "../ui/screens/Inmobiliaria/Profile/ComentsScreen";
+import ChangePaswordScreen from "../ui/screens/Inmobiliaria/Profile/ChangePaswordScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,11 @@ export default ProfileStackNavigator = () => {
                 name={NavigatorConstant.PROFILE_STACK.COMENTS}
                 component={ComentsScreen}
                 options={{ title: I18n.t('coments')}}
+            />
+            <Stack.Screen
+                name={NavigatorConstant.PROFILE_STACK.CHANGE_PASWORD}
+                component={ChangePaswordScreen}
+                options={{ title: I18n.t('changePasword')}}
             />
         </Stack.Navigator >
     );

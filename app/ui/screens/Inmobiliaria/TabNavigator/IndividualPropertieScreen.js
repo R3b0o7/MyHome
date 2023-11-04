@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from "../../../components/CustomButton";
 import { useNavigation } from '@react-navigation/native';
 import NavigatorConstant from "../../../../navigation/NavigatorConstant";
+import ImageCustomButton from '../../../components/ImageCustomButton'
 
 const IndividualPropertieScreen = ({ route }) => {
 
@@ -156,86 +157,93 @@ const IndividualPropertieScreen = ({ route }) => {
 
 
     return (
-        <ScrollView>
-            <View style={styles.carouselContainer}>
-                <Carousel
-                    data={carouselItems}
-                    renderItem={renderItem}
-                    sliderWidth={Dimensions.get('window').width}
-                    itemWidth={250} // Ancho de cada tarjeta en el carrusel
-                />
-            </View>
+        <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+                <View style={styles.carouselContainer}>
+                    <Carousel
+                        data={carouselItems}
+                        renderItem={renderItem}
+                        sliderWidth={Dimensions.get('window').width}
+                        itemWidth={250} // Ancho de cada tarjeta en el carrusel
+                    />
+                </View>
 
-            <Text variant="headlineMedium" style={styles.title}>
-                {propertyData.calle} {propertyData.numero} {propertyData.piso} {propertyData.departamento}
-            </Text>
-
-
-
-            <Divider style={styles.divider} />
-
-            <View>
-                <Text style={{ fontSize: 30, alignSelf: 'center' }}>
-                    {propertyData.dolar ? 'US$' : '$'}
-                    {propertyData.precio}
+                <Text variant="headlineMedium" style={styles.title}>
+                    {propertyData.calle} {propertyData.numero} {propertyData.piso} {propertyData.departamento}
                 </Text>
-            </View>
 
-            <Divider style={styles.divider} />
+                <Divider style={styles.divider} />
 
-            <Text variant="headlineSmall" style={styles.subtitle}>
-                Caracteristicas
-            </Text>
+                <View>
+                    <Text style={{ fontSize: 30, alignSelf: 'center' }}>
+                        {propertyData.dolar ? 'US$' : '$'}
+                        {propertyData.precio}
+                    </Text>
+                    <Text style={{ fontSize: 15, alignSelf: 'center' }}>
+                        $ {propertyData.expensas} pesos/mes
+                    </Text>
+                </View>
 
-            <ScrollView horizontal>
-                <FlatList
-                    data={chipsData}
-                    style={{ alignSelf: 'center', marginLeft: 80, marginTop: 0 }}
-                    renderItem={({ item }) => (
-                        <Chip style={styles.chipStyle} icon={item.icon}>
-                            {item.label}
-                        </Chip>
-                    )}
-                    numColumns={2} // Establece el número de columnas en 2
-                />
+                <Divider style={styles.divider} />
+
+                <Text variant="headlineSmall" style={styles.subtitle}>
+                    Caracteristicas
+                </Text>
+
+                <ScrollView horizontal>
+                    <FlatList
+                        data={chipsData}
+                        style={{ alignSelf: 'center', marginLeft: 80, marginTop: 0 }}
+                        renderItem={({ item }) => (
+                            <Chip style={styles.chipStyle} icon={item.icon}>
+                                {item.label}
+                            </Chip>
+                        )}
+                        numColumns={2} // Establece el número de columnas en 2
+                    />
+                </ScrollView>
+
+                <Text variant="headlineSmall" style={styles.subtitle}>
+                    Amenities
+                </Text>
+
+                <ScrollView horizontal>
+                    <FlatList
+                        data={amenidadesFiltradas}
+                        style={{ alignSelf: 'center', marginLeft: 80, marginTop: 0 }}
+                        renderItem={({ item }) => (
+                            <Chip style={styles.chipStyle}>
+                                {item.label}
+                            </Chip>
+                        )}
+                        numColumns={2} // Establece el número de columnas en 2
+                    />
+                </ScrollView>
+                <Text/>
             </ScrollView>
 
-            <Text variant="headlineSmall" style={styles.subtitle}>
-                Amenities
-            </Text>
+                <Divider style={{ marginTop: 5, marginBottom: 0 }} />
 
-            <ScrollView horizontal>
-                <FlatList
-                    data={amenidadesFiltradas}
-                    style={{ alignSelf: 'center', marginLeft: 80, marginTop: 0 }}
-                    renderItem={({ item }) => (
-                        <Chip style={styles.chipStyle}>
-                            {item.label}
-                        </Chip>
-                    )}
-                    numColumns={2} // Establece el número de columnas en 2
-                />
-            </ScrollView>
-
-            <Divider style={{ marginTop: 5, marginBottom: 0 }} />
-
-            <Divider style={styles.divider} />
             <View style={styles.lowerContainer}>
                 {/* Contenedor inferior (1/4 de la pantalla) */}
-                <Text/>
                 <CustomButton
+                    style={styles.boton}
                     title={I18n.t('edit')}
                     onPress={pressEdit}
                 />
-                <Text/>
+                <ImageCustomButton
+                    style={styles.ImageBoton}
+                    imageSource={require('../../../../assets/images/Stars/starFull.png')}
+                    // title={I18n.t('favorite')}
+                    // onPress={pressHandler}
+                />
                 <CustomButton
+                    style={styles.boton}
                     title={I18n.t('deletePropertie')}
                     onPress={pressHandler}
                 />
-                <Text/>
             </View>
-
-        </ScrollView>
+        </View>
     );
 };
 
@@ -272,11 +280,33 @@ const styles = StyleSheet.create({
         marginRight: 25,
         height: 2
     },
+    container: {
+        flex: 1,
+    },
+    scrollViewContent: {
+        flexGrow: 1,
+    },
     lowerContainer: {
-        flex: 0.5, // Este contenedor ocupará 1/4 de la pantalla
-        width: '100%',
+        bottom: 0,
+        padding: 10,
+        backgroundColor: '#e3e3e3',
+        //flex: 0.5, // Este contenedor ocupará 1/4 de la pantalla
+        //width: '100%',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    boton: {
+        width: 100, 
+        marginRight: 10,
+        marginLeft: 10
+    },
+    ImageBoton:{
+        width: 50,
+        height: 40,
+        marginRight: 10,
+        marginLeft: 10
+
     },
 });
 

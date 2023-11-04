@@ -49,6 +49,7 @@ export default {
     cantcuartos: 'Cantidad de cuartos',
     cantbaños: 'Cantidad de baños',
     deletePropertie: 'Eliminar',
+    edit: 'Editar',
     noPropertiesCreated: 'No tienes ninguna propiedad creada',
     saveChanges: 'Guardar cambios',
     terraza: 'Terraza',
@@ -86,6 +87,8 @@ export default {
     reservada: 'Reservada',
     alquiladaVendida: 'Alquilada o Vendida',
     statePropertie: 'Estado de la Propiedad',
+    changePasword: 'Cambiar Contraseña',
+    favorite: 'Destacado',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

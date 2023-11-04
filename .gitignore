@@ -65,3 +65,4 @@ app/config/config.js
 
 # testing
 /coverage
+app/config/config.js

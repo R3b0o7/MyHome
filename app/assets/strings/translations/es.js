@@ -49,6 +49,7 @@ export default {
     cantcuartos: 'Cantidad de cuartos',
     cantbaños: 'Cantidad de baños',
     deletePropertie: 'Eliminar',
+    edit: 'Editar',
     noPropertiesCreated: 'No tienes ninguna propiedad creada',
     saveChanges: 'Guardar cambios',
     terraza: 'Terraza',

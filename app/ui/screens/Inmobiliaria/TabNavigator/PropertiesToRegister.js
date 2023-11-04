@@ -7,7 +7,6 @@
     import I18n from '../../../../assets/strings/I18';
     import CheckBox from '@react-native-community/checkbox';
     import CustomSwitch from '../../../components/CustomSwitch';
-    import CustomHelperText from '../../../components/CustomHelperText';
     import UpdateImageModal from '../../../components/UpdateImageModal';
     import AsyncStorage from '@react-native-async-storage/async-storage';
     import { SERVER_URL } from '../../../../config/config';

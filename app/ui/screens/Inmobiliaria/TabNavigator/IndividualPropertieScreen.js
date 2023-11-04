@@ -9,6 +9,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from "../../../components/CustomButton";
 import { useNavigation } from '@react-navigation/native';
+import NavigatorConstant from "../../../../navigation/NavigatorConstant";
 
 const IndividualPropertieScreen = ({ route }) => {
 
@@ -19,6 +20,10 @@ const IndividualPropertieScreen = ({ route }) => {
             { text: "Sí", onPress: () => handleToDelete() },
             { text: "No" }
         ])
+    }
+
+    const pressEdit = () =>{
+        navigation.push(NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_UPDATE);
     }
 
     const handleToDelete = async () => {
@@ -217,10 +222,17 @@ const IndividualPropertieScreen = ({ route }) => {
             <Divider style={styles.divider} />
             <View style={styles.lowerContainer}>
                 {/* Contenedor inferior (1/4 de la pantalla) */}
+                <Text/>
+                <CustomButton
+                    title={I18n.t('edit')}
+                    onPress={pressEdit}
+                />
+                <Text/>
                 <CustomButton
                     title={I18n.t('deletePropertie')}
                     onPress={pressHandler}
                 />
+                <Text/>
             </View>
 
         </ScrollView>

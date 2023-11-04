@@ -5,6 +5,7 @@ import I18n from "../assets/strings/I18";
 import PropertiesScreen from "../ui/screens/Inmobiliaria/TabNavigator/PropertiesScreen";
 import PropertiesToRegister from "../ui/screens/Inmobiliaria/TabNavigator/PropertiesToRegister";
 import IndividualPropertieScreen from "../ui/screens/Inmobiliaria/TabNavigator/IndividualPropertieScreen";
+import PropertiesUpdate from "../ui/screens/Inmobiliaria/TabNavigator/PropertiesUpdate";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,14 @@ export default PropertiesNavigator = () => {
              <Stack.Screen
                 name={NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_VIEW}
                 component={IndividualPropertieScreen}
+                options={{ title: ''}}
+                // options={{
+                //     headerShown: false,
+                //   }}
+            />
+            <Stack.Screen
+                name={NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_UPDATE}
+                component={PropertiesUpdate}
                 options={{ title: ''}}
                 // options={{
                 //     headerShown: false,

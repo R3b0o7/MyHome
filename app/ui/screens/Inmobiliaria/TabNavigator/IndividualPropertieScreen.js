@@ -1,36 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Dimensions, Alert, ScrollView } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, FlatList, Dimensions, Alert, ScrollView } from 'react-native';
 import { Chip, Divider, Text } from 'react-native-paper';
-import ImagePop from "../../../components/ImagePop";
+import ImagePop from '../../../components/ImagePop';
 import Carousel from 'react-native-snap-carousel';
 import I18n from '../../../../assets/strings/I18';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomButton from "../../../components/CustomButton";
-import { useNavigation } from '@react-navigation/native';
-import NavigatorConstant from "../../../../navigation/NavigatorConstant";
+import CustomButton from '../../../components/CustomButton';
+import { useNavigation , useIsFocused } from '@react-navigation/native';
+import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 
 const IndividualPropertieScreen = ({ route }) => {
-
     const navigation = useNavigation();
+    const isFocused = useIsFocused();
 
     const pressHandler = () => {
-        Alert.alert("Eliminar propiedad", "Estás seguro que desas eliminar la propiedad?", [
+        Alert.alert("Eliminar propiedad", "¿Estás seguro de que deseas eliminar la propiedad?", [
             { text: "Sí", onPress: () => handleToDelete() },
             { text: "No" }
-        ])
+        ]);
     }
 
-    const pressEdit = () =>{
-        navigation.push(NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_UPDATE);
+    const pressEdit = () => {
+        const propertyId = route.params.propertyId;
+        navigation.push(NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_UPDATE, {
+            propertyId: propertyId,
+        });
     }
 
     const handleToDelete = async () => {
         try {
             const propertyId = route.params.propertyId;
-
-            // Obtén el token de autorización desde AsyncStorage
             const authToken = await AsyncStorage.getItem('authToken');
 
             if (!authToken) {
@@ -38,7 +39,6 @@ const IndividualPropertieScreen = ({ route }) => {
                 return;
             }
 
-            // Realiza una solicitud DELETE al endpoint del servidor para eliminar la propiedad
             const response = await axios.delete(`${SERVER_URL}/api/properties/${propertyId}`, {
                 headers: {
                     Authorization: authToken,
@@ -46,11 +46,8 @@ const IndividualPropertieScreen = ({ route }) => {
             });
 
             if (response.status === 200) {
-
-                alert('Se borro la propiedad con extito');
-
+                alert('Se borró la propiedad con éxito');
                 navigation.goBack();
-
             } else {
                 console.error('Error al eliminar la propiedad:', response.data.message);
             }
@@ -59,43 +56,40 @@ const IndividualPropertieScreen = ({ route }) => {
         }
     };
 
-
     const initialCharacteristics = {};
-
     const [propertyData, setPropertyData] = useState(initialCharacteristics);
 
-    useEffect(() => {
-        // Obtiene el ID de la propiedad desde las props de la navegación
-        const propertyId = route.params.propertyId;   //route.params.propertyId;
+    const fetchPropertyData = async () => {
+        try {
+            const propertyId = route.params.propertyId;
+            const authToken = await AsyncStorage.getItem('authToken');
 
-        // Recupera el token de autorización almacenado en AsyncStorage
-        AsyncStorage.getItem('authToken')
-            .then(authToken => {
-                if (authToken) {
-                    // Define las cabeceras de la solicitud con el token de autorización
-                    const headers = {
-                        Authorization: authToken,
-                    };
+            if (!authToken) {
+                console.error('Token de autorización no encontrado en AsyncStorage');
+                return;
+            }
 
-                    // Realiza una solicitud GET con las cabeceras configuradas
-                    axios.get(`${SERVER_URL}/api/properties/${propertyId}`, { headers })
-                        .then(response => {
-                            // Establece los datos de la propiedad en el estado
-                            setPropertyData(response.data);
-                        })
-                        .catch(error => {
-                            console.error('Error al obtener los datos de la propiedad:', error);
-                        });
-                } else {
-                    console.error('Token de autorización no encontrado en AsyncStorage');
+            const response = await axios.get(`${SERVER_URL}/api/properties/${propertyId}`, {
+                headers: {
+                    Authorization: authToken,
                 }
-            })
-            .catch(error => {
-                console.error('Error al recuperar el token de autorización:', error);
             });
-    }, []);
 
+            if (response.status === 200) {
+                setPropertyData(response.data);
+            } else {
+                console.error('Error al obtener los datos de la propiedad:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Error al obtener los datos de la propiedad:', error);
+        }
+    };
 
+    useEffect(() => {
+        if (isFocused) {
+            fetchPropertyData();
+        }
+    }, [isFocused]);
 
     const carouselItems = [
         {
@@ -135,25 +129,19 @@ const IndividualPropertieScreen = ({ route }) => {
         // Agregar otras amenidades aquí
     };
 
-    // Filtrar solo las amenidades que son true
     const amenidadesFiltradas = Object.entries(amenidades)
         .filter(([amenidad, valor]) => valor)
         .map(([amenidad, valor]) => ({ label: amenidad }));
-
-
 
     const renderItem = ({ item, index }) => {
         return (
             <View style={styles.slide}>
                 <ImagePop
                     coverUrl={item.coverUrl}
-                //onCustomButtonPress={handleCardPress} // Pasa la función personalizada
                 />
             </View>
         );
     };
-
-
 
     return (
         <ScrollView>
@@ -162,7 +150,7 @@ const IndividualPropertieScreen = ({ route }) => {
                     data={carouselItems}
                     renderItem={renderItem}
                     sliderWidth={Dimensions.get('window').width}
-                    itemWidth={250} // Ancho de cada tarjeta en el carrusel
+                    itemWidth={250}
                 />
             </View>
 
@@ -170,21 +158,18 @@ const IndividualPropertieScreen = ({ route }) => {
                 {propertyData.calle} {propertyData.numero} {propertyData.piso} {propertyData.departamento}
             </Text>
 
-
-
             <Divider style={styles.divider} />
 
             <View>
                 <Text style={{ fontSize: 30, alignSelf: 'center' }}>
-                    {propertyData.dolar ? 'US$' : '$'}
-                    {propertyData.precio}
+                    {propertyData.dolar ? 'US$' : '$'} {propertyData.precio}
                 </Text>
             </View>
 
             <Divider style={styles.divider} />
 
             <Text variant="headlineSmall" style={styles.subtitle}>
-                Caracteristicas
+                Características
             </Text>
 
             <ScrollView horizontal>
@@ -196,12 +181,12 @@ const IndividualPropertieScreen = ({ route }) => {
                             {item.label}
                         </Chip>
                     )}
-                    numColumns={2} // Establece el número de columnas en 2
+                    numColumns={2}
                 />
             </ScrollView>
 
             <Text variant="headlineSmall" style={styles.subtitle}>
-                Amenities
+                Amenidades
             </Text>
 
             <ScrollView horizontal>
@@ -213,28 +198,25 @@ const IndividualPropertieScreen = ({ route }) => {
                             {item.label}
                         </Chip>
                     )}
-                    numColumns={2} // Establece el número de columnas en 2
+                    numColumns={2}
                 />
             </ScrollView>
 
             <Divider style={{ marginTop: 5, marginBottom: 0 }} />
-
             <Divider style={styles.divider} />
             <View style={styles.lowerContainer}>
-                {/* Contenedor inferior (1/4 de la pantalla) */}
-                <Text/>
+                <Text />
                 <CustomButton
                     title={I18n.t('edit')}
                     onPress={pressEdit}
                 />
-                <Text/>
+                <Text />
                 <CustomButton
                     title={I18n.t('deletePropertie')}
                     onPress={pressHandler}
                 />
-                <Text/>
+                <Text />
             </View>
-
         </ScrollView>
     );
 };
@@ -273,7 +255,7 @@ const styles = StyleSheet.create({
         height: 2
     },
     lowerContainer: {
-        flex: 0.5, // Este contenedor ocupará 1/4 de la pantalla
+        flex: 0.5,
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',

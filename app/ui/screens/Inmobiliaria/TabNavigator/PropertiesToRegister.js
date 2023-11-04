@@ -96,7 +96,7 @@
         });
 
         const [propertyTypes, setPropertyTypes] = useState(initialPropertyTypes);
-        const [characteristicsProp, setBathroomCount] = useState(initialCharacteristics);
+        const [characteristicsProp, setCharacteristicsProp] = useState(initialCharacteristics);
         const [frenteTypes, setFrenteTypes] = useState(initialFrenteTypes);
         const [orientTypes, setOrientTypes] = useState(initialOrientTypes);
         const [amenities, setAmenities] = useState(initialAmenities);
@@ -121,7 +121,7 @@
         const handleCharacteristicsPropChange = (characteristics) => {
             const updatedcharacteristicsProp = { ...characteristicsProp };
             updatedcharacteristicsProp[characteristics] = !characteristicsProp[characteristics];
-            setBathroomCount(updatedcharacteristicsProp);
+            setCharacteristicsProp(updatedcharacteristicsProp);
         };
 
         //FRENTE O CONTRAFRENTE

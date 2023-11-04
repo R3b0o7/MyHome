@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import CustomTextInput from '../../../components/CustomTextInput';
@@ -12,8 +12,137 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
 
-const PropertiesUpdate = () => {
+const PropertiesUpdate = ({ route }) => {
+
+    //SETEAR LOS DATOS DEL GET EN LOS INPUT
+
+
+    const getToken = async () => {
+        try {
+            const token = await AsyncStorage.getItem('authToken');
+            return token;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getToken()
+            .then((token) => {
+
+                if (token) {
+                    // Define las cabeceras de la solicitud con el token de autorización
+                    const headers = {
+                        Authorization: token,
+                    };
+                    const propertyId = route.params.propertyId;
+
+
+                    // Realiza una solicitud GET con las cabeceras configuradas
+                    axios.get(`${SERVER_URL}/api/properties/${propertyId}`, { headers })
+                        .then(response => {
+                            // Establece los datos de la propiedad en el estado
+                            // setPropertyData(response.data);
+
+                            // Actualiza los valores de los campos de entrada
+                            setUbicacionData({
+                                ...textInputData,
+                                calle: response.data.calle,
+                                numero: response.data.numero,
+                                piso: response.data.piso,
+                                departamento: response.data.departamento,
+                                localidad: response.data.localidad,
+                                pais: response.data.pais,
+                                coordenadas: response.data.coordenadas,
+                                m2cubiert: response.data.m2cubiert,
+                                m2semidescubiert: response.data.m2semidescubiert,
+                                m2descubiert: response.data.m2descubiert,
+                                cantambient: response.data.cantambient,
+                                cantcuartos: response.data.cantcuartos,
+                                cantbaños: response.data.cantbaños,
+                                antiguedad: response.data.antiguedad,
+                                precio: response.data.precio,
+                                expensas: response.data.expensas,
+                            });
+
+                            // Actualiza los valores de los campos de selección
+                            setPropertyTypes({
+                                ...propertyTypes,
+                                house: response.data.house,
+                                ph: response.data.ph,
+                                apartment: response.data.apartment,
+                                local: response.data.local,
+                                office: response.data.office,
+                                territory: response.data.galpon,
+                            });
+
+                            setCharacteristicsProp({
+                                ...characteristicsProp,
+                                terraza: response.data.terraza,
+                                balcon: response.data.balcon,
+                                cochera: response.data.cochera,
+                                baulera: response.data.baulera,
+                            });
+
+                            setFrenteTypes({
+                                ...frenteTypes,
+                                frente: response.data.frente,
+                                contrafrente: response.data.contrafrente,
+                            });
+
+                            setOrientTypes({
+                                ...orientTypes,
+                                orientnorte: response.data.orientnorte,
+                                orientsur: response.data.orientsur,
+                                orienteste: response.data.orienteste,
+                                orientOeste: response.data.orientOeste,
+                            });
+
+                            setAmenities({
+                                ...amenities,
+                                sum: response.data.sum,
+                                pool: response.data.pool,
+                                quincho: response.data.quincho,
+                                solarium: response.data.solarium,
+                                sauna: response.data.sauna,
+                                roomgames: response.data.roomgames,
+                                calefaccion: response.data.calefaccion,
+                                coworking: response.data.coworking,
+                                microcine: response.data.microcine,
+                            });
+
+                            setStateTypes({
+                                ...stateTypes,
+                                alquiler: response.data.alquiler,
+                                venta: response.data.venta,
+                                reservada: response.data.reservada,
+                                alquiladaVendida: response.data.alquiladaVendida,
+                            });
+
+                            // Actualiza el estado del dólar
+                            setIsDollar(response.data.dolar);
+
+
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener los datos de la propiedad:', error);
+                        });
+                }
+                else {
+                    console.error('Token de autorización no encontrado en AsyncStorage');
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
+
     const navigation = useNavigation();
+
+    // const initialPropertyAll = {};
+
+    // const [propertyData, setPropertyData] = useState(initialPropertyAll);
 
     const [updateImageModalVisible, setUpdateImageModalVisible] = useState(false);
     const openUpdateImageModal = () => {
@@ -92,7 +221,7 @@ const PropertiesUpdate = () => {
     });
 
     const [propertyTypes, setPropertyTypes] = useState(initialPropertyTypes);
-    const [characteristicsProp, setBathroomCount] = useState(initialCharacteristics);
+    const [characteristicsProp, setCharacteristicsProp] = useState(initialCharacteristics);
     const [frenteTypes, setFrenteTypes] = useState(initialFrenteTypes);
     const [orientTypes, setOrientTypes] = useState(initialOrientTypes);
     const [amenities, setAmenities] = useState(initialAmenities);
@@ -117,7 +246,7 @@ const PropertiesUpdate = () => {
     const handleCharacteristicsPropChange = (characteristics) => {
         const updatedcharacteristicsProp = { ...characteristicsProp };
         updatedcharacteristicsProp[characteristics] = !characteristicsProp[characteristics];
-        setBathroomCount(updatedcharacteristicsProp);
+        setCharacteristicsProp(updatedcharacteristicsProp);
     };
 
     //FRENTE O CONTRAFRENTE
@@ -158,18 +287,17 @@ const PropertiesUpdate = () => {
     };
 
     // Función para enviar la solicitud de registro
-    const handleRegister = async () => {
+    const handleUpdateProperty = async () => {
         try {
-            console.log('dolar', isDollar);
-            // Reemplaza esta URL por la URL de tu backend donde se encuentra la ruta de registro de propiedades
-            const apiUrl = `${SERVER_URL}/api/properties/register`;
+            const apiUrl = `${SERVER_URL}/api/properties/update/${route.params.propertyId}`; // Reemplaza con la URL correcta
 
             // Obtiene el token de AsyncStorage
             const token = await AsyncStorage.getItem('authToken');
 
-            // Define los datos a enviar en la solicitud
-            const propertyData = {
+            console.log(textInputData.calle);
 
+            // Define los datos actualizados de la propiedad
+            const updatedPropertyData = {
                 calle: textInputData.calle,
                 numero: textInputData.numero,
                 piso: textInputData.piso,
@@ -177,18 +305,21 @@ const PropertiesUpdate = () => {
                 localidad: textInputData.localidad,
                 pais: textInputData.pais,
                 coordenadas: textInputData.coordenadas,
-                house: propertyTypes.house,
-                ph: propertyTypes.ph,
-                apartment: propertyTypes.apartment,
-                local: propertyTypes.local,
-                office: propertyTypes.office,
-                galpon: propertyTypes.territory,
                 m2cubiert: textInputData.m2cubiert,
                 m2semidescubiert: textInputData.m2semidescubiert,
                 m2descubiert: textInputData.m2descubiert,
                 cantambient: textInputData.cantambient,
                 cantcuartos: textInputData.cantcuartos,
                 cantbaños: textInputData.cantbaños,
+                antiguedad: textInputData.antiguedad,
+                precio: textInputData.precio,
+                expensas: textInputData.expensas,
+                house: propertyTypes.house,
+                ph: propertyTypes.ph,
+                apartment: propertyTypes.apartment,
+                local: propertyTypes.local,
+                office: propertyTypes.office,
+                territory: propertyTypes.galpon,
                 terraza: characteristicsProp.terraza,
                 balcon: characteristicsProp.balcon,
                 cochera: characteristicsProp.cochera,
@@ -199,7 +330,6 @@ const PropertiesUpdate = () => {
                 orientsur: orientTypes.orientsur,
                 orienteste: orientTypes.orienteste,
                 orientOeste: orientTypes.orientOeste,
-                antiguedad: textInputData.antiguedad,
                 sum: amenities.sum,
                 pool: amenities.pool,
                 quincho: amenities.quincho,
@@ -209,33 +339,29 @@ const PropertiesUpdate = () => {
                 calefaccion: amenities.calefaccion,
                 coworking: amenities.coworking,
                 microcine: amenities.microcine,
-                photos: '',
-                videos: '',
-                precio: textInputData.precio,
-                dolar: isDollar,
-                expensas: textInputData.expensas,
                 alquiler: stateTypes.alquiler,
                 venta: stateTypes.venta,
                 reservada: stateTypes.reservada,
                 alquiladaVendida: stateTypes.alquiladaVendida,
-
+                dolar: isDollar,
             };
 
-            // Realiza la solicitud POST al servidor
-            const response = await axios.post(apiUrl, propertyData, {
+            // Realiza la solicitud PUT al servidor
+            const response = await axios.put(apiUrl, updatedPropertyData, {
                 headers: {
                     Authorization: token, // Incluye el token en la cabecera de la solicitud
                 },
             });
 
-            // Muestra una alerta de registro exitoso
-            alert('Propiedad creada exitosamente!');
+            // Muestra una alerta de actualización exitosa
+            alert('Propiedad actualizada exitosamente!');
 
-            navigation.goBack();
+            // Redirige o realiza otras acciones necesarias después de la actualización
+            navigation.goBack(); // Redirige a la pantalla anterior, por ejemplo
         } catch (error) {
-            console.error('Error al registrar la propiedad:', error);
-            // Muestra una alerta de error en el registro
-            alert('Error al registrar la propiedad');
+            console.error('Error al actualizar la propiedad:', error);
+            // Muestra una alerta de error en la actualización
+            alert('Error al actualizar la propiedad');
         }
     };
 
@@ -377,14 +503,14 @@ const PropertiesUpdate = () => {
                 <Title style={styles.title}>{I18n.t('amenities')}</Title>
 
                 {Object.keys(amenities).map((amenitiesCh) => (
-                <View style={styles.checkboxRow} key={amenitiesCh}>
-                    <Text style={styles.checkboxText}>{I18n.t(amenitiesCh)}</Text>
-                    <CheckBox
-                        value={amenities[amenitiesCh]}
-                        onValueChange={() => handleAmenitiesChange(amenitiesCh)}
-                    />
-                </View>
-            ))}
+                    <View style={styles.checkboxRow} key={amenitiesCh}>
+                        <Text style={styles.checkboxText}>{I18n.t(amenitiesCh)}</Text>
+                        <CheckBox
+                            value={amenities[amenitiesCh]}
+                            onValueChange={() => handleAmenitiesChange(amenitiesCh)}
+                        />
+                    </View>
+                ))}
 
                 <Title style={styles.title}>{I18n.t('description')}</Title>
 
@@ -427,7 +553,7 @@ const PropertiesUpdate = () => {
                     </View>
                 ))}
 
-                <CustomButton title={I18n.t('saveChanges')} onPress={handleRegister} style={styles.registerButton} />
+                <CustomButton title={I18n.t('saveChanges')} onPress={handleUpdateProperty} style={styles.registerButton} />
 
             </ScrollView>
         </View>

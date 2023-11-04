@@ -294,8 +294,6 @@ const PropertiesUpdate = ({ route }) => {
             // Obtiene el token de AsyncStorage
             const token = await AsyncStorage.getItem('authToken');
 
-            console.log(textInputData.calle);
-
             // Define los datos actualizados de la propiedad
             const updatedPropertyData = {
                 calle: textInputData.calle,

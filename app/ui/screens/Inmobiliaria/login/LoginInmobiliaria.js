@@ -23,6 +23,10 @@ const LoginScreen = () => {
         try {
             // Realizar la solicitud de inicio de sesión al servidor
             const response = await axios.post(`${SERVER_URL}/api/users/login`, userData);
+            if(response.status === 401){
+                alert('La cuenta no está activada, revisa tu correo');
+
+            }
 
             if (response.status === 200) {
                 // Almacenar el token de autenticación en el dispositivo
@@ -37,7 +41,7 @@ const LoginScreen = () => {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            alert('Error en el inicio de sesión');
+            alert('Error en el inicio de sesión, recuerda activar tu cuenta en el link que te llego a tu correo');
 
 
         }

@@ -15,7 +15,8 @@ export default LoginNavigator = () => {
             <Stack.Screen
                 name={NavigatorConstant.LOGIN_STACK.LOGIN_LANDING}
                 component={LoginLanding}
-                options={{ title: I18n.t('login') }}
+                options={{ title: I18n.t('login'), headerShown: false, }}
+                
             />
             <Stack.Screen
                 name={NavigatorConstant.LOGIN_STACK.LOGIN}

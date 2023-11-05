@@ -16,7 +16,7 @@ const LoginLandingScreen = () => {
 
     // Función vacía para manejar la acción de login Usuario
     const handleUsuario = () => {
-        navigation.push(NavigatorConstant.LOGIN_STACK.LOGIN);
+       // navigation.push(NavigatorConstant.LOGIN_STACK.LOGIN);
     };
 
     return (

@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Card, Text } from 'react-native-paper';
 import CustomButton from './CustomButton';
 
-const CustomCard = ({ address, description, coverUrl, CustomButtonTitle, onCustomButtonPress }) => (
+const CustomCard = ({ address, description, coverUrl, CustomButtonTitle, onCustomButtonPress, propertyId }) => (
     <Card style={{ width: 250, alignSelf: 'center' }}>
         <Card.Cover source={{ uri: coverUrl }} />
         <Card.Content>
-            <Text variant="titleLarge">{address}</Text>
+        <Text style={{ fontSize: 20}}>{address}</Text>
             <Text variant="bodyMedium">{description}</Text>
         </Card.Content>
         <Card.Actions>

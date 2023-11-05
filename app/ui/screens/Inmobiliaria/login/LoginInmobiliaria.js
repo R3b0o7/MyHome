@@ -19,14 +19,18 @@ const LoginScreen = () => {
 
     // Función vacía para manejar la acción de inicio de sesión
     const handleLogin = async () => {
-        
+
         try {
             // Realizar la solicitud de inicio de sesión al servidor
             const response = await axios.post(`${SERVER_URL}/api/users/login`, userData);
+            if(response.status === 401){
+                alert('La cuenta no está activada, revisa tu correo');
+
+            }
 
             if (response.status === 200) {
                 // Almacenar el token de autenticación en el dispositivo
-               const token = response.data.token; // Asumiendo que el servidor envía un token
+                const token = response.data.token; // Asumiendo que el servidor envía un token
                 await AsyncStorage.setItem('authToken', token); // Almacena el token en AsyncStorage
 
                 // Redirigir al usuario a la pantalla de inicio o a donde sea necesario
@@ -37,8 +41,9 @@ const LoginScreen = () => {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en el inicio de sesión:', error);
-            alert('Error en el inicio de sesión');
+            alert('Error en el inicio de sesión, recuerda activar tu cuenta en el link que te llego a tu correo');
+
+
         }
     };
 
@@ -73,7 +78,7 @@ const LoginScreen = () => {
                     secureTextEntry={true}
                     icon={require('../../../../assets/images/Icons/black/key.png')}
                     value={userData.password}
-                    onChangeText={(text) => setUserData({ ...userData, password: text } )}
+                    onChangeText={(text) => setUserData({ ...userData, password: text })}
                 />
                 <CustomButton title={I18n.t('ingresar')} color="blue" onPress={handleLogin} style={styles.loginButton} />
                 <CustomButton title={I18n.t('registrarse')} color="green" onPress={handleRegister} />

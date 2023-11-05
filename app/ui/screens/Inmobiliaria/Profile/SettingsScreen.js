@@ -103,33 +103,32 @@ const SettingsScreen = () => {
       });
   };
 
-  const handleDeleteAccount = () => {
-    // Obtener el token del AsyncStorage
-    getToken()
-      .then((token) => {
-        // Realizar una solicitud DELETE para borrar la cuenta del usuario
-        axios
-          .delete(`${SERVER_URL}/api/users/delete`, {
-            headers: {
-              Authorization: token,
-            },
-          })
-          .then((response) => {
-            // Realizar alguna acción adicional si es necesario
-            alert("Cuenta borrada con éxito.");
-            navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
+  // const handleDeleteAccount = () => {
+  //   // Obtener el token del AsyncStorage
+  //   getToken()
+  //     .then((token) => {
+  //       // Realizar una solicitud DELETE para borrar la cuenta del usuario
+  //       axios
+  //         .delete(`${SERVER_URL}/api/users/delete`, {
+  //           headers: {
+  //             Authorization: token,
+  //           },
+  //         })
+  //         .then((response) => {
+  //           // Realizar alguna acción adicional si es necesario
+  //           alert("Cuenta borrada con éxito.");
+  //           navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
           
-          })
-          .catch((error) => {
-            console.error("Error al borrar la cuenta:", error);
-          });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error al borrar la cuenta:", error);
+  //         });
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
 
-  };
-
+  // };
 
   const pressHandler = () => {
     Alert.alert("Guardar cambios", "Estás seguro que desas guardar cambios?", [
@@ -138,12 +137,12 @@ const SettingsScreen = () => {
     ])
   }
 
-  const pressDeleteAccount = () => {
-    Alert.alert("BORRAR CUENTA", "Estás seguro que desas BORRAR LA CUENTA?", [
-      { text: "Sí", onPress: () => handleDeleteAccount() },
-      { text: "No" }
-    ])
-  }
+  // const pressDeleteAccount = () => {
+  //   Alert.alert("BORRAR CUENTA", "Estás seguro que desas BORRAR LA CUENTA?", [
+  //     { text: "Sí", onPress: () => handleDeleteAccount() },
+  //     { text: "No" }
+  //   ])
+  // }
 
   const handleChangePasword = () => {
     navigation.push(NavigatorConstant.PROFILE_STACK.CHANGE_PASWORD);
@@ -210,7 +209,7 @@ const SettingsScreen = () => {
         <CustomButton 
           style={styles.buttons} 
           title={I18n.t('delete')} 
-          onPress={pressDeleteAccount} 
+          onPress={openDeleteCustomModal} 
         />
 
       </View>

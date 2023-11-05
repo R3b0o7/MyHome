@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NavigatorConstant from './NavigatorConstant';
 import LandingTabNavigator from "./LandingTabNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
+import PropertiesStackNavigator from "./PropertiesStackNavigator";
 
 const Stack = createNativeStackNavigator();
 export default RootNavigator = () => {
@@ -20,6 +21,14 @@ export default RootNavigator = () => {
                 <Stack.Screen
                     name={NavigatorConstant.LANDING_STACK.HOME}
                     component={LandingTabNavigator}
+                />
+                <Stack.Screen
+                    name={NavigatorConstant.PROFILE_STACK.PROFILE_MAIN}
+                    component={ProfileStackNavigator}
+                />
+                <Stack.Screen
+                    name={NavigatorConstant.PROPERTIES_STACK.MYPROPERTIES}
+                    component={PropertiesStackNavigator}
                 />
             </Stack.Navigator>
         </NavigationContainer>

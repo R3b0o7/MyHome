@@ -67,6 +67,8 @@ export default {
     cancel: 'Cancelar',
     confirm: 'Confirmar',
     amenities: 'Amenities',
+    currentPassword: 'Contraseña actual',
+    newPassword: 'Contraseña nueva',
     sum: 'Sum',
     pool: 'Pileta',
     quincho: 'Quincho',

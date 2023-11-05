@@ -55,6 +55,7 @@ const PropertiesUpdate = ({ route }) => {
                     cantcuartos: response.data.cantcuartos,
                     cantbaños: response.data.cantbaños,
                     antiguedad: response.data.antiguedad,
+                    descripcion: response.data.descripcion,
                     precio: response.data.precio,
                     expensas: response.data.expensas,
                 });
@@ -215,7 +216,8 @@ const PropertiesUpdate = ({ route }) => {
         cantambient: '',
         cantcuartos: '',
         cantbaños: '',
-        antiguedad: '',
+        antiguedad: '',        
+        descripcion: '',
         precio: '',
         expensas: '',
     });
@@ -286,7 +288,7 @@ const PropertiesUpdate = ({ route }) => {
 
     };
 
-    
+
     const handleUpdateProperty = async () => {
         try {
             const apiUrl = `${SERVER_URL}/api/properties/update/${route.params.propertyId}`; // Reemplaza con la URL correcta
@@ -338,6 +340,7 @@ const PropertiesUpdate = ({ route }) => {
                 calefaccion: amenities.calefaccion,
                 coworking: amenities.coworking,
                 microcine: amenities.microcine,
+                descripcion: textInputData.descripcion,
                 alquiler: stateTypes.alquiler,
                 venta: stateTypes.venta,
                 reservada: stateTypes.reservada,
@@ -517,7 +520,15 @@ const PropertiesUpdate = ({ route }) => {
                         </View>
                     ))}
 
-                    <Title style={styles.title}>{I18n.t('description')}</Title>
+                    <Text />
+
+                    <CustomTextInput
+                        label={I18n.t('description')}
+                        value={textInputData.descripcion}
+                        onChangeText={(text) => setUbicacionData({ ...textInputData, descripcion: text })}
+                    />
+
+                    <Text />
 
                     <CustomButton title={I18n.t('uploadphoto')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
                     <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />

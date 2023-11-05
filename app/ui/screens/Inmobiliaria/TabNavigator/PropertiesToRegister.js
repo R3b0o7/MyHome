@@ -91,6 +91,7 @@ const PropertiesToRegister = () => {
         cantcuartos: '',
         cantbaños: '',
         antiguedad: '',
+        descripcion: '',
         precio: '',
         expensas: '',
     });
@@ -175,7 +176,7 @@ const PropertiesToRegister = () => {
             }
 
             if (emptyFields.length > 0) {
-                alert(`Los campos ${emptyFields.join(', ')} están vacíos. Por favor, completa todos los campos.`);
+                alert(`Los campos (${emptyFields.join(', ')}) están vacíos. Por favor, completa todos los campos.`);
                 return;
             }
 
@@ -227,6 +228,7 @@ const PropertiesToRegister = () => {
                 calefaccion: amenities.calefaccion,
                 coworking: amenities.coworking,
                 microcine: amenities.microcine,
+                descripcion: textInputData.descripcion,
                 photos: '',
                 videos: '',
                 precio: textInputData.precio,
@@ -405,7 +407,14 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
-                <Title style={styles.title}>{I18n.t('description')}</Title>
+                <Text/>
+
+                <CustomTextInput
+                    label={I18n.t('description')}
+                    value={textInputData.descripcion}
+                    onChangeText={(text) => setUbicacionData({ ...textInputData, descripcion: text })}
+                />
+                 <Text/>
 
                 <CustomButton title={I18n.t('uploadphoto')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
                 <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />

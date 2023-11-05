@@ -9,7 +9,6 @@ import HorizontalCustomCard from '../../../components/HorizontalCustomCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
-import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 
 const HomeScreen = () => {
     const navigation = useNavigation();
@@ -46,14 +45,16 @@ const HomeScreen = () => {
 
 
     const handleCardHorizontalPress = () => {
-        // Define aquí la lógica de navegación
+
 
         //navigation.push(NavigatorConstant.LOGIN_STACK.REGISTER); // Navega a la pantalla 'Detalle'
 
     };
 
-    const handleCardPress = () => {
-        
+    const handleViewPress = (ID) => {
+
+        console.log(ID)
+
 
     };
 
@@ -82,43 +83,25 @@ const HomeScreen = () => {
         // Agrega más tarjetas si es necesario
     ];
 
-    const horizontalCardData = [
-        {
-            id: 1,
-            address: '123 Main St',
-            operation: 'Venta',
-            coverUrl: 'https://picsum.photos/701',
-        },
-        {
-            id: 2,
-            address: '456 Elm St',
-            operation: 'Venta',
-            coverUrl: 'https://picsum.photos/702',
-        },
-        {
-            id: 3,
-            address: '789 Oak St',
-            operation: 'Venta',
-            coverUrl: 'https://picsum.photos/703',
-        },
-        {
-            id: 4,
-            address: '987 Elm St',
-            operation: 'Alquiler',
-            coverUrl: 'https://picsum.photos/704',
-        }
-    ];
-
-
     const renderItem = ({ item, index }) => {
         return (
             <View style={styles.slide}>
                 <CustomCard
-                    address={item.address}
-                    description={item.description}
-                    coverUrl={item.coverUrl}
-                    CustomButtonTitle={item.CustomButtonTitle}
-                    onCustomButtonPress={handleCardPress} // Pasa la función personalizada
+                    address={item.calle + ' ' + item.numero + ' ' + item.piso + ' ' + item.departamento}
+                    description={
+                        item.alquiler
+                            ? 'Alquiler'
+                            : item.venta
+                                ? 'Venta'
+                                : item.reservada
+                                    ? 'Reservada'
+                                    : item.alquiladaVendida
+                                        ? 'Alquilada o Vendida'
+                                        : '' // Añade una operación predeterminada si ninguna está en true
+                    }
+                    coverUrl={'https://picsum.photos/701'}
+                    CustomButtonTitle={I18n.t('view')}
+                    onCustomButtonPress={handleViewPress}
                 />
             </View>
         );
@@ -127,15 +110,16 @@ const HomeScreen = () => {
     return (
 
         <ScrollView>
-            <View style={styles.carouselContainer}>
+            {/*<View style={styles.carouselContainer}>
                 <Title style={styles.title}>Mis destacadas</Title>
                 <Carousel
-                    data={carouselItems}
+                    data={userProperties}
                     renderItem={renderItem}
                     sliderWidth={Dimensions.get('window').width}
                     itemWidth={250} // Ancho de cada tarjeta en el carrusel
+                    onPress={() => handleViewPress(renderItem._id)}
                 />
-            </View>
+            </View>*/}
             <View style={styles.cardsContainer}>
                 <Title style={styles.title2}>Propiedades reservadas</Title>
 
@@ -149,12 +133,12 @@ const HomeScreen = () => {
                                 data.alquiler
                                     ? 'Alquiler'
                                     : data.venta
-                                    ? 'Venta'
-                                    : data.reservada
-                                    ? 'Reservada'
-                                    : data.alquiladaVendida
-                                    ? 'Alquilada o Vendida'
-                                    : '' // Añade una operación predeterminada si ninguna está en true
+                                        ? 'Venta'
+                                        : data.reservada
+                                            ? 'Reservada'
+                                            : data.alquiladaVendida
+                                                ? 'Alquilada o Vendida'
+                                                : '' // Añade una operación predeterminada si ninguna está en true
                             }
                             coverUrl={'https://picsum.photos/701'}
                             onPress={() => handleCardHorizontalPress(data._id)} // Pasa el ID de la propiedad al presionar

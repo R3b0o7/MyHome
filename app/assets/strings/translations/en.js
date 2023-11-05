@@ -89,6 +89,8 @@ export default {
     statePropertie: 'Estado de la Propiedad',
     changePasword: 'Cambiar Contraseña',
     favorite: 'Destacado',
+    inmobiliaria: 'Inmobiliaria',
+    usuario: 'Usuario',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

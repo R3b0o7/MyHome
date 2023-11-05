@@ -29,7 +29,7 @@ const LoginLandingScreen = () => {
                 <ImageCustomButton 
                     title={I18n.t('usuario')} 
                     imageSource={require('../../../../assets/images/Icons/lightMode/perfil.png')}
-                    onPress={handleUsuario}
+                    // onPress={handleUsuario}
                     style={styles.buttons} />
                 <ImageCustomButtonBlue 
                     title={I18n.t('inmobiliaria')} 

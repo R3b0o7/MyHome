@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, Modal, Text, StyleSheet } from 'react-native';
 
+import { SERVER_URL } from '../../config/config';
+import axios from 'axios';
 import NavigatorConstant from '../../navigation/NavigatorConstant';
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from './CustomTextInput';
@@ -11,8 +13,73 @@ const DeleteCustomModal = ({ visible, onClose }) => {
 
   const navigation = useNavigation();
 
-  const handleLogOut = () => {
-    navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN)
+  const [confirmationText, setConfirmationText] = useState(''); // Estado para el texto de confirmación
+
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      return token;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // const handleLogOut = () => {
+  //   navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN)
+  // };
+
+  useEffect(() => {
+    getToken()
+      .then((token) => {
+        axios.get(`${SERVER_URL}/api/users/me`, {
+          headers: {
+            'Authorization': token,
+          },
+        })
+          .then((response) => {
+            setUserData({
+              userName: response.data.userName,
+              email: response.data.email,
+              visibleEmail: response.data.visibleEmail,
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const handleDeleteAccount = () => {
+    if (confirmationText === 'ELIMINAR') {
+    // Obtener el token del AsyncStorage
+      getToken()
+        .then((token) => {
+          // Realizar una solicitud DELETE para borrar la cuenta del usuario
+          axios
+            .delete(`${SERVER_URL}/api/users/delete`, {
+              headers: {
+                Authorization: token,
+              },
+            })
+            .then((response) => {
+              // Realizar alguna acción adicional si es necesario
+              alert("Cuenta borrada con éxito.");
+              navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
+            
+            })
+            .catch((error) => {
+              console.error("Error al borrar la cuenta:", error);
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      alert('Por favor, escriba "ELIMINAR" para confirmar.');
+    }
   };
 
   return (
@@ -30,11 +97,12 @@ const DeleteCustomModal = ({ visible, onClose }) => {
             
             <CustomTextInput
               icon={require('../../assets/images/Icons/lightMode/cancel.png')}
+              onChangeText={(text) => setConfirmationText(text)}
             />
             
             <View style={styles.buttonContainer}>
               <CustomButton style={{marginLeft: 100}} title={I18n.t('cancel')}  onPress={onClose} />
-              <CustomButton style={{marginLeft: 10}} title={I18n.t('confirm')} onPress={handleLogOut} />
+              <CustomButton style={{marginLeft: 10}} title={I18n.t('confirm')} onPress={handleDeleteAccount} />
             </View>
 
         </View>

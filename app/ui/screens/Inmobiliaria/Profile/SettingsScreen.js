@@ -138,12 +138,12 @@ const SettingsScreen = () => {
     ])
   }
 
-  const pressDeleteAccount = () => {
-    Alert.alert("BORRAR CUENTA", "Estás seguro que desas BORRAR LA CUENTA?", [
-      { text: "Sí", onPress: () => handleDeleteAccount() },
-      { text: "No" }
-    ])
-  }
+  // const pressDeleteAccount = () => {
+  //   Alert.alert("BORRAR CUENTA", "Estás seguro que desas BORRAR LA CUENTA?", [
+  //     { text: "Sí", onPress: () => handleDeleteAccount() },
+  //     { text: "No" }
+  //   ])
+  // }
 
   const handleChangePasword = () => {
     navigation.push(NavigatorConstant.PROFILE_STACK.CHANGE_PASWORD);
@@ -210,7 +210,7 @@ const SettingsScreen = () => {
         <CustomButton 
           style={styles.buttons} 
           title={I18n.t('delete')} 
-          onPress={pressDeleteAccount} 
+          onPress={openDeleteCustomModal} 
         />
 
       </View>

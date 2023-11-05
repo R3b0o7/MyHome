@@ -171,6 +171,9 @@
                 // Obtiene el token de AsyncStorage
                 const token = await AsyncStorage.getItem('authToken');
 
+                //validacion para que no este vacio
+                
+
                 // Define los datos a enviar en la solicitud
                 const propertyData = {
 
@@ -285,6 +288,7 @@
                     />
                     <CustomTextInput
                         label={I18n.t('latLong')}
+                        disabled={true}
                         value={textInputData.coordenadas}
                         onChangeText={(text) => setUbicacionData({ ...textInputData, coordenadas: text })}
                     />

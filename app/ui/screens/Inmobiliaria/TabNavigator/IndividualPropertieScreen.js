@@ -225,12 +225,12 @@ const IndividualPropertieScreen = ({ route }) => {
                     onPress={pressEdit}
                 />
 
-                {/*<ImageCustomButton
+                <ImageCustomButton
                     style={styles.ImageBoton}
                     imageSource={require('../../../../assets/images/Stars/starFull.png')}
                     // title={I18n.t('favorite')}
                     // onPress={pressHandler}
-                        />*/}
+                        />
 
                 <CustomButton
                     style={styles.boton}

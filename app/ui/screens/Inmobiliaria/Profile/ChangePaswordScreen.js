@@ -46,7 +46,7 @@ const ChangePaswordScreen = () => {
       if (response.status === 201) {
 
         alert('Contraseña cambiada con éxito, Inicie sesion nuevamente');
-        navigation.goBack();
+        navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
 
       }
     } catch (error) {

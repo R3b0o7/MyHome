@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, Modal, Text, StyleSheet } from 'react-native';
-
 import { SERVER_URL } from '../../config/config';
 import axios from 'axios';
+
 import NavigatorConstant from '../../navigation/NavigatorConstant';
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from './CustomTextInput';
 import I18n from '../../assets/strings/I18';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DeleteCustomModal = ({ visible, onClose }) => {
 
@@ -23,34 +24,6 @@ const DeleteCustomModal = ({ visible, onClose }) => {
       console.error(error);
     }
   };
-
-  // const handleLogOut = () => {
-  //   navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN)
-  // };
-
-  useEffect(() => {
-    getToken()
-      .then((token) => {
-        axios.get(`${SERVER_URL}/api/users/me`, {
-          headers: {
-            'Authorization': token,
-          },
-        })
-          .then((response) => {
-            setUserData({
-              userName: response.data.userName,
-              email: response.data.email,
-              visibleEmail: response.data.visibleEmail,
-            });
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
 
   const handleDeleteAccount = () => {
     if (confirmationText === 'ELIMINAR') {

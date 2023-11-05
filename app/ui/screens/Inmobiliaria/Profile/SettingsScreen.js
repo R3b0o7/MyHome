@@ -103,33 +103,32 @@ const SettingsScreen = () => {
       });
   };
 
-  const handleDeleteAccount = () => {
-    // Obtener el token del AsyncStorage
-    getToken()
-      .then((token) => {
-        // Realizar una solicitud DELETE para borrar la cuenta del usuario
-        axios
-          .delete(`${SERVER_URL}/api/users/delete`, {
-            headers: {
-              Authorization: token,
-            },
-          })
-          .then((response) => {
-            // Realizar alguna acción adicional si es necesario
-            alert("Cuenta borrada con éxito.");
-            navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
+  // const handleDeleteAccount = () => {
+  //   // Obtener el token del AsyncStorage
+  //   getToken()
+  //     .then((token) => {
+  //       // Realizar una solicitud DELETE para borrar la cuenta del usuario
+  //       axios
+  //         .delete(`${SERVER_URL}/api/users/delete`, {
+  //           headers: {
+  //             Authorization: token,
+  //           },
+  //         })
+  //         .then((response) => {
+  //           // Realizar alguna acción adicional si es necesario
+  //           alert("Cuenta borrada con éxito.");
+  //           navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
           
-          })
-          .catch((error) => {
-            console.error("Error al borrar la cuenta:", error);
-          });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error al borrar la cuenta:", error);
+  //         });
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
 
-  };
-
+  // };
 
   const pressHandler = () => {
     Alert.alert("Guardar cambios", "Estás seguro que desas guardar cambios?", [

@@ -47,7 +47,7 @@ const ReCoveryScreen = () => {
                     label={I18n.t('mail')}
                     icon={require('../../../../assets/images/Icons/black/email.png')}
                     value={email}
-                    onChangeText={(text) => setEmail(text.toLowerCase())} // Actualiza el estado del correo electrónico
+                    onChangeText={(text) => setEmail(text)} // Actualiza el estado del correo electrónico
                 />
                 <CustomButton title={I18n.t('recoveryPasswordButton')} color="green" onPress={handleRescoveryPassword} style={styles.rescoveryPasswordButton} />
             </View>

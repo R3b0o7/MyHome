@@ -71,7 +71,7 @@ const LoginScreen = () => {
                     icon={require('../../../../assets/images/Icons/black/perfil.png')}
                     style={styles.customTextInput}
                     value={userData.email}
-                    onChangeText={(text) => setUserData({ ...userData, email: text.toLowerCase() })}
+                    onChangeText={(text) => setUserData({ ...userData, email: text })}
                 />
                 <CustomTextInput
                     label={I18n.t('password')}

@@ -11,14 +11,17 @@ import UpdateImageModal from '../../../components/UpdateImageModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
+import * as ImagePicker from 'react-native-image-picker';
 
 const PropertiesToRegister = () => {
     const navigation = useNavigation();
 
     const [updateImageModalVisible, setUpdateImageModalVisible] = useState(false);
+
     const openUpdateImageModal = () => {
         setUpdateImageModalVisible(true);
     };
+
     const closeUpdateImageModal = () => {
         setUpdateImageModalVisible(false);
     };
@@ -26,6 +29,8 @@ const PropertiesToRegister = () => {
         const isNumber = /^[0-9]+$/.test(text); //SOLO RECIBA NUMEROS
         return !isNumber;
     };
+
+
 
     //API GOOGLE
 
@@ -180,7 +185,25 @@ const PropertiesToRegister = () => {
 
 
     const handleUploadPhoto = () => {
+        const options = {
+            title: 'Selecciona una foto',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
 
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('El usuario canceló la selección de la imagen');
+            } else if (response.error) {
+                console.log('Error:', response.error);
+            } else {
+                // Aquí puedes manejar la imagen seleccionada, que está en response.uri
+                console.log('URI de la imagen:', response.uri);
+                // Puedes enviar esta URI a tu servidor o realizar otras acciones necesarias
+            }
+        });
     };
 
 
@@ -217,7 +240,7 @@ const PropertiesToRegister = () => {
             // Uso de la función para obtener coordenadas desde una dirección
             const address = `${textInputData.calle} ${textInputData.numero}, ${textInputData.localidad}, ${textInputData.pais}`;
             const coordinatesdata = await getCoordinatesFromAddress(address);
-            const coordinates =`${coordinatesdata.latitude}, ${coordinatesdata.longitude}`;
+            const coordinates = `${coordinatesdata.latitude}, ${coordinatesdata.longitude}`;
 
 
             // Define los datos a enviar en la solicitud
@@ -374,6 +397,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={propertyTypes[type]}
                             onValueChange={() => handlePropertyTypeChange(type)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}
@@ -449,6 +473,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={characteristicsProp[characteristics]}
                             onValueChange={() => handleCharacteristicsPropChange(characteristics)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}
@@ -461,6 +486,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={frenteTypes[type]}
                             onValueChange={() => handleFrenteChange(type)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}
@@ -473,6 +499,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={orientTypes[type]}
                             onValueChange={() => handleOrientChange(type)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}
@@ -498,6 +525,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={amenities[amenitiesCh]}
                             onValueChange={() => handleAmenitiesChange(amenitiesCh)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}
@@ -515,7 +543,7 @@ const PropertiesToRegister = () => {
                 />
                 <Text />
 
-                <CustomButton title={I18n.t('uploadphoto')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
+                <CustomButton title={I18n.t('uploadphoto')} onPress={handleUploadPhoto} style={styles.uploadphotoButton} />
                 <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
                 <Title style={styles.titleUpload}>{I18n.t('requeredPhoto')}</Title>
 
@@ -560,6 +588,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={stateTypes[type]}
                             onValueChange={() => handleStateChange(type)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}

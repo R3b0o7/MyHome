@@ -316,7 +316,22 @@ const PropertiesUpdate = ({ route }) => {
 
     const handleUpdateProperty = async () => {
         try {
-            const apiUrl = `${SERVER_URL}/api/properties/update/${route.params.propertyId}`; // Reemplaza con la URL correcta
+
+            //validacion para que no este vacio
+            const emptyFields = [];
+
+            for (const key in textInputData) {
+                if (key !== 'coordenadas' && textInputData[key] === '') {
+                    emptyFields.push(key);
+                }
+            }
+
+            if (emptyFields.length > 0) {
+                alert(`Los campos (${emptyFields.join(', ')}) están vacíos. Por favor, completa todos los campos.`);
+                return;
+            }
+
+            const apiUrl = `${SERVER_URL}/api/properties/update/${route.params.propertyId}`; 
 
             // Obtiene el token de AsyncStorage
             const token = await AsyncStorage.getItem('authToken');
@@ -486,6 +501,7 @@ const PropertiesUpdate = ({ route }) => {
                             <CheckBox
                                 value={propertyTypes[type]}
                                 onValueChange={() => handlePropertyTypeChange(type)}
+                                tintColors={{ true: '#4363AC', false: '#49454F' }}
                             />
                         </View>
                     ))}
@@ -561,6 +577,7 @@ const PropertiesUpdate = ({ route }) => {
                             <CheckBox
                                 value={characteristicsProp[characteristics]}
                                 onValueChange={() => handleCharacteristicsPropChange(characteristics)}
+                                tintColors={{ true: '#4363AC', false: '#49454F' }}
                             />
                         </View>
                     ))}
@@ -573,6 +590,7 @@ const PropertiesUpdate = ({ route }) => {
                             <CheckBox
                                 value={frenteTypes[type]}
                                 onValueChange={() => handleFrenteChange(type)}
+                                tintColors={{ true: '#4363AC', false: '#49454F' }}
                             />
                         </View>
                     ))}
@@ -585,6 +603,7 @@ const PropertiesUpdate = ({ route }) => {
                             <CheckBox
                                 value={orientTypes[type]}
                                 onValueChange={() => handleOrientChange(type)}
+                                tintColors={{ true: '#4363AC', false: '#49454F' }}
                             />
                         </View>
                     ))}
@@ -610,6 +629,7 @@ const PropertiesUpdate = ({ route }) => {
                             <CheckBox
                                 value={amenities[amenitiesCh]}
                                 onValueChange={() => handleAmenitiesChange(amenitiesCh)}
+                                tintColors={{ true: '#4363AC', false: '#49454F' }}
                             />
                         </View>
                     ))}
@@ -673,6 +693,7 @@ const PropertiesUpdate = ({ route }) => {
                             <CheckBox
                                 value={stateTypes[type]}
                                 onValueChange={() => handleStateChange(type)}
+                                tintColors={{ true: '#4363AC', false: '#49454F' }}
                             />
                         </View>
                     ))}

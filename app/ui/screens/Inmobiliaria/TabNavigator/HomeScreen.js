@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import { View, StyleSheet, Dimensions, ScrollView, Image } from 'react-native';
 import CustomCard from '../../../components/CustomCard';
 import I18n from '../../../../assets/strings/I18';
 import { useNavigation } from '@react-navigation/native';
@@ -53,7 +53,7 @@ const HomeScreen = () => {
     };
 
     const handleCardPress = () => {
-        
+
 
     };
 
@@ -127,8 +127,12 @@ const HomeScreen = () => {
     return (
 
         <ScrollView>
-            <View style={styles.carouselContainer}>
+            <View style={styles.headerContainer}>
+                <Image source={require('../../../../assets/images/Icons/destacadas.png')} style={styles.icon} />
                 <Title style={styles.title}>Mis destacadas</Title>
+            </View>
+            <View style={styles.carouselContainer}>
+
                 <Carousel
                     data={carouselItems}
                     renderItem={renderItem}
@@ -136,8 +140,12 @@ const HomeScreen = () => {
                     itemWidth={250} // Ancho de cada tarjeta en el carrusel
                 />
             </View>
+
+            <View style={styles.headerContainer}>
+                <Image source={require('../../../../assets/images/Icons/propiedades.png')} style={styles.icon} />
+                <Title style={styles.title}>Propiedades reservadas</Title>
+            </View>
             <View style={styles.cardsContainer}>
-                <Title style={styles.title2}>Propiedades reservadas</Title>
 
                 {userProperties
                     .filter((data) => data.reservada)
@@ -149,12 +157,12 @@ const HomeScreen = () => {
                                 data.alquiler
                                     ? 'Alquiler'
                                     : data.venta
-                                    ? 'Venta'
-                                    : data.reservada
-                                    ? 'Reservada'
-                                    : data.alquiladaVendida
-                                    ? 'Alquilada o Vendida'
-                                    : '' // Añade una operación predeterminada si ninguna está en true
+                                        ? 'Venta'
+                                        : data.reservada
+                                            ? 'Reservada'
+                                            : data.alquiladaVendida
+                                                ? 'Alquilada o Vendida'
+                                                : '' // Añade una operación predeterminada si ninguna está en true
                             }
                             coverUrl={'https://picsum.photos/701'}
                             onPress={() => handleCardHorizontalPress(data._id)} // Pasa el ID de la propiedad al presionar
@@ -187,6 +195,16 @@ const styles = StyleSheet.create({
         flex: 1, // Ocupa el espacio inferior
         justifyContent: 'flex-end', // Alinea el botón en la parte inferior
         alignItems: 'center', // Alinea elementos secundarios en el centro
+    },
+    headerContainer: {
+        marginLeft: 31,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    icon: {
+        width: 24, // Set the desired width for your icon
+        height: 24, // Set the desired height for your icon
+        marginRight: 8, // Adjust the spacing as needed
     },
     title: {
         fontSize: 20,

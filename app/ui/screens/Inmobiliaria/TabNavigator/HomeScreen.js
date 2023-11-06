@@ -128,7 +128,7 @@ const HomeScreen = () => {
 
         <ScrollView>
             <View style={styles.headerContainer}>
-                <Image source={require('../../../../assets/images/Icons/destacadas.png')} style={styles.icon} />
+                <Image source={require('../../../../assets/images/Icons/destacadas.png')} style={{width: 20, height: 24,marginRight: 8,}}/>
                 <Title style={styles.title}>Mis destacadas</Title>
             </View>
             <View style={styles.carouselContainer}>

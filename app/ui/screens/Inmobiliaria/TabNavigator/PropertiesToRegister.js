@@ -397,6 +397,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={propertyTypes[type]}
                             onValueChange={() => handlePropertyTypeChange(type)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}
@@ -472,6 +473,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={characteristicsProp[characteristics]}
                             onValueChange={() => handleCharacteristicsPropChange(characteristics)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}
@@ -484,6 +486,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={frenteTypes[type]}
                             onValueChange={() => handleFrenteChange(type)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}
@@ -496,6 +499,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={orientTypes[type]}
                             onValueChange={() => handleOrientChange(type)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}
@@ -521,6 +525,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={amenities[amenitiesCh]}
                             onValueChange={() => handleAmenitiesChange(amenitiesCh)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}
@@ -583,6 +588,7 @@ const PropertiesToRegister = () => {
                         <CheckBox
                             value={stateTypes[type]}
                             onValueChange={() => handleStateChange(type)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
                         />
                     </View>
                 ))}

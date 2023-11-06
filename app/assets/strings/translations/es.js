@@ -1,6 +1,4 @@
 export default {
-    appName: 'Demo1',
-    welcome: 'Bienvenido a React Native',
     login: 'Logueo',
     precioVentaAlqui: 'Precio de venta o alquiler',
     register: 'Registro',
@@ -32,7 +30,7 @@ export default {
     city: 'Localidad',
     state: 'Provincia',
     country: 'País',
-    latLong: 'Coordenadas',
+    latLong: 'Lat & Long',
     location: 'Ubicacion',
     kindOfProperty: 'Tipo de propiedad',
     house: 'Casa',

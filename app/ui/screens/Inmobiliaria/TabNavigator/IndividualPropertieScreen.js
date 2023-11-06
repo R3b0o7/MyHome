@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
 
         bottom: 0,
         padding: 10,
-        backgroundColor: '#e3e3e3',
+       //backgroundColor: '#e3e3e3',
         //flex: 0.5, // Este contenedor ocupará 1/4 de la pantalla
         //width: '100%',
         flexDirection: 'row',

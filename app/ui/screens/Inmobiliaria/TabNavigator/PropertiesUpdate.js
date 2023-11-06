@@ -11,6 +11,7 @@ import UpdateImageModal from '../../../components/UpdateImageModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
+import * as ImagePicker from 'react-native-image-picker';
 
 const PropertiesUpdate = ({ route }) => {
 
@@ -305,6 +306,25 @@ const PropertiesUpdate = ({ route }) => {
 
 
     const handleUploadPhoto = () => {
+        const options = {
+            title: 'Selecciona una foto',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('El usuario canceló la selección de la imagen');
+            } else if (response.error) {
+                console.log('Error:', response.error);
+            } else {
+                // Aquí puedes manejar la imagen seleccionada, que está en response.uri
+                console.log('URI de la imagen:', response.uri);
+                // Puedes enviar esta URI a tu servidor o realizar otras acciones necesarias
+            }
+        });
 
     };
 
@@ -648,7 +668,7 @@ const PropertiesUpdate = ({ route }) => {
 
                     <Text />
 
-                    <CustomButton title={I18n.t('uploadphoto')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
+                    <CustomButton title={I18n.t('uploadphoto')} onPress={handleUploadPhoto} style={styles.uploadphotoButton} />
                     <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
                     <Title style={styles.titleUpload}>{I18n.t('requeredPhoto')}</Title>
 

@@ -37,7 +37,7 @@ const RegisterScreen = () => {
 
             // Manejar la respuesta del servidor
             if (response.status === 201) {
-                alert('Registro exitoso');
+                alert('Registro exitoso, revise su correo para activar la cuenta');
                 navigation.goBack(); // Redirigir al usuario a la pantalla de inicio de sesión u otra pantalla.
             } else {
                 // Manejar otros escenarios de respuesta (por ejemplo, error de servidor)

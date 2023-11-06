@@ -101,10 +101,6 @@ const ProfileUser = () => {
           />
         </View>
 
-        <View style={{ marginTop: 10 }}>
-          <Stars />
-        </View>
-
         <View style={{
           marginTop: 15,
           marginLeft: 45,

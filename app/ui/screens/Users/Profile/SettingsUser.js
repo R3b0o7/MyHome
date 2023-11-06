@@ -118,7 +118,7 @@ const SettingsUser = () => {
   //           // Realizar alguna acción adicional si es necesario
   //           alert("Cuenta borrada con éxito.");
   //           navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
-          
+
   //         })
   //         .catch((error) => {
   //           console.error("Error al borrar la cuenta:", error);
@@ -195,21 +195,21 @@ const SettingsUser = () => {
       }}>
 
         <CustomButton
-          style={styles.buttons} 
+          style={styles.buttons}
           title={I18n.t('changePasword')}
           onPress={() => handleChangePasword()}
         />
 
         <CustomButton
-          style={styles.buttons} 
+          style={styles.buttons}
           title={I18n.t('saveChanges')}
           onPress={() => pressHandler()}
         />
-       
-        <CustomButton 
-          style={styles.buttons} 
-          title={I18n.t('delete')} 
-          onPress={openDeleteCustomModal} 
+
+        <CustomButton
+          style={styles.buttons}
+          title={I18n.t('delete')}
+          onPress={openDeleteCustomModal}
         />
 
       </View>

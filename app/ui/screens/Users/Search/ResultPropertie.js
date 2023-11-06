@@ -24,7 +24,6 @@ const ResultPropertie = () => {
         <View>
            <Text> RESULTADO DE PROPIEDADES</Text>
            <CustomButton title='PROPIEDAD' color="blue" onPress={handleLogin} style={styles.loginButton} />
-
         </View>
     );
 };

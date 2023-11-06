@@ -63,13 +63,13 @@ const RegisterScreen = () => {
                     label={I18n.t('mail')}
                     icon={require('../../../../assets/images/Icons/black/email.png')}
                     value={userData.email}
-                    onChangeText={(text) => setUserData({ ...userData, email: text })}
+                    onChangeText={(text) => setUserData({ ...userData, email: text.toLowerCase() })}
                 />
                 <CustomTextInput
                     label={I18n.t('visibleMail')}
                     icon={require('../../../../assets/images/Icons/black/email.png')}
                     value={userData.visibleEmail}
-                    onChangeText={(text) => setUserData({ ...userData, visibleEmail: text })}
+                    onChangeText={(text) => setUserData({ ...userData, visibleEmail: text.toLowerCase() })}
                 />
                 <CustomTextInput
                     label={I18n.t('password')}

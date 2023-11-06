@@ -8,7 +8,7 @@ import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../../../components/CustomButton';
-import { useNavigation , useIsFocused } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import ImageCustomButton from '../../../components/ImageCustomButton'
 
@@ -110,12 +110,12 @@ const IndividualPropertieScreen = ({ route }) => {
     ];
 
     const chipsData = [
-        { icon: require('../../../../assets/images/Icons/black/m2.png'), label: propertyData.m2cubiert },
-        { icon: require('../../../../assets/images/Icons/black/ambientes.png'), label: propertyData.cantambient },
-        { icon: require('../../../../assets/images/Icons/black/bed.png'), label: propertyData.cantcuartos },
-        { icon: require('../../../../assets/images/Icons/black/bano.png'), label: propertyData.cantbaños },
-        { icon: require('../../../../assets/images/Icons/black/calendar.png'), label: propertyData.antiguedad },
-        { icon: require('../../../../assets/images/Icons/black/car.png'), label: propertyData.cochera ? 'SI' : 'NO' },
+        { icon: require('../../../../assets/images/Icons/black/m2.png'), label: `${propertyData.m2cubiert}m2` },
+        { icon: require('../../../../assets/images/Icons/black/ambientes.png'), label: `${propertyData.cantambient} amb.` },
+        { icon: require('../../../../assets/images/Icons/black/bed.png'), label: `${propertyData.cantcuartos} dorm.` },
+        { icon: require('../../../../assets/images/Icons/black/bano.png'), label: `${propertyData.cantbaños} baño` },
+        { icon: require('../../../../assets/images/Icons/black/calendar.png'), label: `${propertyData.antiguedad} años` },
+        { icon: require('../../../../assets/images/Icons/black/car.png'), label: `cochera: ${propertyData.cochera ? 'SI' : 'NO'}` },
     ];
 
     const amenidades = {
@@ -211,10 +211,21 @@ const IndividualPropertieScreen = ({ route }) => {
                         numColumns={2} // Establece el número de columnas en 2
                     />
                 </ScrollView>
+
+                <Text variant="headlineSmall" style={styles.subtitle}>
+                    Descripción
+                </Text>
+
+                <Text style={styles.subtitle}>
+                    {propertyData.descripcion}
+                </Text>
+
                 <Text/>
+
+
             </ScrollView>
 
-                <Divider style={{ marginTop: 5, marginBottom: 0 }} />
+            <Divider style={{ marginTop: 5, marginBottom: 0 }} />
 
             <View style={styles.lowerContainer}>
                 {/* Contenedor inferior (1/4 de la pantalla) */}
@@ -228,9 +239,9 @@ const IndividualPropertieScreen = ({ route }) => {
                 <ImageCustomButton
                     style={styles.ImageBoton}
                     imageSource={require('../../../../assets/images/Stars/starFull.png')}
-                    // title={I18n.t('favorite')}
-                    // onPress={pressHandler}
-                        />
+                // title={I18n.t('favorite')}
+                // onPress={pressHandler}
+                />
 
                 <CustomButton
                     style={styles.boton}
@@ -295,11 +306,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     boton: {
-        width: 100, 
+        width: 100,
         marginRight: 10,
         marginLeft: 10
     },
-    ImageBoton:{
+    ImageBoton: {
         width: 50,
         height: 40,
         marginRight: 10,

@@ -324,17 +324,31 @@ const PropertiesToRegister = () => {
                 <CustomTextInput
                     label={I18n.t('address')}
                     value={textInputData.calle}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, calle: text })}
+                    onChangeText={(text) => {
+                        // Convierte la primera letra en mayúscula y el resto en minúsculas
+                        text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+                        setUbicacionData({ ...textInputData, calle: text });
+                    }}
                 />
                 <CustomTextInput
                     label={I18n.t('streetNumber')}
                     value={textInputData.numero}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, numero: text })}
+                    onChangeText={(text) => {
+                        // Filtra el texto para asegurarse de que solo contenga números
+                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
+                        setUbicacionData({ ...textInputData, numero: numericText });
+                    }}
+                    keyboardType="numeric"
                 />
                 <CustomTextInput
                     label={I18n.t('floor')}
                     value={textInputData.piso}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, piso: text })}
+                    onChangeText={(text) => {
+                        // Filtra el texto para asegurarse de que solo contenga números
+                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
+                        setUbicacionData({ ...textInputData, piso: numericText });
+                    }}
+                    keyboardType="numeric"
                 />
                 <CustomTextInput
                     label={I18n.t('apartment')}
@@ -344,17 +358,29 @@ const PropertiesToRegister = () => {
                 <CustomTextInput
                     label={I18n.t('city')}
                     value={textInputData.localidad}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, localidad: text })}
+                    onChangeText={(text) => {
+                        // Convierte la primera letra en mayúscula y el resto en minúsculas
+                        text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+                        setUbicacionData({ ...textInputData, localidad: text });
+                    }}
                 />
                 <CustomTextInput
                     label={I18n.t('state')}
                     value={textInputData.provincia}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, provincia: text })}
+                    onChangeText={(text) => {
+                        // Convierte la primera letra en mayúscula y el resto en minúsculas
+                        text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+                        setUbicacionData({ ...textInputData, provincia: text });
+                    }}
                 />
                 <CustomTextInput
                     label={I18n.t('country')}
                     value={textInputData.pais}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, pais: text })}
+                    onChangeText={(text) => {
+                        // Convierte la primera letra en mayúscula y el resto en minúsculas
+                        text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+                        setUbicacionData({ ...textInputData, pais: text });
+                    }}
                 />
                 <CustomTextInput
                     label={I18n.t('latLong')}
@@ -380,32 +406,62 @@ const PropertiesToRegister = () => {
                 <CustomTextInput
                     label={I18n.t('m2cubiert')}
                     value={textInputData.m2cubiert}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, m2cubiert: text })}
+                    onChangeText={(text) => {
+                        // Filtra el texto para asegurarse de que solo contenga números
+                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
+                        setUbicacionData({ ...textInputData, m2cubiert: numericText });
+                    }}
+                    keyboardType="numeric"
                 />
                 <CustomTextInput
                     label={I18n.t('m2semidescubiert')}
                     value={textInputData.m2semidescubiert}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, m2semidescubiert: text })}
+                    onChangeText={(text) => {
+                        // Filtra el texto para asegurarse de que solo contenga números
+                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
+                        setUbicacionData({ ...textInputData, m2semidescubiert: numericText });
+                    }}
+                    keyboardType="numeric"
                 />
                 <CustomTextInput
                     label={I18n.t('m2descubiert')}
                     value={textInputData.m2descubiert}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, m2descubiert: text })}
+                    onChangeText={(text) => {
+                        // Filtra el texto para asegurarse de que solo contenga números
+                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
+                        setUbicacionData({ ...textInputData, m2descubiert: numericText });
+                    }}
+                    keyboardType="numeric"
                 />
                 <CustomTextInput
                     label={I18n.t('cantambient')}
                     value={textInputData.cantambient}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, cantambient: text })}
+                    onChangeText={(text) => {
+                        // Filtra el texto para asegurarse de que solo contenga números
+                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
+                        setUbicacionData({ ...textInputData, cantambient: numericText });
+                    }}
+                    keyboardType="numeric"
                 />
                 <CustomTextInput
                     label={I18n.t('cantcuartos')}
                     value={textInputData.cantcuartos}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, cantcuartos: text })}
+                    onChangeText={(text) => {
+                        // Filtra el texto para asegurarse de que solo contenga números
+                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
+                        setUbicacionData({ ...textInputData, cantcuartos: numericText });
+                    }}
+                    keyboardType="numeric"
                 />
                 <CustomTextInput
                     label={I18n.t('cantbaños')}
                     value={textInputData.cantbaños}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, cantbaños: text })}
+                    onChangeText={(text) => {
+                        // Filtra el texto para asegurarse de que solo contenga números
+                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
+                        setUbicacionData({ ...textInputData, cantbaños: numericText });
+                    }}
+                    keyboardType="numeric"
                 />
 
                 <Text />
@@ -449,7 +505,12 @@ const PropertiesToRegister = () => {
                 <CustomTextInput
                     label={I18n.t('antiguedad')}
                     value={textInputData.antiguedad}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, antiguedad: text })}
+                    onChangeText={(text) => {
+                        // Filtra el texto para asegurarse de que solo contenga números
+                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
+                        setUbicacionData({ ...textInputData, antiguedad: numericText });
+                    }}
+                    keyboardType="numeric"
                 />
 
                 <Title style={styles.title}>{I18n.t('amenities')}</Title>
@@ -469,7 +530,11 @@ const PropertiesToRegister = () => {
                 <CustomTextInput
                     label={I18n.t('description')}
                     value={textInputData.descripcion}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, descripcion: text })}
+                    onChangeText={(text) => {
+                        // Convierte la primera letra en mayúscula y el resto en minúsculas
+                        text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+                        setUbicacionData({ ...textInputData, descripcion: text });
+                    }}
                 />
                 <Text />
 
@@ -482,7 +547,12 @@ const PropertiesToRegister = () => {
                 <CustomTextInput
                     label={I18n.t('precioVentaAlqui')}
                     value={textInputData.precio}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, precio: text })}
+                    onChangeText={(text) => {
+                        // Filtra el texto para asegurarse de que solo contenga números
+                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
+                        setUbicacionData({ ...textInputData, precio: numericText });
+                    }}
+                    keyboardType="numeric"
                 />
 
                 <Title style={styles.title}>
@@ -497,7 +567,12 @@ const PropertiesToRegister = () => {
                 <CustomTextInput
                     label={I18n.t('expenses')}
                     value={textInputData.expensas}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, expensas: text })}
+                    onChangeText={(text) => {
+                        // Filtra el texto para asegurarse de que solo contenga números
+                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
+                        setUbicacionData({ ...textInputData, expensas: numericText });
+                    }}
+                    keyboardType="numeric"
                 />
 
                 <Title style={styles.title}>{I18n.t('statePropertie')}</Title>

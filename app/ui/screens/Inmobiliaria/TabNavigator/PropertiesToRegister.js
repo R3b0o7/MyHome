@@ -27,6 +27,32 @@ const PropertiesToRegister = () => {
         return !isNumber;
     };
 
+    //API GOOGLE
+
+    const getCoordinatesFromAddress = async (address) => {
+        try {
+            // Reemplaza 'TU_CLAVE_DE_API' con tu propia clave de API de Google Maps
+            const apiKey = 'AIzaSyD1leVNZKgKkjTr_jNyyx_6zPH0M2DJ_9g';
+            const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+
+            const response = await axios.get(apiUrl);
+
+            if (response.data.status === 'OK' && response.data.results.length > 0) {
+                const location = response.data.results[0].geometry.location;
+                const latitude = location.lat;
+                const longitude = location.lng;
+                return { latitude, longitude };
+            } else {
+                throw new Error('No se pudieron obtener las coordenadas de la dirección.');
+            }
+        } catch (error) {
+            console.error('Error al obtener las coordenadas:', error);
+            throw error;
+        }
+    };
+
+
+
     const initialPropertyTypes = {
         house: false,
         ph: false,
@@ -186,6 +212,14 @@ const PropertiesToRegister = () => {
             // Obtiene el token de AsyncStorage
             const token = await AsyncStorage.getItem('authToken');
 
+            //obtener coordenadas
+
+            // Uso de la función para obtener coordenadas desde una dirección
+            const address = `${textInputData.calle} ${textInputData.numero}, ${textInputData.localidad}, ${textInputData.pais}`;
+            const coordinatesdata = await getCoordinatesFromAddress(address);
+            const coordinates =`${coordinatesdata.latitude}, ${coordinatesdata.longitude}`;
+
+
             // Define los datos a enviar en la solicitud
             const propertyData = {
 
@@ -195,7 +229,7 @@ const PropertiesToRegister = () => {
                 departamento: textInputData.departamento,
                 localidad: textInputData.localidad,
                 pais: textInputData.pais,
-                coordenadas: textInputData.coordenadas,
+                coordenadas: coordinates,
                 house: propertyTypes.house,
                 ph: propertyTypes.ph,
                 apartment: propertyTypes.apartment,
@@ -407,14 +441,14 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
-                <Text/>
+                <Text />
 
                 <CustomTextInput
                     label={I18n.t('description')}
                     value={textInputData.descripcion}
                     onChangeText={(text) => setUbicacionData({ ...textInputData, descripcion: text })}
                 />
-                 <Text/>
+                <Text />
 
                 <CustomButton title={I18n.t('uploadphoto')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
                 <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />

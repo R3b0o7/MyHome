@@ -17,6 +17,31 @@ const PropertiesUpdate = ({ route }) => {
     const isFocused = useIsFocused();
     const [isLoading, setIsLoading] = useState(true);
 
+    //API GOOGLE
+
+    const getCoordinatesFromAddress = async (address) => {
+        try {
+            // Reemplaza 'TU_CLAVE_DE_API' con tu propia clave de API de Google Maps
+            const apiKey = 'AIzaSyD1leVNZKgKkjTr_jNyyx_6zPH0M2DJ_9g';
+            const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+
+            const response = await axios.get(apiUrl);
+
+            if (response.data.status === 'OK' && response.data.results.length > 0) {
+                const location = response.data.results[0].geometry.location;
+                const latitude = location.lat;
+                const longitude = location.lng;
+                return { latitude, longitude };
+            } else {
+                throw new Error('No se pudieron obtener las coordenadas de la dirección.');
+            }
+        } catch (error) {
+            console.error('Error al obtener las coordenadas:', error);
+            throw error;
+        }
+    };
+
+
     const fetchPropertyData = async () => {
         try {
             const authToken = await AsyncStorage.getItem('authToken');
@@ -296,6 +321,14 @@ const PropertiesUpdate = ({ route }) => {
             // Obtiene el token de AsyncStorage
             const token = await AsyncStorage.getItem('authToken');
 
+            //obtener coordenadas
+
+            // Uso de la función para obtener coordenadas desde una dirección
+            const address = `${textInputData.calle} ${textInputData.numero}, ${textInputData.localidad}, ${textInputData.pais}`;
+            const coordinatesdata = await getCoordinatesFromAddress(address);
+            const coordinates =`${coordinatesdata.latitude}, ${coordinatesdata.longitude}`;
+
+
             // Define los datos actualizados de la propiedad
             const updatedPropertyData = {
                 calle: textInputData.calle,
@@ -305,7 +338,7 @@ const PropertiesUpdate = ({ route }) => {
                 localidad: textInputData.localidad,
                 provincia: textInputData.provincia,
                 pais: textInputData.pais,
-                coordenadas: textInputData.coordenadas,
+                coordenadas: coordinates,
                 m2cubiert: textInputData.m2cubiert,
                 m2semidescubiert: textInputData.m2semidescubiert,
                 m2descubiert: textInputData.m2descubiert,

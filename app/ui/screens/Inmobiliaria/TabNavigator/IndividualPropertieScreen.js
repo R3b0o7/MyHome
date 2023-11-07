@@ -57,6 +57,9 @@ const IndividualPropertieScreen = ({ route }) => {
             console.error('Error al eliminar la propiedad:', error);
         }
     };
+    const pressHandlerFavorite = async () => {
+        alert('Se agrego a tus destacadas');
+    };
 
     const initialCharacteristics = {};
     const [propertyData, setPropertyData] = useState(initialCharacteristics);
@@ -240,7 +243,7 @@ const IndividualPropertieScreen = ({ route }) => {
                     style={styles.ImageBoton}
                     imageSource={require('../../../../assets/images/Stars/starFull.png')}
                 // title={I18n.t('favorite')}
-                // onPress={pressHandler}
+                    onPress={pressHandlerFavorite}
                 />
 
                 <CustomButton

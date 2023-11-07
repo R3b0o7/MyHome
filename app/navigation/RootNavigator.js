@@ -5,6 +5,7 @@ import NavigatorConstant from './NavigatorConstant';
 import LandingTabNavigator from "./LandingTabNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
 import PropertiesStackNavigator from "./PropertiesStackNavigator";
+import LandingTabUserNavigator from "./LandingTabUserNavigator";
 
 const Stack = createNativeStackNavigator();
 export default RootNavigator = () => {
@@ -29,6 +30,10 @@ export default RootNavigator = () => {
                 <Stack.Screen
                     name={NavigatorConstant.PROPERTIES_STACK.MYPROPERTIES}
                     component={PropertiesStackNavigator}
+                />
+                <Stack.Screen
+                    name={NavigatorConstant.TAB_STACK_USER.TAB}
+                    component={LandingTabUserNavigator}
                 />
             </Stack.Navigator>
         </NavigationContainer>

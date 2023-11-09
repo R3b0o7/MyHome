@@ -150,7 +150,7 @@ const SettingsUser = () => {
 
   return (
     <ScrollView>
-      <View style={{ marginTop: 39, alignSelf: 'center' }}>
+      <View style={styles.container}>
         <Avatar.Image
           style={styles.shadow}
           size={200}
@@ -167,7 +167,7 @@ const SettingsUser = () => {
         <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
       </View>
 
-      <View style={{ marginTop: 10 }}>
+      <View style={styles.container}>
         <CustomTextInput
           label="Nombre"
           icon={require('../../../../assets/images/Icons/lightMode/perfil.png')}
@@ -181,29 +181,25 @@ const SettingsUser = () => {
           onChangeText={(value) => setUserData({ ...userData, email: value })} // Actualizar el estado cuando el texto cambia
         />
         <CustomTextInput
-          label="Correo Visible"
-          icon={require('../../../../assets/images/Icons/lightMode/mail.png')}
+          label="Dirección"
+          icon={require('../../../../assets/images/Icons/lightMode/location.png')}
           value={userData.visibleEmail}
           onChangeText={(value) => setUserData({ ...userData, visibleEmail: value })} // Actualizar el estado cuando el texto cambia
         />
       </View>
 
-      <View style={{
-        marginTop: 10,
-        marginLeft: 100,
-        marginRight: 100,
-      }}>
+      <View style={styles.container}>
+
+      <CustomButton
+          style={styles.buttons}
+          title={I18n.t('saveChanges')}
+          onPress={() => pressHandler()}
+        />
 
         <CustomButton
           style={styles.buttons}
           title={I18n.t('changePasword')}
           onPress={() => handleChangePasword()}
-        />
-
-        <CustomButton
-          style={styles.buttons}
-          title={I18n.t('saveChanges')}
-          onPress={() => pressHandler()}
         />
 
         <CustomButton
@@ -230,7 +226,12 @@ const SettingsUser = () => {
 
 
 const styles = StyleSheet.create({
-
+  container:{
+    flex: 1,
+    marginTop: 20,
+    justifyContent: 'center', // Centra verticalmente
+    alignItems: 'center',     // Centra horizontalmente
+  },
   shadow: {
     alignSelf: 'center',
     elevation: 8,
@@ -245,8 +246,10 @@ const styles = StyleSheet.create({
     padding: 6
   },
   buttons: {
-    marginTop: 20,
-    marginBottom: 20
+    height: 50,
+    marginTop: 10,
+    marginBottom:10,
+    width: 200
   }
 });
 

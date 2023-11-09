@@ -75,18 +75,18 @@ const ProfileUser = () => {
   return (
     <View>
       <ScrollView>
-        <View style={{ marginTop: 39, alignSelf: 'center' }}>
+        <View style={styles.container}>
           <Avatar.Image
             style={styles.shadow}
             size={200}
             source={require('../../../../assets/images/misc/logotipo.png')}
           />
-          <Text variant="headlineMedium" style={{ marginTop: 20 }}>
-            {userData.userName}
+          <Text variant="headlineMedium" style={styles.textName}>
+            {/* {userData.userName} */}Jhone Doe
           </Text>
         </View>
 
-        <View style={{ marginTop: 10 }}>
+        <View style={styles.container}>
           <CustomTextInput
             label="Correo"
             value={userData.email}
@@ -94,18 +94,14 @@ const ProfileUser = () => {
             icon={require('../../../../assets/images/Icons/lightMode/mail.png')}
           />
           <CustomTextInput
-            label="Correo Visible"
+            label="Dirección"
             value={userData.visibleEmail}
             disabled={true}
-            icon={require('../../../../assets/images/Icons/lightMode/mail.png')}
+            icon={require('../../../../assets/images/Icons/lightMode/location.png')}
           />
         </View>
 
-        <View style={{
-          marginTop: 15,
-          marginLeft: 45,
-          marginRight: 45,
-        }}>
+        <View style={styles.buttonsConteiner}>
           
           <ImageCustomButton
             style={styles.buttons}
@@ -124,9 +120,23 @@ const ProfileUser = () => {
 };
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    marginTop: 20,
+    justifyContent: 'center', // Centra verticalmente
+    alignItems: 'center',     // Centra horizontalmente
+  },
+  buttonsConteiner: {
+    flex: 1,
+    marginTop: 100,
+    justifyContent: 'center', // Centra verticalmente
+    alignItems: 'center',     // Centra horizontalmente
+  },
   buttons: {
     height: 50,
-    marginTop: 25
+    marginTop: 10,
+    marginBottom:10,
+    width: 300
   },
   shadow: {
     alignSelf: 'center',
@@ -135,6 +145,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+  },
+  textName: {
+    margin:20,
+    fontSize: 30,
+    textAlign: 'center', // Alinea el texto en el centro horizontal
   }
 });
 

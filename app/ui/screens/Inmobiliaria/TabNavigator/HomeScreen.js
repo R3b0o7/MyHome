@@ -124,6 +124,15 @@ const HomeScreen = () => {
         );
     };
 
+    const getRandomImageUrl = (images) => {
+        if (!Array.isArray(images) || images.length === 0) {
+            // Devuelve una URL predeterminada o null
+            return 'https://picsum.photos/701'; // O alguna otra URL de imagen predeterminada
+        }
+        const randomIndex = Math.floor(Math.random() * images.length);
+        return images[randomIndex];
+    };
+
     return (
 
         <ScrollView>
@@ -164,7 +173,7 @@ const HomeScreen = () => {
                                                 ? 'Alquilada o Vendida'
                                                 : '' // Añade una operación predeterminada si ninguna está en true
                             }
-                            coverUrl={'https://picsum.photos/701'}
+                            coverUrl={getRandomImageUrl(data.photos)}
                             onPress={() => handleCardHorizontalPress(data._id)} // Pasa el ID de la propiedad al presionar
                         />
                     ))

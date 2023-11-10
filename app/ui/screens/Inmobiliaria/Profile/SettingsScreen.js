@@ -216,14 +216,6 @@ const SettingsScreen = () => {
 
       <DeleteCustomModal visible={deleteCustomModalVisible} onClose={closeDeleteCustomModal} />
 
-      {/* <View style={{
-        marginTop: 50,
-        alignSelf: 'center'
-      }}>
-        No hace nada el Switch, pero tampoco esta hecho el modo oscuro
-        <Switch value='light mode' color='#000000' />
-      </View> */}
-
     </ScrollView>
   );
 };

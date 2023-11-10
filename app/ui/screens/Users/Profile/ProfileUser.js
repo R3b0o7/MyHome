@@ -61,10 +61,6 @@ const ProfileUser = () => {
     navigation.push(NavigatorConstant.PROFILE_STACK.SETTINGS);
   };
 
-  const handleComents = () => {
-    navigation.push(NavigatorConstant.PROFILE_STACK.COMENTS);
-  };
-
   const pressHandler = () => {
     Alert.alert("Cerrar Sesión", "Estás seguro que deseas cerrar la sesión?", [
       { text: "Sí", onPress: () => handleLogOut() },
@@ -79,8 +75,9 @@ const ProfileUser = () => {
           <Avatar.Image
             style={styles.shadow}
             size={200}
-            source={require('../../../../assets/images/misc/logotipo.png')}
+            source={require('../../../../assets/images/misc/User_profile.png')}
           />
+          {/* TODO -> traer del back el nombre de usuario */}
           <Text variant="headlineMedium" style={styles.textName}>
             {/* {userData.userName} */}Jhone Doe
           </Text>
@@ -127,8 +124,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',     // Centra horizontalmente
   },
   buttonsConteiner: {
-    flex: 1,
-    marginTop: 100,
+    flex: 2,
+    marginTop: 80,
     justifyContent: 'center', // Centra verticalmente
     alignItems: 'center',     // Centra horizontalmente
   },
@@ -149,6 +146,7 @@ const styles = StyleSheet.create({
   textName: {
     margin:20,
     fontSize: 30,
+    fontWeight: 'bold',
     textAlign: 'center', // Alinea el texto en el centro horizontal
   }
 });

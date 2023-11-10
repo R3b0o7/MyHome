@@ -128,8 +128,8 @@ const HomeUser = () => {
 
         <ScrollView>
             <View style={styles.headerContainer}>
-                <Image source={require('../../../../assets/images/Icons/destacadas.png')} style={{width: 20, height: 24,marginRight: 8,}}/>
-                <Title style={styles.title}>Mis destacadas</Title>
+                <Image source={require('../../../../assets/images/Icons/destacadas.png')} style={styles.icon}/>
+                <Title style={styles.title}>Propiedades cercanas</Title>
             </View>
             <View style={styles.carouselContainer}>
 
@@ -142,8 +142,8 @@ const HomeUser = () => {
             </View>
 
             <View style={styles.headerContainer}>
-                <Image source={require('../../../../assets/images/Icons/propiedades.png')} style={styles.icon} />
-                <Title style={styles.title}>Propiedades reservadas</Title>
+                <Image source={require('../../../../assets/images/Icons/destacadas.png')} style={styles.icon} />
+                <Title style={styles.title}>Favoritos</Title>
             </View>
             <View style={styles.cardsContainer}>
 
@@ -197,14 +197,16 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Alinea elementos secundarios en el centro
     },
     headerContainer: {
-        marginLeft: 31,
+        flex: 1,
+        justifyContent: 'flex-start', // Alinea el botón en la parte inferior
+        marginLeft:40,
+        alignItems: 'center', // Alinea elementos secundarios en el centro
         flexDirection: 'row',
-        alignItems: 'center',
     },
     icon: {
-        width: 24, // Set the desired width for your icon
-        height: 24, // Set the desired height for your icon
-        marginRight: 8, // Adjust the spacing as needed
+        width: 24, 
+        height: 29,
+        marginRight: 8,
     },
     title: {
         fontSize: 20,
@@ -225,6 +227,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 12,
         elevation: 3,
+        marginBottom:20
     },
 });
 

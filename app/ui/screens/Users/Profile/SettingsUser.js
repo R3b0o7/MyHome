@@ -151,19 +151,19 @@ const SettingsUser = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Avatar.Image
-          style={styles.shadow}
-          size={200}
-          source={require('../../../../assets/images/misc/logotipo.png')}
-        />
-      </View>
+        <View style={styles.avatarContainer}>
+          <Avatar.Image
+            style={styles.shadow}
+            size={200}
+            source={require('../../../../assets/images/misc/User_profile.png')}
+          />
+          <ImageCustomButton 
+            style={styles.imageButtonStyle} 
+            onPress={openUpdateImageModal} 
+            imageSource={require('../../../../assets/images/Icons/pencil.png')} 
+            />
+        </View>
 
-      <View style={{
-        marginTop: -40,
-        marginLeft: 270,
-        marginRight: 100
-      }}>
-        <ImageCustomButton style={styles.imageStyle} onPress={openUpdateImageModal} imageSource={require('../../../../assets/images/Icons/pencil.png')} />
         <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
       </View>
 
@@ -189,36 +189,24 @@ const SettingsUser = () => {
       </View>
 
       <View style={styles.container}>
-
-      <CustomButton
-          style={styles.buttons}
-          title={I18n.t('saveChanges')}
-          onPress={() => pressHandler()}
-        />
-
         <CustomButton
-          style={styles.buttons}
-          title={I18n.t('changePasword')}
-          onPress={() => handleChangePasword()}
-        />
-
-        <CustomButton
-          style={styles.buttons}
-          title={I18n.t('delete')}
-          onPress={openDeleteCustomModal}
-        />
-
+            style={styles.buttons}
+            title={I18n.t('saveChanges')}
+            onPress={() => pressHandler()}
+          />
+          <CustomButton
+            style={styles.buttons}
+            title={I18n.t('changePasword')}
+            onPress={() => handleChangePasword()}
+          />
+          <CustomButton
+            style={styles.buttons}
+            title={I18n.t('delete')}
+            onPress={openDeleteCustomModal}
+          />
       </View>
 
       <DeleteCustomModal visible={deleteCustomModalVisible} onClose={closeDeleteCustomModal} />
-
-      {/* <View style={{
-        marginTop: 50,
-        alignSelf: 'center'
-      }}>
-        No hace nada el Switch, pero tampoco esta hecho el modo oscuro
-        <Switch value='light mode' color='#000000' />
-      </View> */}
 
     </ScrollView>
   );
@@ -232,6 +220,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Centra verticalmente
     alignItems: 'center',     // Centra horizontalmente
   },
+  avatarContainer: {
+    position: 'relative', // Establecer la posición relativa para posicionar los elementos secundarios
+  },
   shadow: {
     alignSelf: 'center',
     elevation: 8,
@@ -240,7 +231,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
-  imageStyle: {
+  imageButtonStyle: {
+    position: 'absolute', // Posiciona el botón de imagen de forma absoluta con respecto al contenedor principal
+    bottom: 0,
+    right: 0,
     height: 40,
     width: 40,
     padding: 6

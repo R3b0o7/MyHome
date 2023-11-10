@@ -16,11 +16,11 @@ export default LandingTabUserNavigator = () => {
         name={NavigatorConstant.TAB_STACK_USER.SEARCH}
         component={SearchNavigator}
         options={{
-          title: I18n.t(''),
+          title: I18n.t('search'),
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
-              source={focused ? require('../assets/images/Icons/TabNavigator/propiedades1.png') : require('../assets/images/Icons/TabNavigator/propiedades1.png')}
+              source={focused ? require('../assets/images/Icons/lightMode/serch.png') : require('../assets/images/Icons/lightMode/serch.png')}
               style={{ width: 24, height: 24 }}
             />
           ),
@@ -30,7 +30,7 @@ export default LandingTabUserNavigator = () => {
         name={NavigatorConstant.TAB_STACK_USER.HOME}
         component={HomeUser}
         options={{
-          title: I18n.t('asdasd'),
+          title: I18n.t('home'),
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image

@@ -57,7 +57,7 @@ const ChangePaswordUser = () => {
 
   return (
     <ScrollView>
-    <View style={{ marginTop: 200 }}>
+    <View style={styles.container}>
       <CustomTextInput
         label={I18n.t('currentPassword')}
         secureTextEntry={true}
@@ -91,11 +91,16 @@ const ChangePaswordUser = () => {
 };
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    marginTop: 150,
+    justifyContent: 'center', // Centra verticalmente
+    alignItems: 'center',     // Centra horizontalmente
+  },
   buttons: {
     marginTop: 100,
     marginBottom: 20,
-    marginLeft: 80,
-    marginRight: 80
+    width: 200
   }
 });
 

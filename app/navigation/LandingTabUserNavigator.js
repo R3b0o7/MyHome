@@ -20,7 +20,7 @@ export default LandingTabUserNavigator = () => {
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
-              source={focused ? require('../assets/images/Icons/lightMode/serch.png') : require('../assets/images/Icons/lightMode/serch.png')}
+              source={focused ? require('../assets/images/Icons/lightMode/search2.png') : require('../assets/images/Icons/lightMode/search2.png')}
               style={{ width: 24, height: 24 }}
             />
           ),

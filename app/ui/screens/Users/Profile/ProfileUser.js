@@ -94,7 +94,7 @@ const ProfileUser = () => {
             label="Dirección"
             value={userData.visibleEmail}
             disabled={true}
-            icon={require('../../../../assets/images/Icons/lightMode/location.png')}
+            icon={require('../../../../assets/images/Icons/lightMode/tag.png')}
           />
         </View>
 

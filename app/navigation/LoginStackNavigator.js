@@ -38,7 +38,7 @@ export default LoginNavigator = () => {
             <Stack.Screen
                 name={NavigatorConstant.LOGIN_STACK.LOGIN_USER}
                 component={LoginUser}
-                options={{ title: I18n.t('recoveryPassword') }}
+                options={{ title: I18n.t('login')}}
             />
 
         </Stack.Navigator >

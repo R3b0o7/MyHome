@@ -182,7 +182,7 @@ const SettingsUser = () => {
         />
         <CustomTextInput
           label="Dirección"
-          icon={require('../../../../assets/images/Icons/lightMode/location.png')}
+          icon={require('../../../../assets/images/Icons/lightMode/tag.png')}
           value={userData.visibleEmail}
           onChangeText={(value) => setUserData({ ...userData, visibleEmail: value })} // Actualizar el estado cuando el texto cambia
         />

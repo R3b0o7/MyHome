@@ -128,7 +128,7 @@ const HomeUser = () => {
 
         <ScrollView>
             <View style={styles.headerContainer}>
-                <Image source={require('../../../../assets/images/Icons/destacadas.png')} style={styles.icon}/>
+                <Image source={require('../../../../assets/images/Icons/lightMode/gps.png')} style={styles.icon}/>
                 <Title style={styles.title}>Propiedades cercanas</Title>
             </View>
             <View style={styles.carouselContainer}>
@@ -142,7 +142,7 @@ const HomeUser = () => {
             </View>
 
             <View style={styles.headerContainer}>
-                <Image source={require('../../../../assets/images/Icons/destacadas.png')} style={styles.icon} />
+                <Image source={require('../../../../assets/images/Icons/lightMode/fav.png')} style={styles.icon} />
                 <Title style={styles.title}>Favoritos</Title>
             </View>
             <View style={styles.cardsContainer}>
@@ -171,7 +171,7 @@ const HomeUser = () => {
                 }
                 {userProperties.filter((data) => data.reservada).length === 0 && (
                     <Text style={styles.noPropertiesText}>
-                        No tienes propiedades reservadas.
+                        No tienes propiedades en favoritos.
                     </Text>
                 )}
 
@@ -204,8 +204,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     icon: {
-        width: 24, 
-        height: 29,
+        width: 28, 
+        height: 28,
         marginRight: 8,
     },
     title: {

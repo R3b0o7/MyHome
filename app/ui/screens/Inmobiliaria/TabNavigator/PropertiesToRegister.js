@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
 import * as ImagePicker from 'react-native-image-picker';
+import { API_KEY, CLOUD_NAME, API_SECRET } from '@env';
 
 const PropertiesToRegister = () => {
     const navigation = useNavigation();
@@ -201,6 +202,9 @@ const PropertiesToRegister = () => {
             } else {
                 // Aquí puedes manejar la imagen seleccionada, que está en response.uri
                 console.log('URI de la imagen:', response.uri);
+                console.log('API_KEY:', API_KEY);
+                console.log('CLOUD_NAME:', CLOUD_NAME);
+                console.log('API_SECRET:', API_SECRET);
                 // Puedes enviar esta URI a tu servidor o realizar otras acciones necesarias
             }
         });

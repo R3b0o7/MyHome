@@ -11,8 +11,8 @@ import UpdateImageModal from '../../../components/UpdateImageModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
-import * as ImagePicker from 'react-native-image-picker';
 import { API_KEY, CLOUD_NAME, API_SECRET } from '@env';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const PropertiesToRegister = () => {
     const navigation = useNavigation();
@@ -135,6 +135,7 @@ const PropertiesToRegister = () => {
     const [amenities, setAmenities] = useState(initialAmenities);
     const [stateTypes, setStateTypes] = useState(initialState);
     const [isDollar, setIsDollar] = useState(false);
+    const [imageUrls, setImageUrls] = useState([]);
 
 
 
@@ -186,29 +187,43 @@ const PropertiesToRegister = () => {
 
 
     const handleUploadPhoto = () => {
-        const options = {
-            title: 'Selecciona una foto',
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
+        ImagePicker.openPicker({
+            multiple: true,
+            // Agrega aquí más opciones si necesitas, como limitar el tipo de archivo, tamaño, etc.
+        }).then(images => {
+            images.forEach(async (image) => {
+                const formData = new FormData();
+                formData.append('file', {
+                    uri: image.path, // Nota: Usamos 'path' en lugar de 'uri'
+                    type: image.mime, // 'mime' contiene el tipo de archivo
+                    name: image.filename || `image-${Date.now()}` // Usamos un nombre por defecto si 'filename' no está disponible
+                });
+                formData.append('upload_preset', 'Myhome');
 
-        ImagePicker.launchImageLibrary(options, (response) => {
-            if (response.didCancel) {
-                console.log('El usuario canceló la selección de la imagen');
-            } else if (response.error) {
-                console.log('Error:', response.error);
-            } else {
-                // Aquí puedes manejar la imagen seleccionada, que está en response.uri
-                console.log('URI de la imagen:', response.uri);
-                console.log('API_KEY:', API_KEY);
-                console.log('CLOUD_NAME:', CLOUD_NAME);
-                console.log('API_SECRET:', API_SECRET);
-                // Puedes enviar esta URI a tu servidor o realizar otras acciones necesarias
-            }
+                try {
+                    const uploadResponse = await axios.post(
+                        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+                        formData,
+                        {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                        }
+                    );
+                    // Actualizar el estado con la nueva URL
+                    setImageUrls(prevUrls => [...prevUrls, uploadResponse.data.secure_url]);
+
+                    console.log(uploadResponse.data.secure_url);
+                    alert(uploadResponse.data.secure_url);
+                } catch (error) {
+                    console.log('Error al subir la imagen:', error);
+                }
+            });
+        }).catch(error => {
+            console.log('Error al seleccionar imágenes:', error);
         });
     };
+
 
 
     const handleUploadVideo = () => {

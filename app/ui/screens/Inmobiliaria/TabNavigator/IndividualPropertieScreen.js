@@ -96,22 +96,13 @@ const IndividualPropertieScreen = ({ route }) => {
         }
     }, [isFocused]);
 
-    const carouselItems = [
-        {
-            id: 1,
-            coverUrl: 'https://picsum.photos/700',
-        },
-        {
-            id: 2,
-            coverUrl: 'https://picsum.photos/701',
-        },
-        {
-            id: 3,
-            coverUrl: 'https://picsum.photos/702',
-        },
-        // Agrega más tarjetas si es necesario
-    ];
-
+    const carouselItems = propertyData.photos 
+        ? propertyData.photos.map((photoUrl, index) => ({
+            id: index,
+            coverUrl: photoUrl,
+        }))
+        : [];
+    
     const chipsData = [
         { icon: require('../../../../assets/images/Icons/black/m2.png'), label: `${propertyData.m2cubiert}m2` },
         { icon: require('../../../../assets/images/Icons/black/ambientes.png'), label: `${propertyData.cantambient} amb.` },

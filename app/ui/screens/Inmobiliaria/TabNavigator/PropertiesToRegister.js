@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import CustomTextInput from '../../../components/CustomTextInput';
 import { useNavigation } from '@react-navigation/native';
@@ -189,40 +189,55 @@ const PropertiesToRegister = () => {
     const handleUploadPhoto = () => {
         ImagePicker.openPicker({
             multiple: true,
-            // Agrega aquí más opciones si necesitas, como limitar el tipo de archivo, tamaño, etc.
+            // ... otras opciones ...
         }).then(images => {
-            images.forEach(async (image) => {
-                const formData = new FormData();
-                formData.append('file', {
-                    uri: image.path, // Nota: Usamos 'path' en lugar de 'uri'
-                    type: image.mime, // 'mime' contiene el tipo de archivo
-                    name: image.filename || `image-${Date.now()}` // Usamos un nombre por defecto si 'filename' no está disponible
-                });
-                formData.append('upload_preset', 'Myhome');
+            // Solo almacenar la información de la imagen, no subirla
+            const imageInfo = images.map(image => ({
+                uri: image.path,
+                type: image.mime,
+                name: image.filename || `image-${Date.now()}`
+            }));
 
-                try {
-                    const uploadResponse = await axios.post(
-                        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-                        formData,
-                        {
-                            headers: {
-                                'Content-Type': 'multipart/form-data',
-                            },
-                        }
-                    );
-                    // Actualizar el estado con la nueva URL
-                    setImageUrls(prevUrls => [...prevUrls, uploadResponse.data.secure_url]);
-
-                    console.log(uploadResponse.data.secure_url);
-                    alert(uploadResponse.data.secure_url);
-                } catch (error) {
-                    console.log('Error al subir la imagen:', error);
-                }
-            });
+            setImageUrls(imageInfo);
         }).catch(error => {
             console.log('Error al seleccionar imágenes:', error);
         });
     };
+
+    const uploadImages = async () => {
+        const uploadedUrls = [];
+
+        for (const image of imageUrls) {
+            const formData = new FormData();
+            formData.append('file', {
+                uri: image.uri,
+                type: image.type,
+                name: image.name,
+            });
+            formData.append('upload_preset', 'Myhome');
+
+            try {
+                const uploadResponse = await axios.post(
+                    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                );
+
+                uploadedUrls.push(uploadResponse.data.secure_url);
+            } catch (error) {
+                console.log('Error al subir la imagen:', error);
+                throw error; // Si una imagen falla, puedes decidir si continuar o detener todo el proceso
+            }
+        }
+
+        return uploadedUrls;
+    };
+
+
 
 
 
@@ -260,6 +275,9 @@ const PropertiesToRegister = () => {
             const address = `${textInputData.calle} ${textInputData.numero}, ${textInputData.localidad}, ${textInputData.pais}`;
             const coordinatesdata = await getCoordinatesFromAddress(address);
             const coordinates = `${coordinatesdata.latitude}, ${coordinatesdata.longitude}`;
+
+            //Sube las fotos a cloudinary
+            const photoUrls = await uploadImages();
 
 
             // Define los datos a enviar en la solicitud
@@ -305,7 +323,7 @@ const PropertiesToRegister = () => {
                 coworking: amenities.coworking,
                 microcine: amenities.microcine,
                 descripcion: textInputData.descripcion,
-                photos: '',
+                photos: photoUrls,
                 videos: '',
                 precio: textInputData.precio,
                 dolar: isDollar,
@@ -566,6 +584,21 @@ const PropertiesToRegister = () => {
                 <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
                 <Title style={styles.titleUpload}>{I18n.t('requeredPhoto')}</Title>
 
+                {
+                    imageUrls.length > 0 && (
+                        <View style={styles.selectedImagesContainer}>
+                            {imageUrls.map((image, index) => (
+                                <View key={index} style={styles.imageContainer}>
+                                    <Image
+                                        source={{ uri: image.uri }}
+                                        style={styles.image}
+                                    />
+                                </View>
+                            ))}
+                        </View>
+                    )
+                }
+
                 <CustomButton title={I18n.t('uploadVideo')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
                 <Text />
                 <CustomTextInput
@@ -660,6 +693,24 @@ const styles = StyleSheet.create({
         marginLeft: 40,
         marginRight: 40,
         fontWeight: 'bold',
+    },
+    selectedImagesContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    imageContainer: {
+        width: 100,
+        height: 100,
+        margin: 5,
+        borderRadius: 10,
+        overflow: 'hidden',
+    },
+    image: {
+        width: '100%',
+        height: '100%',
     },
 });
 

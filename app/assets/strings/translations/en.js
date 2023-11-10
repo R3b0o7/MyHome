@@ -91,6 +91,7 @@ export default {
     favorite: 'Favorite',
     inmobiliaria: 'Real Estate',
     usuario: 'User',
+    search: 'Search',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

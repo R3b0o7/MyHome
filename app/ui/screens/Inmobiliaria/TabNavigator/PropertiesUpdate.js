@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, ScrollView, Image } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import CustomTextInput from '../../../components/CustomTextInput';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
@@ -11,7 +11,8 @@ import UpdateImageModal from '../../../components/UpdateImageModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
-import * as ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
+import { API_KEY, CLOUD_NAME, API_SECRET } from '@env';
 
 const PropertiesUpdate = ({ route }) => {
 
@@ -64,6 +65,15 @@ const PropertiesUpdate = ({ route }) => {
 
                 // Actualiza los estados con los datos obtenidos
                 // Actualiza los valores de los campos de entrada
+
+                if (Array.isArray(propertyData.photos)) {
+                    setImageUrls(propertyData.photos.map(photoUrl => ({ uri: photoUrl })));
+                } else {
+                    // Si no hay fotos o el formato es diferente, establece el estado a un array vacío
+                    setImageUrls([]);
+                }
+
+
                 setUbicacionData({
                     ...textInputData,
                     calle: response.data.calle,
@@ -242,7 +252,7 @@ const PropertiesUpdate = ({ route }) => {
         cantambient: '',
         cantcuartos: '',
         cantbaños: '',
-        antiguedad: '',        
+        antiguedad: '',
         descripcion: '',
         precio: '',
         expensas: '',
@@ -255,6 +265,7 @@ const PropertiesUpdate = ({ route }) => {
     const [amenities, setAmenities] = useState(initialAmenities);
     const [stateTypes, setStateTypes] = useState(initialState);
     const [isDollar, setIsDollar] = useState(false);
+    const [imageUrls, setImageUrls] = useState([]);
 
 
 
@@ -306,26 +317,52 @@ const PropertiesUpdate = ({ route }) => {
 
 
     const handleUploadPhoto = () => {
-        const options = {
-            title: 'Selecciona una foto',
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
+        ImagePicker.openPicker({
+            multiple: true,
+            // ... otras opciones ...
+        }).then(images => {
+            const imageInfo = images.map(image => ({
+                uri: image.path,
+                type: image.mime,
+                name: image.filename || `image-${Date.now()}`
+            }));
 
-        ImagePicker.launchImageLibrary(options, (response) => {
-            if (response.didCancel) {
-                console.log('El usuario canceló la selección de la imagen');
-            } else if (response.error) {
-                console.log('Error:', response.error);
-            } else {
-                // Aquí puedes manejar la imagen seleccionada, que está en response.uri
-                console.log('URI de la imagen:', response.uri);
-                // Puedes enviar esta URI a tu servidor o realizar otras acciones necesarias
-            }
+            setImageUrls(imageInfo);
+        }).catch(error => {
+            console.log('Error al seleccionar imágenes:', error);
         });
+    };
+    const uploadImages = async () => {
+        const uploadedUrls = [];
 
+        for (const image of imageUrls) {
+            const formData = new FormData();
+            formData.append('file', {
+                uri: image.uri,
+                type: image.type,
+                name: image.name,
+            });
+            formData.append('upload_preset', 'Myhome');
+
+            try {
+                const uploadResponse = await axios.post(
+                    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                );
+
+                uploadedUrls.push(uploadResponse.data.secure_url);
+            } catch (error) {
+                console.log('Error al subir la imagen:', error);
+                throw error; // Si una imagen falla, puedes decidir si continuar o detener todo el proceso
+            }
+        }
+
+        return uploadedUrls;
     };
 
 
@@ -340,6 +377,7 @@ const PropertiesUpdate = ({ route }) => {
             //validacion para que no este vacio
             const emptyFields = [];
 
+
             for (const key in textInputData) {
                 if (key !== 'coordenadas' && textInputData[key] === '') {
                     emptyFields.push(key);
@@ -351,7 +389,7 @@ const PropertiesUpdate = ({ route }) => {
                 return;
             }
 
-            const apiUrl = `${SERVER_URL}/api/properties/update/${route.params.propertyId}`; 
+            const apiUrl = `${SERVER_URL}/api/properties/update/${route.params.propertyId}`;
 
             // Obtiene el token de AsyncStorage
             const token = await AsyncStorage.getItem('authToken');
@@ -361,7 +399,17 @@ const PropertiesUpdate = ({ route }) => {
             // Uso de la función para obtener coordenadas desde una dirección
             const address = `${textInputData.calle} ${textInputData.numero}, ${textInputData.localidad}, ${textInputData.pais}`;
             const coordinatesdata = await getCoordinatesFromAddress(address);
-            const coordinates =`${coordinatesdata.latitude}, ${coordinatesdata.longitude}`;
+            const coordinates = `${coordinatesdata.latitude}, ${coordinatesdata.longitude}`;
+
+            let photoUrls = [];
+
+            // Si hay nuevas fotos seleccionadas (asumiendo que las nuevas fotos tienen 'type')
+            if (imageUrls.some(image => image.type)) {
+                photoUrls = await uploadImages();
+            } else {
+                // Si no hay fotos nuevas, usa las URLs existentes
+                photoUrls = imageUrls.map(image => image.uri);
+            }
 
 
             // Define los datos actualizados de la propiedad
@@ -409,6 +457,7 @@ const PropertiesUpdate = ({ route }) => {
                 coworking: amenities.coworking,
                 microcine: amenities.microcine,
                 descripcion: textInputData.descripcion,
+                photos: photoUrls, // Asegúrate de que esto sea un array de URLs
                 alquiler: stateTypes.alquiler,
                 venta: stateTypes.venta,
                 reservada: stateTypes.reservada,
@@ -672,7 +721,22 @@ const PropertiesUpdate = ({ route }) => {
                     <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
                     <Title style={styles.titleUpload}>{I18n.t('requeredPhoto')}</Title>
 
-                    <CustomButton title={I18n.t('uploadVideo')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
+                    {
+                        imageUrls.length > 0 && (
+                            <View style={styles.selectedImagesContainer}>
+                                {imageUrls.map((image, index) => (
+                                    <View key={index} style={styles.imageContainer}>
+                                        <Image
+                                            source={{ uri: image.uri }}
+                                            style={styles.image}
+                                        />
+                                    </View>
+                                ))}
+                            </View>
+                        )
+                    }
+
+                    < CustomButton title={I18n.t('uploadVideo')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
                     <Text />
                     <CustomTextInput
                         label={I18n.t('precioVentaAlqui')}
@@ -767,6 +831,24 @@ const styles = StyleSheet.create({
         marginLeft: 40,
         marginRight: 40,
         fontWeight: 'bold',
+    },
+    selectedImagesContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    imageContainer: {
+        width: 100,
+        height: 100,
+        margin: 5,
+        borderRadius: 10,
+        overflow: 'hidden',
+    },
+    image: {
+        width: '100%',
+        height: '100%',
     },
 });
 

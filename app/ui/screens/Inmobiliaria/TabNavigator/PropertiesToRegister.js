@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import CustomTextInput from '../../../components/CustomTextInput';
 import { useNavigation } from '@react-navigation/native';
@@ -11,7 +11,8 @@ import UpdateImageModal from '../../../components/UpdateImageModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
-import * as ImagePicker from 'react-native-image-picker';
+import { API_KEY, CLOUD_NAME, API_SECRET } from '@env';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const PropertiesToRegister = () => {
     const navigation = useNavigation();
@@ -134,6 +135,7 @@ const PropertiesToRegister = () => {
     const [amenities, setAmenities] = useState(initialAmenities);
     const [stateTypes, setStateTypes] = useState(initialState);
     const [isDollar, setIsDollar] = useState(false);
+    const [imageUrls, setImageUrls] = useState([]);
 
 
 
@@ -185,26 +187,58 @@ const PropertiesToRegister = () => {
 
 
     const handleUploadPhoto = () => {
-        const options = {
-            title: 'Selecciona una foto',
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
+        ImagePicker.openPicker({
+            multiple: true,
+            // ... otras opciones ...
+        }).then(images => {
+            // Solo almacenar la información de la imagen, no subirla
+            const imageInfo = images.map(image => ({
+                uri: image.path,
+                type: image.mime,
+                name: image.filename || `image-${Date.now()}`
+            }));
 
-        ImagePicker.launchImageLibrary(options, (response) => {
-            if (response.didCancel) {
-                console.log('El usuario canceló la selección de la imagen');
-            } else if (response.error) {
-                console.log('Error:', response.error);
-            } else {
-                // Aquí puedes manejar la imagen seleccionada, que está en response.uri
-                console.log('URI de la imagen:', response.uri);
-                // Puedes enviar esta URI a tu servidor o realizar otras acciones necesarias
-            }
+            setImageUrls(imageInfo);
+        }).catch(error => {
+            console.log('Error al seleccionar imágenes:', error);
         });
     };
+
+    const uploadImages = async () => {
+        const uploadedUrls = [];
+
+        for (const image of imageUrls) {
+            const formData = new FormData();
+            formData.append('file', {
+                uri: image.uri,
+                type: image.type,
+                name: image.name,
+            });
+            formData.append('upload_preset', 'Myhome');
+
+            try {
+                const uploadResponse = await axios.post(
+                    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                );
+
+                uploadedUrls.push(uploadResponse.data.secure_url);
+            } catch (error) {
+                console.log('Error al subir la imagen:', error);
+                throw error; // Si una imagen falla, puedes decidir si continuar o detener todo el proceso
+            }
+        }
+
+        return uploadedUrls;
+    };
+
+
+
 
 
     const handleUploadVideo = () => {
@@ -241,6 +275,9 @@ const PropertiesToRegister = () => {
             const address = `${textInputData.calle} ${textInputData.numero}, ${textInputData.localidad}, ${textInputData.pais}`;
             const coordinatesdata = await getCoordinatesFromAddress(address);
             const coordinates = `${coordinatesdata.latitude}, ${coordinatesdata.longitude}`;
+
+            //Sube las fotos a cloudinary
+            const photoUrls = await uploadImages();
 
 
             // Define los datos a enviar en la solicitud
@@ -286,7 +323,7 @@ const PropertiesToRegister = () => {
                 coworking: amenities.coworking,
                 microcine: amenities.microcine,
                 descripcion: textInputData.descripcion,
-                photos: '',
+                photos: photoUrls,
                 videos: '',
                 precio: textInputData.precio,
                 dolar: isDollar,
@@ -547,6 +584,21 @@ const PropertiesToRegister = () => {
                 <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
                 <Title style={styles.titleUpload}>{I18n.t('requeredPhoto')}</Title>
 
+                {
+                    imageUrls.length > 0 && (
+                        <View style={styles.selectedImagesContainer}>
+                            {imageUrls.map((image, index) => (
+                                <View key={index} style={styles.imageContainer}>
+                                    <Image
+                                        source={{ uri: image.uri }}
+                                        style={styles.image}
+                                    />
+                                </View>
+                            ))}
+                        </View>
+                    )
+                }
+
                 <CustomButton title={I18n.t('uploadVideo')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
                 <Text />
                 <CustomTextInput
@@ -641,6 +693,24 @@ const styles = StyleSheet.create({
         marginLeft: 40,
         marginRight: 40,
         fontWeight: 'bold',
+    },
+    selectedImagesContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    imageContainer: {
+        width: 100,
+        height: 100,
+        margin: 5,
+        borderRadius: 10,
+        overflow: 'hidden',
+    },
+    image: {
+        width: '100%',
+        height: '100%',
     },
 });
 

@@ -19,7 +19,7 @@ export default SearchNavigator = () => {
             <Stack.Screen
                 name={NavigatorConstant.SEARCH_.SEARCH_MAIN}
                 component={SearchPropertie}
-                options={{ title: ''}}
+                options={{ title: '', headerShown: false }}
             />
             <Stack.Screen
                 name={NavigatorConstant.SEARCH_.RESULTS}

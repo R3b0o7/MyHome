@@ -194,13 +194,9 @@ const SettingsUser = () => {
             title={I18n.t('saveChanges')}
             onPress={() => pressHandler()}
           />
+
           <CustomButton
-            style={styles.buttons}
-            title={I18n.t('changePasword')}
-            onPress={() => handleChangePasword()}
-          />
-          <CustomButton
-            style={styles.buttons}
+            style={[styles.buttons, {marginTop:50}]}
             title={I18n.t('delete')}
             onPress={openDeleteCustomModal}
           />

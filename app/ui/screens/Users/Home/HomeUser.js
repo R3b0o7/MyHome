@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         flex: 1,
         justifyContent: 'flex-start', // Alinea el botón en la parte inferior
-        marginLeft:40,
+        marginLeft:30,
         alignItems: 'center', // Alinea elementos secundarios en el centro
         flexDirection: 'row',
     },

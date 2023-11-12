@@ -38,7 +38,7 @@ const PropertiesToRegister = () => {
     const getCoordinatesFromAddress = async (address) => {
         try {
             // Reemplaza 'TU_CLAVE_DE_API' con tu propia clave de API de Google Maps
-            const apiKey = 'AIzaSyD1leVNZKgKkjTr_jNyyx_6zPH0M2DJ_9g';
+            const apiKey = 'AIzaSyAPV6YxGL3i8jsUIqb2dyyprRCDuWRiH1I';
             const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
 
             const response = await axios.get(apiUrl);

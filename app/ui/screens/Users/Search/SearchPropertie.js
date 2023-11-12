@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import CheckBox from '@react-native-community/checkbox'; //TODO
-
+import { Title, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 
@@ -140,6 +140,24 @@ const SearchPropertie = () => {
         {key:'3', value:'Entre 10 y 30 años'},
         {key:'4', value:'Más de 30 años'},
     ]
+    const initialAmenities = {
+        sum: false,
+        pool: false,
+        quincho: false,
+        solarium: false,
+        sauna: false,
+        roomgames: false,
+        calefaccion: false,
+        coworking: false,
+        microcine: false,
+    };
+    const [amenities, setAmenities] = useState(initialAmenities);
+    //AMENITIES
+    const handleAmenitiesChange = (amenitiesCh) => {
+        const updatedAmenities = { ...amenities };
+        updatedAmenities[amenitiesCh] = !amenities[amenitiesCh];
+        setAmenities(updatedAmenities);
+    };
 
     return (
         <View style={styles.container}>
@@ -256,6 +274,21 @@ const SearchPropertie = () => {
                     save= 'value' 
                 />
                 <Text style={{marginBottom:20}}>CheckBox de Amenities</Text>
+
+                <Title style={styles.title}>{I18n.t('amenities')}</Title>
+
+                {Object.keys(amenities).map((amenitiesCh) => (
+                    <View style={styles.checkboxRow} key={amenitiesCh}>
+                        <Text style={styles.checkboxText}>{I18n.t(amenitiesCh)}</Text>
+                        <CheckBox
+                            value={amenities[amenitiesCh]}
+                            onValueChange={() => handleAmenitiesChange(amenitiesCh)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
+                        />
+                    </View>
+                ))}
+
+
             </ScrollView>
         </View>
     );
@@ -293,6 +326,16 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
       },
+      checkboxRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginLeft: 40,
+        marginRight: 40,
+    },
+    checkboxText: {
+        fontSize: 16,
+    },
 });
 
 export default SearchPropertie;

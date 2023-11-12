@@ -1,23 +1,41 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image} from 'react-native';
+import { View, StyleSheet, Text, Image, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import I18n from '../../../../assets/strings/I18';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 import ImageCustomButton from '../../../components/ImageCustomButton';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { CLIENT_GOOGLE } from '@env';
 
 
 const LoginUserScreen = () => {
     
     const navigation = useNavigation();
 
+    GoogleSignin.configure({
+        webClientId: "704405752710-n2tgvrt5aoepu5b5d7mpqccmjj4perlf.apps.googleusercontent.com",
+        offlineAccess: true // Si necesitas acceder al token de actualización
+      });
+
     const handleLogin = async () => {
+    try {
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        console.log(userInfo);
+        alert(userInfo);
+
+        // Envía el token a tu backend para verificar la identidad del usuario
+        // y crear una sesión, o lo que sea necesario en tu caso
 
         navigation.replace(NavigatorConstant.TAB_STACK_USER.TAB);
+    } catch (error) {
+        console.log(error);
+        
+    }
+};
 
-       
-    };
 
     
     return (

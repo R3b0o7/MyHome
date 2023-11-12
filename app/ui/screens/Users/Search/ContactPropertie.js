@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { View, StyleSheet, Text} from 'react-native';
-import { TextInput, Divider } from 'react-native-paper';
+import { TextInput, Divider} from 'react-native-paper';
+import { DatePickerInput, registerTranslation } from 'react-native-paper-dates';
 import { useNavigation } from '@react-navigation/native';
 import CheckBox from '@react-native-community/checkbox';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
@@ -8,10 +9,12 @@ import I18n from '../../../../assets/strings/I18';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 import CustomButton from '../../../components/CustomButton';
+import App from '../../../../App';
 
 
 const ContactPropertie = () => {
-    
+
+
     const navigation = useNavigation();
 
     const [text, setText] = React.useState("");
@@ -36,6 +39,9 @@ const ContactPropertie = () => {
         updatedScheduleTypes[scheduleTypes] = !scheduleTypes[scheduleTypes];
         setScheduleTypes(updatedScheduleTypes);
     };
+
+    //Input Date
+    const [inputDate, setInputDate] = React.useState(undefined)
 
     const handleSend = async () => {
 
@@ -73,6 +79,16 @@ const ContactPropertie = () => {
                         />
                     </View>
                 ))}
+
+                <DatePickerInput
+                    locale={I18n.locale}
+                    label={I18n.t('date')}
+                    value={inputDate}
+                    onChange={(d) => setInputDate(d)}
+                    inputMode="start"
+                    mode="outlined"
+                />
+
             </View>
             <View style={styles.lowerContainer}>
                 {/* Contenedor inferior (1/4 de la pantalla) */}

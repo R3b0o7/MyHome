@@ -94,6 +94,7 @@ export default {
     send: 'Enviar',
     morning: 'Mañana',
     afternoon: 'Tarde',
+    date: 'Fecha',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

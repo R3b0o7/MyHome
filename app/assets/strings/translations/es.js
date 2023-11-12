@@ -91,6 +91,9 @@ export default {
     favorite: 'Destacado',
     inmobiliaria: 'Inmobiliaria',
     usuario: 'Usuario',
+    send: 'Enviar',
+    morning: 'Mañana',
+    afternoon: 'Tarde',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

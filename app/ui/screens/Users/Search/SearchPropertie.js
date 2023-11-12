@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import CheckBox from '@react-native-community/checkbox'; //TODO
+import CheckBox from '@react-native-community/checkbox'; 
 import { Title, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
@@ -178,6 +178,8 @@ const SearchPropertie = () => {
                 <SelectList //Venta/Alquiler
                     boxStyles= {styles.listBox} //Asigna estilo al box
                     dropdownStyles= {styles.dropdown} //Asigna estilo al dropdown
+                    inputStyles= {styles.textDropList} //Asigna estilo al texto del contenido
+                    dropdownTextStyles={styles.dropdownTextStyles} //Asigna estilo al texto del dropdown
                     setSelected= {setCategory}
                     data= {estado}
                     search={false} //Habilita o no el buscador
@@ -189,7 +191,9 @@ const SearchPropertie = () => {
                 />
                 <SelectList //Tipo de propiedad
                     boxStyles= {styles.listBox} 
-                    dropdownStyles= {styles.dropdown} 
+                    dropdownStyles= {styles.dropdown}
+                    inputStyles= {styles.textDropList} 
+                    dropdownTextStyles={styles.dropdownTextStyles}
                     setSelected= {setCategory}
                     data= {tipoProp}
                     search={false} 
@@ -201,7 +205,9 @@ const SearchPropertie = () => {
                 />
                 <SelectList //Provincia-Localidad-Barrio
                     boxStyles= {styles.listBox} 
-                    dropdownStyles= {styles.dropdown} 
+                    dropdownStyles= {styles.dropdown}
+                    inputStyles= {styles.textDropList} 
+                    dropdownTextStyles={styles.dropdownTextStyles}
                     setSelected= {setCategory}
                     data= {barrios}
                     search={true} 
@@ -213,7 +219,9 @@ const SearchPropertie = () => {
                 />
                 <SelectList //Moneda
                     boxStyles= {styles.listBox} 
-                    dropdownStyles= {styles.dropdown} 
+                    dropdownStyles= {styles.dropdown}
+                    inputStyles= {styles.textDropList} 
+                    dropdownTextStyles={styles.dropdownTextStyles}
                     setSelected= {setCategory}
                     data= {moneda}
                     search={false} 
@@ -227,7 +235,9 @@ const SearchPropertie = () => {
                 <Text style={{marginTop:20, marginBottom:20}}>Colocar aca barra de precios</Text>
                 <SelectList //Ambientes
                     boxStyles= {styles.listBox} 
-                    dropdownStyles= {styles.dropdown} 
+                    dropdownStyles= {styles.dropdown}
+                    inputStyles= {styles.textDropList} 
+                    dropdownTextStyles={styles.dropdownTextStyles}
                     setSelected= {setCategory}
                     data= {ambientes}
                     search={false} 
@@ -239,7 +249,9 @@ const SearchPropertie = () => {
                 />
                 <SelectList //Dormitorios
                     boxStyles= {styles.listBox} 
-                    dropdownStyles= {styles.dropdown} 
+                    dropdownStyles= {styles.dropdown}
+                    inputStyles= {styles.textDropList} 
+                    dropdownTextStyles={styles.dropdownTextStyles}
                     setSelected= {setCategory}
                     data= {dormitorios}
                     search={false} 
@@ -251,7 +263,9 @@ const SearchPropertie = () => {
                 />
                 <SelectList //Baños
                     boxStyles= {styles.listBox} 
-                    dropdownStyles= {styles.dropdown} 
+                    dropdownStyles= {styles.dropdown}
+                    inputStyles= {styles.textDropList} 
+                    dropdownTextStyles={styles.dropdownTextStyles}
                     setSelected= {setCategory}
                     data= {baños}
                     search={false} 
@@ -263,7 +277,9 @@ const SearchPropertie = () => {
                 />
                 <SelectList //Antigüedad
                     boxStyles= {styles.listBox} 
-                    dropdownStyles= {styles.dropdown} 
+                    dropdownStyles= {styles.dropdown}
+                    inputStyles= {styles.textDropList} 
+                    dropdownTextStyles={styles.dropdownTextStyles}
                     setSelected= {setCategory}
                     data= {antiguedad}
                     search={false} 
@@ -273,7 +289,6 @@ const SearchPropertie = () => {
                     notFoundText= {"No se encontro resultado"} 
                     save= 'value' 
                 />
-                <Text style={{marginBottom:20}}>CheckBox de Amenities</Text>
 
                 <Title style={styles.title}>{I18n.t('amenities')}</Title>
 
@@ -287,8 +302,6 @@ const SearchPropertie = () => {
                         />
                     </View>
                 ))}
-
-
             </ScrollView>
         </View>
     );
@@ -315,8 +328,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#E0E4F2',
         borderColor: '#E0E4F2',
     },
+    textDropList:{
+        color: 'black'
+    },
+    dropdownTextStyles:{
+        color: 'black'
+    },
     Button:{
-        width: 240,
+        width: 200,
         marginTop: 30,
         marginBottom: 40, 
     },
@@ -325,13 +344,15 @@ const styles = StyleSheet.create({
         width:38,
         marginLeft: 15,
         marginRight: 15,
-      },
-      checkboxRow: {
+    },
+    checkboxRow: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginLeft: 40,
-        marginRight: 40,
+        width: 250,
+        // marginLeft: 40,
+        // marginRight: 40,
     },
     checkboxText: {
         fontSize: 16,

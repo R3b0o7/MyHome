@@ -404,6 +404,7 @@ const styles = StyleSheet.create({
         width: 250,
         // marginLeft: 40,
         // marginRight: 40,
+        //marginBottom:20
     },
     checkboxText: {
         fontSize: 16,

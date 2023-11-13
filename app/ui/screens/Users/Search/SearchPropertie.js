@@ -64,6 +64,10 @@ const SearchPropertie = () => {
         {key:'3', value:'Casa'},
         {key:'4', value:'Local comercial'},
     ]
+    const provincia = [
+        {key:'1', value:'CABA'},
+        {key:'2', value:'Buenos Aires'},
+    ]
     const barrios = [
         {key:'1', value:'Agronomía'},
         {key:'2', value:'Almagro'},
@@ -211,7 +215,21 @@ const SearchPropertie = () => {
                     notFoundText= {"No se encontro resultado"} 
                     save= 'value' 
                 />
-                <SelectList //Provincia-Localidad-Barrio
+                <SelectList //Provincia
+                    boxStyles= {styles.listBox} 
+                    dropdownStyles= {styles.dropdown}
+                    inputStyles= {styles.textDropList} 
+                    dropdownTextStyles={styles.dropdownTextStyles}
+                    setSelected= {setCategory}
+                    data= {provincia}
+                    search={true} 
+                    maxHeight={100} 
+                    placeholder= {"Provincia"} 
+                    searchPlaceholder= {"Buscar"}
+                    notFoundText= {"No se encontro resultado"} 
+                    save= 'value' 
+                />
+                <SelectList //Localidad-Barrio
                     boxStyles= {styles.listBox} 
                     dropdownStyles= {styles.dropdown}
                     inputStyles= {styles.textDropList} 
@@ -220,7 +238,7 @@ const SearchPropertie = () => {
                     data= {barrios}
                     search={true} 
                     maxHeight={300} 
-                    placeholder= {"Provincia/Localidad/Barrio"} 
+                    placeholder= {"Localidad/Barrio"} 
                     searchPlaceholder= {"Buscar"}
                     notFoundText= {"No se encontro resultado"} 
                     save= 'value' 
@@ -233,7 +251,7 @@ const SearchPropertie = () => {
                     setSelected= {setCategory}
                     data= {moneda}
                     search={false} 
-                    maxHeight={170} 
+                    maxHeight={100} 
                     placeholder= {"Moneda"} 
                     searchPlaceholder= {"Buscar"}
                     notFoundText= {"No se encontro resultado"} 

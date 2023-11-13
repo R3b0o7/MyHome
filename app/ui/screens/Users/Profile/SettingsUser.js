@@ -105,7 +105,7 @@ const SettingsUser = () => {
       });
   };
 
-  // const handleDeleteAccount = () => {
+  /* const handleDeleteAccount = () => {
   //   // Obtener el token del AsyncStorage
   //   getToken()
   //     .then((token) => {
@@ -131,7 +131,13 @@ const SettingsUser = () => {
   //     });
 
   // };
-
+  // const pressDeleteAccount = () => {
+  //   Alert.alert("BORRAR CUENTA", "Estás seguro que desas BORRAR LA CUENTA?", [
+  //     { text: "Sí", onPress: () => handleDeleteAccount() },
+  //     { text: "No" }
+  //   ])
+  // }*/
+  
   const pressHandler = () => {
     Alert.alert("Guardar cambios", "Estás seguro que desas guardar cambios?", [
       { text: "Sí", onPress: () => handleSaveChanges() },
@@ -139,12 +145,7 @@ const SettingsUser = () => {
     ])
   }
 
-  // const pressDeleteAccount = () => {
-  //   Alert.alert("BORRAR CUENTA", "Estás seguro que desas BORRAR LA CUENTA?", [
-  //     { text: "Sí", onPress: () => handleDeleteAccount() },
-  //     { text: "No" }
-  //   ])
-  // }
+
 
   return (
     <ScrollView>

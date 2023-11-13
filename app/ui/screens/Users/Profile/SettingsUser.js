@@ -10,7 +10,7 @@ import CustomTextInput from '../../../components/CustomTextInput';
 import CustomButton from '../../../components/CustomButton';
 import ImageCustomButton from '../../../components/ImageCustomButton';
 import UpdateImageModal from '../../../components/UpdateImageModal';
-import DeleteCustomModal from '../../../components/DeleteCustomModal';
+import DeleteCustomModal from '../../../components/DeleteCustomModal2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingsUser = () => {

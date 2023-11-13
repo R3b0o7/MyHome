@@ -80,6 +80,7 @@ const PropertiesUpdate = ({ route }) => {
                     numero: response.data.numero,
                     piso: response.data.piso,
                     departamento: response.data.departamento,
+                    barrio: response.data.barrio,
                     localidad: response.data.localidad,
                     provincia: response.data.provincia,
                     pais: response.data.pais,
@@ -242,6 +243,7 @@ const PropertiesUpdate = ({ route }) => {
         numero: '',
         piso: '',
         departamento: '',
+        barrio: '',
         localidad: '',
         provincia: '',
         pais: '',
@@ -418,6 +420,7 @@ const PropertiesUpdate = ({ route }) => {
                 numero: textInputData.numero,
                 piso: textInputData.piso,
                 departamento: textInputData.departamento,
+                barrio: textInputData.barrio,
                 localidad: textInputData.localidad,
                 provincia: textInputData.provincia,
                 pais: textInputData.pais,
@@ -527,6 +530,11 @@ const PropertiesUpdate = ({ route }) => {
                         label={I18n.t('apartment')}
                         value={textInputData.departamento}
                         onChangeText={(text) => setUbicacionData({ ...textInputData, departamento: text })}
+                    />
+                    <CustomTextInput
+                        label={I18n.t('barrio')}
+                        value={textInputData.barrio}
+                        onChangeText={(text) => setUbicacionData({ ...textInputData, barrio: text })}
                     />
                     <CustomTextInput
                         label={I18n.t('city')}

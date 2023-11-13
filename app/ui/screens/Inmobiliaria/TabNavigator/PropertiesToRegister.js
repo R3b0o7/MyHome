@@ -112,6 +112,7 @@ const PropertiesToRegister = () => {
         numero: '',
         piso: '',
         departamento: '',
+        barrio: '',
         localidad: '',
         provincia: '',
         pais: '',
@@ -287,6 +288,7 @@ const PropertiesToRegister = () => {
                 numero: textInputData.numero,
                 piso: textInputData.piso,
                 departamento: textInputData.departamento,
+                barrio: textInputData.barrio,
                 localidad: textInputData.localidad,
                 pais: textInputData.pais,
                 coordenadas: coordinates,
@@ -391,6 +393,11 @@ const PropertiesToRegister = () => {
                     label={I18n.t('apartment')}
                     value={textInputData.departamento}
                     onChangeText={(text) => setUbicacionData({ ...textInputData, departamento: text })}
+                />
+                <CustomTextInput
+                    label={I18n.t('barrio')}
+                    value={textInputData.barrio}
+                    onChangeText={(text) => setUbicacionData({ ...textInputData, barrio: text })}
                 />
                 <CustomTextInput
                     label={I18n.t('city')}

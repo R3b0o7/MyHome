@@ -2,6 +2,7 @@ export default {
     login: 'Logueo',
     precioVentaAlqui: 'Precio de venta o alquiler',
     register: 'Registro',
+    barrio: 'Barrio',
     password: 'Contraseña',
     confirmPassword: 'Confirmar contraseña',
     ingresar: 'Ingresar',

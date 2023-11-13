@@ -4,23 +4,22 @@ import { TextInput, Divider} from 'react-native-paper';
 import { DatePickerInput, registerTranslation } from 'react-native-paper-dates';
 import { useNavigation } from '@react-navigation/native';
 import CheckBox from '@react-native-community/checkbox';
-import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import I18n from '../../../../assets/strings/I18';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 import CustomButton from '../../../components/CustomButton';
-import App from '../../../../App';
 
 
 const ContactPropertie = () => {
 
 
     const navigation = useNavigation();
-
+    //const { propertyInfo } = route.params; // NECESITO CREAR EN RESULT PROPERTY
+    
     const [text, setText] = React.useState("");
     const [characterCount, setCharacterCount] = useState(0);
     const maxCharacterLimit = 500;
-  
+
     const initialScheduleTypes = {
         morning: false,
         afternoon: false,
@@ -45,8 +44,37 @@ const ContactPropertie = () => {
 
     const handleSend = async () => {
 
-        navigation.goBack();
+        try {
+            const apiUrl = `${SERVER_URL}/api/contact/create`;
 
+            // Obtiene el token de AsyncStorage
+            const token = await AsyncStorage.getItem('authToken');
+
+            // Define los datos a enviar en la solicitud
+            const contactData = {
+                message: text,
+                morning: scheduleTypes.morning,
+                afternoon: scheduleTypes.afternoon,
+                date: inputDate,
+                property: propertyInfo.id,
+            }
+
+            // Realiza la solicitud POST al servidor
+            const response = await axios.post(apiUrl, contactData, {
+                headers: {
+                    Authorization: token, // Incluye el token en la cabecera de la solicitud
+                },
+            });
+
+            // Muestra una alerta de registro exitoso
+            alert('Contacto creado exitosamente!');
+
+            navigation.goBack();
+
+        } catch (error) {
+            // Muestra una alerta de error en la creacion
+            alert('Error al crear el contacto');
+        }
        
     };
 

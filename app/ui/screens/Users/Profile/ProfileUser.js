@@ -19,18 +19,19 @@ const ProfileUser = () => {
   const [userData, setUserData] = useState({
     userName: '',
     email: '',
-    visibleEmail: '',
+    direccion: '',
+    photo: '',
   });
 
- /* const fetchUserData = async () => {
+  const fetchUserData = async () => {
     try {
       // Obtiene el token de AsyncStorage
       const token = await AsyncStorage.getItem('authToken');
-      
+
       // Realiza una solicitud GET para obtener los datos del usuario desde tu backend
-      const response = await axios.get(`${SERVER_URL}/api/users/me`, {
+      const response = await axios.get(`${SERVER_URL}/api/usersComun/me`, {
         headers: {
-          'Authorization': token,
+          Authorization: token,
         },
       });
 
@@ -39,17 +40,18 @@ const ProfileUser = () => {
         setUserData({
           userName: userDataFromAPI.userName,
           email: userDataFromAPI.email,
-          visibleEmail: userDataFromAPI.visibleEmail,
+          direccion: userDataFromAPI.direccion,
+          photo: userDataFromAPI.photo,
         });
       }
     } catch (error) {
       console.error('Error al obtener los datos del usuario:', error);
     }
-  };*/
+  };
 
   useEffect(() => {
     if (isFocused) {
-      //fetchUserData();
+      fetchUserData();
     }
   }, [isFocused]);
 
@@ -72,14 +74,23 @@ const ProfileUser = () => {
     <View>
       <ScrollView>
         <View style={styles.container}>
-          <Avatar.Image
-            style={styles.shadow}
-            size={200}
-            source={require('../../../../assets/images/misc/User_profile.png')}
-          />
-          {/* TODO -> traer del back el nombre de usuario */}
+          {
+            userData.photo ?
+              <Avatar.Image
+                style={styles.shadow}
+                size={200}
+                source={{ uri: userData.photo }}
+              />
+              :
+              // Puedes poner aquí un avatar predeterminado o dejarlo vacío
+              <Avatar.Icon
+                style={styles.shadow}
+                size={200}
+                icon="account"
+              />
+          }
           <Text variant="headlineMedium" style={styles.textName}>
-            {/* {userData.userName} */}Jhone Doe
+            {userData.userName}
           </Text>
         </View>
 
@@ -92,14 +103,14 @@ const ProfileUser = () => {
           />
           <CustomTextInput
             label="Dirección"
-            value={userData.visibleEmail}
+            value={userData.direccion}
             disabled={true}
             icon={require('../../../../assets/images/Icons/lightMode/tag.png')}
           />
         </View>
 
         <View style={styles.buttonsConteiner}>
-          
+
           <ImageCustomButton
             style={styles.buttons}
             title={I18n.t('settings')}
@@ -117,7 +128,7 @@ const ProfileUser = () => {
 };
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1,
     marginTop: 20,
     justifyContent: 'center', // Centra verticalmente
@@ -132,7 +143,7 @@ const styles = StyleSheet.create({
   buttons: {
     height: 50,
     marginTop: 10,
-    marginBottom:10,
+    marginBottom: 10,
     width: 300
   },
   shadow: {
@@ -144,7 +155,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   textName: {
-    margin:20,
+    margin: 20,
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center', // Alinea el texto en el centro horizontal

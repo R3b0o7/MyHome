@@ -7,6 +7,7 @@ import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 import ImageCustomButton from '../../../components/ImageCustomButton';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CLIENT_GOOGLE } from '@env';
 
 
@@ -24,20 +25,34 @@ const LoginUserScreen = () => {
             await GoogleSignin.hasPlayServices();
             // Cierra la sesión actual antes de iniciar una nueva
             await GoogleSignin.signOut();
+
             const userInfo = await GoogleSignin.signIn();
-            console.log(userInfo);
+
+            const userData = {
+                userName: userInfo.user.name,
+                email: userInfo.user.email,
+                direccion: '',
+                photo: userInfo.user.photo
+            }
+
+            // Realizar la solicitud de inicio de sesión al servidor
+            const response = await axios.post(`${SERVER_URL}/api/usersComun/login`, userData);
+
+            if (response.status === 200) {
+                
+                // Almacenar el token de autenticación en el dispositivo
+                const token = response.data.token; // Asumiendo que el servidor envía un token
+                await AsyncStorage.setItem('authToken', token); // Almacena el token en AsyncStorage
+
+                // Redirigir al usuario a la pantalla de inicio o a donde sea necesario
+                navigation.replace(NavigatorConstant.TAB_STACK_USER.TAB);
+            }
             
-
-            // Envía el token a tu backend para verificar la identidad del usuario
-            // y crear una sesión, o lo que sea necesario en tu caso
-
-            navigation.replace(NavigatorConstant.TAB_STACK_USER.TAB);
         } catch (error) {
             console.log(error);
 
         }
     };
-
 
 
     return (

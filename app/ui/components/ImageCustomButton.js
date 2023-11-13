@@ -1,12 +1,12 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Image, View } from 'react-native';
 
-const CustomButton = ({ title, onPress, style, imageStyle, imageSource }) => {
+const CustomButton = ({ title, onPress, imageSource, style, imageStyle, textStyle, buttonContent}) => {
   return (
     <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-      <View style={styles.buttonContent}>
+      <View style={[styles.buttonContent, buttonContent]}>
         <Image style={[styles.imageStyle, imageStyle]} source={imageSource} />
-        <Text style={styles.buttonText}>{title}</Text>
+        <Text style={[styles.textStyle, textStyle]}>{title}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  buttonText: {
+  textStyle: {
     fontSize: 20,
     lineHeight: 20,
     fontFamily: 'Roboto',

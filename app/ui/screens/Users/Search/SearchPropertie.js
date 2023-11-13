@@ -5,6 +5,7 @@ import CheckBox from '@react-native-community/checkbox';
 import { Title, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
+import Slider from '@react-native-community/slider';
 
 import I18n from '../../../../assets/strings/I18';
 import ImageCustomButton from '../../../components/ImageCustomButton'
@@ -50,6 +51,7 @@ const SearchPropertie = () => {
         navigation.push(NavigatorConstant.SEARCH_.RESULTS);
     };
 
+    //CATEGORIAS
     const [category, setCategory] =  useState([]);
 
     const estado = [
@@ -140,6 +142,11 @@ const SearchPropertie = () => {
         {key:'3', value:'Entre 10 y 30 años'},
         {key:'4', value:'Más de 30 años'},
     ]
+    //SLIDER
+    const [minSliderState, setMinSliderState] = useState(0);
+    const [maxSliderState, setMaxSliderState] = useState(-1000000);
+
+    //AMENITIES
     const initialAmenities = {
         sum: false,
         pool: false,
@@ -151,8 +158,9 @@ const SearchPropertie = () => {
         coworking: false,
         microcine: false,
     };
+
     const [amenities, setAmenities] = useState(initialAmenities);
-    //AMENITIES
+    
     const handleAmenitiesChange = (amenitiesCh) => {
         const updatedAmenities = { ...amenities };
         updatedAmenities[amenitiesCh] = !amenities[amenitiesCh];
@@ -231,8 +239,42 @@ const SearchPropertie = () => {
                     notFoundText= {"No se encontro resultado"} 
                     save= 'value' 
                 />
-                <Text style={{fontSize:18, marginTop:15}}>Máximo, expresado en miles</Text>
-                <Text style={{marginTop:20, marginBottom:20}}>Colocar aca barra de precios</Text>
+                
+                <Text style={{fontSize:20}}>Mínimo, expresado en miles</Text>
+
+                <Slider
+                    style={{width: 250, height: 40}}
+                    minimumValue={0}
+                    maximumValue={1000000}
+                    upperLimit={-maxSliderState}
+                    value={minSliderState}
+                    onValueChange={(value) => setMinSliderState(value)}
+                    thumbTintColor='royalblue'
+                    minimumTrackTintColor="#4563ac"
+                    maximumTrackTintColor="#233460"
+                />
+
+                <Text style={styles.textSlider}>{minSliderState.toFixed(0)}</Text> 
+                {/* toFixed muestra la cantidad de decimales del valor seleccionado en el slider */}
+
+                <Text style={{fontSize:20}}>Máximo, expresado en miles</Text>
+
+                <Slider
+                    style={{width: 250, height: 40}}
+                    minimumValue={-1000000}
+                    maximumValue={0}
+                    upperLimit={-minSliderState}
+                    value={maxSliderState}
+                    inverted
+                    onValueChange={(value) => setMaxSliderState(value)}
+                    thumbTintColor='royalblue'
+                    minimumTrackTintColor="#4563ac"
+                    maximumTrackTintColor="#acb4cc"
+                />
+
+                <Text style={styles.textSlider}>{-maxSliderState.toFixed(0)}</Text> 
+                {/* toFixed muestra la cantidad de decimales del valor seleccionado en el slider */}
+
                 <SelectList //Ambientes
                     boxStyles= {styles.listBox} 
                     dropdownStyles= {styles.dropdown}
@@ -316,6 +358,17 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    Button:{
+        width: 200,
+        marginTop: 30,
+        marginBottom: 40, 
+    },
+    imageButtonStyle: {
+        height:25,
+        width:38,
+        marginLeft: 15,
+        marginRight: 15,
+    },
     listBox: {
         width:300,
         marginTop:10,
@@ -334,16 +387,14 @@ const styles = StyleSheet.create({
     dropdownTextStyles:{
         color: 'black'
     },
-    Button:{
-        width: 200,
-        marginTop: 30,
-        marginBottom: 40, 
-    },
-    imageButtonStyle: {
-        height:25,
-        width:38,
-        marginLeft: 15,
-        marginRight: 15,
+    textSlider: {
+        fontSize:18, 
+        fontWeight: 'bold',
+        width: 100,
+        textAlign: 'center',
+        backgroundColor:'#E0E4F2',
+        borderRadius: 10,
+        marginBottom: 20
     },
     checkboxRow: {
         flex: 1,

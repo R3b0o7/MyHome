@@ -20,13 +20,14 @@ const ProfileScreen = () => {
     userName: '',
     email: '',
     visibleEmail: '',
+    photo: '',
   });
 
   const fetchUserData = async () => {
     try {
       // Obtiene el token de AsyncStorage
       const token = await AsyncStorage.getItem('authToken');
-      
+
       // Realiza una solicitud GET para obtener los datos del usuario desde tu backend
       const response = await axios.get(`${SERVER_URL}/api/users/me`, {
         headers: {
@@ -40,6 +41,7 @@ const ProfileScreen = () => {
           userName: userDataFromAPI.userName,
           email: userDataFromAPI.email,
           visibleEmail: userDataFromAPI.visibleEmail,
+          photo: userDataFromAPI.photo,
         });
       }
     } catch (error) {
@@ -76,11 +78,21 @@ const ProfileScreen = () => {
     <View>
       <ScrollView>
         <View style={{ marginTop: 39, alignSelf: 'center' }}>
-          <Avatar.Image
-            style={styles.shadow}
-            size={200}
-            source={require('../../../../assets/images/misc/logotipo.png')}
-          />
+          {
+            userData.photo ?
+              <Avatar.Image
+                style={styles.shadow}
+                size={200}
+                source={{ uri: userData.photo }}
+              />
+              :
+              // Puedes poner aquí un avatar predeterminado o dejarlo vacío
+              <Avatar.Icon
+                style={styles.shadow}
+                size={200}
+                icon="account"
+              />
+          }
           <Text variant="headlineMedium" style={{ marginTop: 20 }}>
             {userData.userName}
           </Text>

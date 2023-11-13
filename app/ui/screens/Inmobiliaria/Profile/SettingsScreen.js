@@ -13,11 +13,15 @@ import UpdateImageModal from '../../../components/UpdateImageModal';
 import DeleteCustomModal from '../../../components/DeleteCustomModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
+import { API_KEY, CLOUD_NAME, API_SECRET } from '@env';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const SettingsScreen = () => {
 
   const navigation = useNavigation();
   const [updateImageModalVisible, setUpdateImageModalVisible] = useState(false);
+
+  const [imageUrls, setImageUrls] = useState([]);
 
   const openUpdateImageModal = () => {
     setUpdateImageModalVisible(true);
@@ -41,6 +45,7 @@ const SettingsScreen = () => {
     userName: '',
     email: '',
     visibleEmail: '',
+    photo: '',
   });
 
   const getToken = async () => {
@@ -65,6 +70,7 @@ const SettingsScreen = () => {
               userName: response.data.userName,
               email: response.data.email,
               visibleEmail: response.data.visibleEmail,
+              photo: response.data.photo,
             });
           })
           .catch((error) => {
@@ -76,32 +82,36 @@ const SettingsScreen = () => {
       });
   }, []);
 
-  const handleSaveChanges = () => {
-    // Obtener token del AsyncStorage
-    getToken().then((token) => {
-      // Realizar una solicitud PUT para actualizar los datos del usuario
-      axios.put(`${SERVER_URL}/api/users/saveChanges`, {
-        userName: userData.userName,
-        email: userData.email,
-        visibleEmail: userData.visibleEmail,
-      }, {
-        headers: {
-          Authorization: token,
-        },
-      })
-        .then((response) => {
-          // Realizar alguna acción adicional si es necesario
-          alert('Datos actualizados con éxito:');
-          navigation.goBack();
-        })
-        .catch((error) => {
-          console.error('Error al actualizar los datos del usuario:', error);
+  const handleSaveChanges = async () => {
+    try {
+      const token = await getToken();
+
+      // Espera a que la imagen se suba y obtén la URL
+      const photoUrl = await uploadImages();
+
+      // Si la imagen se subió correctamente, actualiza los datos del usuario
+      if (photoUrl) {
+        const response = await axios.put(`${SERVER_URL}/api/users/saveChanges`, {
+          userName: userData.userName,
+          email: userData.email,
+          visibleEmail: userData.visibleEmail,
+          photo: photoUrl,
+        }, {
+          headers: {
+            Authorization: token,
+          },
         });
-    })
-      .catch((error) => {
-        console.error(error);
-      });
+
+        alert('Datos actualizados con éxito');
+        navigation.goBack();
+      } else {
+        console.log('No se pudo subir la imagen');
+      }
+    } catch (error) {
+      console.error('Error al actualizar los datos del usuario:', error);
+    }
   };
+
 
   // const handleDeleteAccount = () => {
   //   // Obtener el token del AsyncStorage
@@ -118,7 +128,7 @@ const SettingsScreen = () => {
   //           // Realizar alguna acción adicional si es necesario
   //           alert("Cuenta borrada con éxito.");
   //           navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
-          
+
   //         })
   //         .catch((error) => {
   //           console.error("Error al borrar la cuenta:", error);
@@ -148,14 +158,80 @@ const SettingsScreen = () => {
     navigation.push(NavigatorConstant.PROFILE_STACK.CHANGE_PASWORD);
   };
 
+
+  const handleChangePhoto = () => {
+    ImagePicker.openPicker({
+      multiple: false,
+      // ... otras opciones ...
+    }).then(image => {
+      // Almacenar la información de una única imagen, no un array
+      const imageInfo = {
+        uri: image.path,
+        type: image.mime,
+        name: image.filename || `image-${Date.now()}`
+      };
+
+      setImageUrls([imageInfo]); // Asegúrate de establecerlo como un array aquí
+      setUserData({ ...userData, photo: image.path });
+    }).catch(error => {
+      console.log('Error al seleccionar imágenes:', error);
+    });
+  };
+
+  const uploadImages = async () => {
+    if (imageUrls.length === 0) {
+      console.log("No hay imágenes para subir");
+      return null;
+    }
+
+    const image = imageUrls[0]; // Toma la primera imagen
+    const formData = new FormData();
+    formData.append('file', {
+      uri: image.uri,
+      type: image.type,
+      name: image.name,
+    });
+    formData.append('upload_preset', 'Fotos_Perfil');
+
+    try {
+      const uploadResponse = await axios.post(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      return uploadResponse.data.secure_url; // Retorna la URL de la imagen subida
+    } catch (error) {
+      console.log('Error al subir la imagen:', error);
+      throw error;
+    }
+  };
+
+
+
   return (
     <ScrollView>
       <View style={{ marginTop: 39, alignSelf: 'center' }}>
-        <Avatar.Image
-          style={styles.shadow}
-          size={200}
-          source={require('../../../../assets/images/misc/logotipo.png')}
-        />
+        {
+          userData.photo ?
+            <Avatar.Image
+              style={styles.shadow}
+              size={200}
+              source={{ uri: userData.photo }}
+            />
+            :
+            // Puedes poner aquí un avatar predeterminado o dejarlo vacío
+            <Avatar.Icon
+              style={styles.shadow}
+              size={200}
+              source={require('../../../../assets/images/misc/logotipo.png')}
+              icon="account"
+            />
+        }
       </View>
 
       <View style={{
@@ -163,7 +239,7 @@ const SettingsScreen = () => {
         marginLeft: 270,
         marginRight: 100
       }}>
-        <ImageCustomButton style={styles.imageStyle} onPress={openUpdateImageModal} imageSource={require('../../../../assets/images/Icons/pencil.png')} />
+        <ImageCustomButton style={styles.imageStyle} onPress={handleChangePhoto} imageSource={require('../../../../assets/images/Icons/pencil.png')} />
         <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
       </View>
 
@@ -195,21 +271,21 @@ const SettingsScreen = () => {
       }}>
 
         <CustomButton
-          style={styles.buttons} 
+          style={styles.buttons}
           title={I18n.t('changePasword')}
           onPress={() => handleChangePasword()}
         />
 
         <CustomButton
-          style={styles.buttons} 
+          style={styles.buttons}
           title={I18n.t('saveChanges')}
           onPress={() => pressHandler()}
         />
-       
-        <CustomButton 
-          style={styles.buttons} 
-          title={I18n.t('delete')} 
-          onPress={openDeleteCustomModal} 
+
+        <CustomButton
+          style={styles.buttons}
+          title={I18n.t('delete')}
+          onPress={openDeleteCustomModal}
         />
 
       </View>

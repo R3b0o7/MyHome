@@ -21,11 +21,6 @@ export default ProfileUserStackNavigator = () => {
                 component={SettingsUser}
                 options={{ title: I18n.t('settings')}}
             />
-            <Stack.Screen
-                name={NavigatorConstant.PROFILE_STACK.CHANGE_PASWORD}
-                component={ChangePaswordUser}
-                options={{ title: I18n.t('changePasword')}}
-            />
         </Stack.Navigator >
     );
 };

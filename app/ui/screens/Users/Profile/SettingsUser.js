@@ -10,9 +10,8 @@ import CustomTextInput from '../../../components/CustomTextInput';
 import CustomButton from '../../../components/CustomButton';
 import ImageCustomButton from '../../../components/ImageCustomButton';
 import UpdateImageModal from '../../../components/UpdateImageModal';
-import DeleteCustomModal from '../../../components/DeleteCustomModal';
+import DeleteCustomModal from '../../../components/DeleteCustomModal2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 
 const SettingsUser = () => {
 
@@ -40,7 +39,8 @@ const SettingsUser = () => {
   const [userData, setUserData] = useState({
     userName: '',
     email: '',
-    visibleEmail: '',
+    direccion: '',
+    photo: '',
   });
 
   const getToken = async () => {
@@ -52,19 +52,20 @@ const SettingsUser = () => {
     }
   };
 
-  /*useEffect(() => {
+  useEffect(() => {
     getToken()
       .then((token) => {
-        axios.get(`${SERVER_URL}/api/users/me`, {
+        axios.get(`${SERVER_URL}/api/usersComun/me`, {
           headers: {
-            'Authorization': token,
+            Authorization: token,
           },
         })
           .then((response) => {
             setUserData({
               userName: response.data.userName,
               email: response.data.email,
-              visibleEmail: response.data.visibleEmail,
+              direccion: response.data.direccion,
+              photo: response.data.photo,
             });
           })
           .catch((error) => {
@@ -74,16 +75,17 @@ const SettingsUser = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);*/
+  }, []);
 
   const handleSaveChanges = () => {
     // Obtener token del AsyncStorage
     getToken().then((token) => {
       // Realizar una solicitud PUT para actualizar los datos del usuario
-      axios.put(`${SERVER_URL}/api/users/saveChanges`, {
+      axios.put(`${SERVER_URL}/api/usersComun/saveChanges`, {
         userName: userData.userName,
         email: userData.email,
-        visibleEmail: userData.visibleEmail,
+        direccion: userData.direccion,
+        photo: userData.photo,
       }, {
         headers: {
           Authorization: token,
@@ -103,7 +105,7 @@ const SettingsUser = () => {
       });
   };
 
-  // const handleDeleteAccount = () => {
+  /* const handleDeleteAccount = () => {
   //   // Obtener el token del AsyncStorage
   //   getToken()
   //     .then((token) => {
@@ -129,7 +131,13 @@ const SettingsUser = () => {
   //     });
 
   // };
-
+  // const pressDeleteAccount = () => {
+  //   Alert.alert("BORRAR CUENTA", "Estás seguro que desas BORRAR LA CUENTA?", [
+  //     { text: "Sí", onPress: () => handleDeleteAccount() },
+  //     { text: "No" }
+  //   ])
+  // }*/
+  
   const pressHandler = () => {
     Alert.alert("Guardar cambios", "Estás seguro que desas guardar cambios?", [
       { text: "Sí", onPress: () => handleSaveChanges() },
@@ -137,31 +145,32 @@ const SettingsUser = () => {
     ])
   }
 
-  // const pressDeleteAccount = () => {
-  //   Alert.alert("BORRAR CUENTA", "Estás seguro que desas BORRAR LA CUENTA?", [
-  //     { text: "Sí", onPress: () => handleDeleteAccount() },
-  //     { text: "No" }
-  //   ])
-  // }
 
-  const handleChangePasword = () => {
-    navigation.push(NavigatorConstant.PROFILE_STACK.CHANGE_PASWORD);
-  };
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
-          <Avatar.Image
-            style={styles.shadow}
-            size={200}
-            source={require('../../../../assets/images/misc/User_profile.png')}
+          {
+            userData.photo ?
+              <Avatar.Image
+                style={styles.shadow}
+                size={200}
+                source={{ uri: userData.photo }}
+              />
+              :
+              // Puedes poner aquí un avatar predeterminado o dejarlo vacío
+              <Avatar.Icon
+                style={styles.shadow}
+                size={200}
+                icon="account"
+              />
+          }
+          <ImageCustomButton
+            style={styles.imageButtonStyle}
+            onPress={openUpdateImageModal}
+            imageSource={require('../../../../assets/images/Icons/pencil.png')}
           />
-          <ImageCustomButton 
-            style={styles.imageButtonStyle} 
-            onPress={openUpdateImageModal} 
-            imageSource={require('../../../../assets/images/Icons/pencil.png')} 
-            />
         </View>
 
         <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
@@ -178,28 +187,28 @@ const SettingsUser = () => {
           label="Correo"
           icon={require('../../../../assets/images/Icons/lightMode/mail.png')}
           value={userData.email}
+          disabled={true}
           onChangeText={(value) => setUserData({ ...userData, email: value })} // Actualizar el estado cuando el texto cambia
         />
         <CustomTextInput
           label="Dirección"
           icon={require('../../../../assets/images/Icons/lightMode/tag.png')}
-          value={userData.visibleEmail}
-          onChangeText={(value) => setUserData({ ...userData, visibleEmail: value })} // Actualizar el estado cuando el texto cambia
+          value={userData.direccion}
+          onChangeText={(value) => setUserData({ ...userData, direccion: value })} // Actualizar el estado cuando el texto cambia
         />
       </View>
 
       <View style={styles.container}>
         <CustomButton
-            style={styles.buttons}
-            title={I18n.t('saveChanges')}
-            onPress={() => pressHandler()}
-          />
-
-          <CustomButton
-            style={[styles.buttons, {marginTop:50}]}
-            title={I18n.t('delete')}
-            onPress={openDeleteCustomModal}
-          />
+          style={styles.buttons}
+          title={I18n.t('saveChanges')}
+          onPress={() => pressHandler()}
+        />
+        <CustomButton
+          style={styles.buttons}
+          title={I18n.t('delete')}
+          onPress={openDeleteCustomModal}
+        />
       </View>
 
       <DeleteCustomModal visible={deleteCustomModalVisible} onClose={closeDeleteCustomModal} />
@@ -210,7 +219,7 @@ const SettingsUser = () => {
 
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1,
     marginTop: 20,
     justifyContent: 'center', // Centra verticalmente
@@ -238,7 +247,7 @@ const styles = StyleSheet.create({
   buttons: {
     height: 50,
     marginTop: 10,
-    marginBottom:10,
+    marginBottom: 10,
     width: 200
   }
 });

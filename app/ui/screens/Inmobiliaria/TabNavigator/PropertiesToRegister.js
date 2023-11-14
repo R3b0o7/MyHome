@@ -11,7 +11,7 @@ import UpdateImageModal from '../../../components/UpdateImageModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
-import { API_KEY, CLOUD_NAME, API_SECRET } from '@env';
+import { CLOUD_NAME } from '@env';
 import ImagePicker from 'react-native-image-crop-picker';
 
 const PropertiesToRegister = () => {
@@ -56,8 +56,6 @@ const PropertiesToRegister = () => {
             throw error;
         }
     };
-
-
 
     const initialPropertyTypes = {
         house: false,
@@ -112,7 +110,6 @@ const PropertiesToRegister = () => {
         numero: '',
         piso: '',
         departamento: '',
-        barrio: '',
         localidad: '',
         provincia: '',
         pais: '',
@@ -183,9 +180,7 @@ const PropertiesToRegister = () => {
         setIsDollar(value);
     };
 
-
-    //MANEJO DE BOTONES
-
+    //MANEJO DE FOTOS
 
     const handleUploadPhoto = () => {
         ImagePicker.openPicker({
@@ -238,10 +233,6 @@ const PropertiesToRegister = () => {
         return uploadedUrls;
     };
 
-
-
-
-
     const handleUploadVideo = () => {
 
     };
@@ -288,7 +279,6 @@ const PropertiesToRegister = () => {
                 numero: textInputData.numero,
                 piso: textInputData.piso,
                 departamento: textInputData.departamento,
-                barrio: textInputData.barrio,
                 localidad: textInputData.localidad,
                 pais: textInputData.pais,
                 coordenadas: coordinates,
@@ -395,17 +385,12 @@ const PropertiesToRegister = () => {
                     onChangeText={(text) => setUbicacionData({ ...textInputData, departamento: text })}
                 />
                 <CustomTextInput
-                    label={I18n.t('barrio')}
-                    value={textInputData.barrio}
-                    onChangeText={(text) => setUbicacionData({ ...textInputData, barrio: text })}
-                />
-                <CustomTextInput
-                    label={I18n.t('city')}
-                    value={textInputData.localidad}
+                    label={I18n.t('country')}
+                    value={textInputData.pais}
                     onChangeText={(text) => {
                         // Convierte la primera letra en mayúscula y el resto en minúsculas
                         text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-                        setUbicacionData({ ...textInputData, localidad: text });
+                        setUbicacionData({ ...textInputData, pais: text });
                     }}
                 />
                 <CustomTextInput
@@ -418,12 +403,12 @@ const PropertiesToRegister = () => {
                     }}
                 />
                 <CustomTextInput
-                    label={I18n.t('country')}
-                    value={textInputData.pais}
+                    label={I18n.t('city')}
+                    value={textInputData.localidad}
                     onChangeText={(text) => {
                         // Convierte la primera letra en mayúscula y el resto en minúsculas
                         text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-                        setUbicacionData({ ...textInputData, pais: text });
+                        setUbicacionData({ ...textInputData, localidad: text });
                     }}
                 />
                 <CustomTextInput

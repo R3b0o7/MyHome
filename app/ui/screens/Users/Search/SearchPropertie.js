@@ -19,35 +19,17 @@ const SearchPropertie = () => {
 
     const [userProperties, setUserProperties] = useState([]); // Estado para almacenar las propiedades del usuario
 
-   /* const fetchUserProperties = async () => {
-        // Obtén el token de AsyncStorage
-        const authToken = await AsyncStorage.getItem('authToken');
-
-        // Realiza una solicitud GET para obtener las propiedades del usuario desde tu backend
-        try {
-            const response = await axios.get(`${SERVER_URL}/api/properties/user-properties`, {
-                headers: {
-                    Authorization: authToken,
-                }
-            });
-            if (response.status === 200) {
-                setUserProperties(response.data);
-            }
-        } catch (error) {
-            console.error('Error al obtener las propiedades del usuario:', error);
-        }
-    };*/
-
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            // Este código se ejecutará cada vez que la pantalla esté en primer plano
-           // fetchUserProperties();
+            
         });
         return unsubscribe;
     }, [navigation]);
 
-    //POR QUE HAY UN LOGIN?
-    const handleLogin = async () => {
+    const handleSearch = async () => {
+
+
+        
         navigation.push(NavigatorConstant.SEARCH_.RESULTS);
     };
 
@@ -182,7 +164,7 @@ const SearchPropertie = () => {
                     title={I18n.t('search')}
                     imageSource={require('../../../../assets/images/Icons/lightMode/serch.png')} 
                     color="blue" 
-                    onPress={handleLogin} 
+                    onPress={handleSearch} 
                     style={styles.Button}
                     imageStyle={styles.imageButtonStyle}
                 />

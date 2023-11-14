@@ -270,12 +270,54 @@ const SearchPropertie = () => {
         microcine: false,
     };
 
-    const [amenities, setAmenities] = useState(initialAmenities);
+    const initialCharacteristics = {
+        terraza: false,
+        balcon: false,
+        cochera: false,
+        baulera: false,
+    };
+    const initialFrenteTypes = {
+        frente: false,
+        contrafrente: false,
+    };
+    const initialOrientTypes = {
+        orientnorte: false,
+        orientsur: false,
+        orienteste: false,
+        orientOeste: false,
+    };
 
+    const [amenities, setAmenities] = useState(initialAmenities);
+    const [characteristicsProp, setCharacteristicsProp] = useState(initialCharacteristics);
+    const [frenteTypes, setFrenteTypes] = useState(initialFrenteTypes);
+    const [orientTypes, setOrientTypes] = useState(initialOrientTypes);
+
+    //AMENITIES
     const handleAmenitiesChange = (amenitiesCh) => {
         const updatedAmenities = { ...amenities };
         updatedAmenities[amenitiesCh] = !amenities[amenitiesCh];
         setAmenities(updatedAmenities);
+    };
+
+    //CARACTERISTICAS
+    const handleCharacteristicsPropChange = (characteristics) => {
+        const updatedcharacteristicsProp = { ...characteristicsProp };
+        updatedcharacteristicsProp[characteristics] = !characteristicsProp[characteristics];
+        setCharacteristicsProp(updatedcharacteristicsProp);
+    };
+
+    //FRENTE O CONTRAFRENTE
+    const handleFrenteChange = (frenteType) => {
+        const updatedFrente = { ...initialFrenteTypes };
+        updatedFrente[frenteType] = !frenteTypes[frenteType];
+        setFrenteTypes(updatedFrente);
+    };
+
+    //ORIENTACION
+    const handleOrientChange = (orientType) => {
+        const updatedOrient = { ...initialOrientTypes };
+        updatedOrient[orientType] = !orientTypes[orientType];
+        setOrientTypes(updatedOrient);
     };
 
     return (
@@ -469,6 +511,50 @@ const SearchPropertie = () => {
                         />
                     </View>
                 ))}
+
+                <Title style={styles.title}>{I18n.t('characteristics')}</Title>
+
+                <Text />
+
+                {Object.keys(characteristicsProp).map((characteristics) => (
+                    <View style={styles.checkboxRow} key={characteristics}>
+                        <Text style={styles.checkboxText}>{I18n.t(characteristics)}</Text>
+                        <CheckBox
+                            value={characteristicsProp[characteristics]}
+                            onValueChange={() => handleCharacteristicsPropChange(characteristics)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
+                        />
+                    </View>
+                ))}
+                <Text />
+
+                {Object.keys(frenteTypes).map((type) => (
+                    <View style={styles.checkboxRow} key={type}>
+                        <Text style={styles.checkboxText}>{I18n.t(type)}</Text>
+                        <CheckBox
+                            value={frenteTypes[type]}
+                            onValueChange={() => handleFrenteChange(type)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
+                        />
+                    </View>
+                ))}
+
+                <Text />
+
+                {Object.keys(orientTypes).map((type) => (
+                    <View style={styles.checkboxRow} key={type}>
+                        <Text style={styles.checkboxText}>{I18n.t(type)}</Text>
+                        <CheckBox
+                            value={orientTypes[type]}
+                            onValueChange={() => handleOrientChange(type)}
+                            tintColors={{ true: '#4363AC', false: '#49454F' }}
+                        />
+                    </View>
+                ))}
+
+                <Text />
+
+
             </ScrollView>
         </View>
     );

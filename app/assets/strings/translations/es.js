@@ -28,7 +28,7 @@ export default {
     streetNumber: 'Número',
     floor: 'Piso',
     apartment: 'Departamento',
-    city: 'Localidad',
+    city: 'Localidad/Barrio',
     state: 'Provincia',
     country: 'País',
     latLong: 'Lat & Long',

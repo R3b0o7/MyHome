@@ -135,6 +135,17 @@ const SearchPropertie = () => {
                 calefaccion: amenities.calefaccion,
                 coworking: amenities.coworking,
                 microcine: amenities.microcine,
+                terraza: characteristicsProp.terraza,
+                balcon: characteristicsProp.balcon,
+                cochera: characteristicsProp.cochera,
+                baulera: characteristicsProp.baulera,
+                frete: frenteTypes.frente,
+                contrafrente: frenteTypes.contrafrente,
+                orientnorte: orientTypes.orientnorte,
+                orientsur: orientTypes.orientsur,
+                orienteste: orientTypes.orienteste,
+                orientOeste: orientTypes.orientOeste,
+
             };
 
             //console.log(requestBody);

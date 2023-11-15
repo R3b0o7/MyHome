@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import CustomTextInput from '../../../components/CustomTextInput';
+import { SelectList } from 'react-native-dropdown-select-list';
 import { useNavigation } from '@react-navigation/native';
 import { Title, Text } from 'react-native-paper';
 import I18n from '../../../../assets/strings/I18';
@@ -110,21 +111,127 @@ const PropertiesToRegister = () => {
         numero: '',
         piso: '',
         departamento: '',
-        localidad: '',
-        provincia: '',
-        pais: '',
+        // localidad: '',
+        // provincia: '',
+        //pais: '',
         coordenadas: '',
         m2cubiert: '',
         m2semidescubiert: '',
         m2descubiert: '',
-        cantambient: '',
-        cantcuartos: '',
-        cantbaños: '',
+        //cantambient: '',
+        //cantcuartos: '',
+        //cantbaños: '',
         antiguedad: '',
         descripcion: '',
         precio: '',
         expensas: '',
     });
+
+    const pais = [
+        { key: '1', value: 'Argentina' },
+    ]
+
+    const provincia = [
+        { key: '1', value: 'CABA' },
+        { key: '2', value: 'Buenos Aires' },
+    ]
+    const localidades = [
+        { key: '1', value: 'Almirante Brown' },
+        { key: '2', value: 'Avellaneda' },
+        { key: '3', value: 'Berazategui' },
+        { key: '4', value: 'Esteban Echeverría' },
+        { key: '5', value: 'Ezeiza' },
+        { key: '6', value: 'Florencio Varela' },
+        { key: '7', value: 'General San Martín' },
+        { key: '8', value: 'Hurlingham' },
+        { key: '9', value: 'Ituzaingó' },
+        { key: '10', value: 'José C. Paz' },
+        { key: '11', value: 'Lanús' },
+        { key: '12', value: 'La Matanza' },
+        { key: '13', value: 'Lomas de Zamora' },
+        { key: '14', value: 'Malvinas Argentinas' },
+        { key: '15', value: 'Merlo' },
+        { key: '16', value: 'Moreno' },
+        { key: '17', value: 'Morón' },
+        { key: '18', value: 'Pilar' },
+        { key: '19', value: 'Presidente Perón' },
+        { key: '20', value: 'Quilmes' },
+        { key: '21', value: 'San Fernando' },
+        { key: '22', value: 'San Isidro' },
+        { key: '23', value: 'San Miguel' },
+        { key: '24', value: 'Tigre' },
+        { key: '25', value: 'Tres de Febrero' },
+        { key: '26', value: 'Vicente López' },
+    ];
+    const barrios = [
+        { key: '1', value: 'Agronomía' },
+        { key: '2', value: 'Almagro' },
+        { key: '3', value: 'Balvanera' },
+        { key: '4', value: 'Barracas' },
+        { key: '5', value: 'Belgrano' },
+        { key: '6', value: 'Boedo' },
+        { key: '7', value: 'Caballito' },
+        { key: '8', value: 'Chacarita' },
+        { key: '9', value: 'Coghlan' },
+        { key: '10', value: 'Colegiales' },
+        { key: '11', value: 'Constitución' },
+        { key: '12', value: 'Flores' },
+        { key: '13', value: 'Floresta' },
+        { key: '14', value: 'La Boca' },
+        { key: '15', value: 'La Paternal' },
+        { key: '16', value: 'Liniers' },
+        { key: '17', value: 'Mataderos' },
+        { key: '18', value: 'Monte Castro' },
+        { key: '19', value: 'Nueva Pompeya' },
+        { key: '20', value: 'Núñez' },
+        { key: '21', value: 'Palermo' },
+        { key: '22', value: 'Parque Avellaneda' },
+        { key: '23', value: 'Parque Chacabuco' },
+        { key: '24', value: 'Parque Chas' },
+        { key: '25', value: 'Parque Patricios' },
+        { key: '26', value: 'Puerto Madero' },
+        { key: '27', value: 'Recoleta' },
+        { key: '28', value: 'Retiro' },
+        { key: '29', value: 'Saavedra' },
+        { key: '30', value: 'San Cristóbal' },
+        { key: '31', value: 'San Nicolás' },
+        { key: '32', value: 'San Telmo' },
+        { key: '33', value: 'Vélez Sársfield' },
+        { key: '34', value: 'Versalles' },
+        { key: '35', value: 'Villa Crespo' },
+        { key: '36', value: 'Villa del Parque' },
+        { key: '37', value: 'Villa Devoto' },
+        { key: '38', value: 'Villa General Mitre' },
+        { key: '39', value: 'Villa Lugano' },
+        { key: '40', value: 'Villa Luro' },
+        { key: '41', value: 'Villa Ortúzar' },
+        { key: '42', value: 'Villa Pueyrredón' },
+        { key: '43', value: 'Villa Real' },
+        { key: '44', value: 'Villa Riachuelo' },
+        { key: '45', value: 'Villa Santa Rita' },
+        { key: '46', value: 'Villa Soldati' },
+        { key: '47', value: 'Villa Urquiza' },
+    ]
+
+    const ambientes = [
+        { key: '1', value: '1' },
+        { key: '2', value: '2' },
+        { key: '3', value: '3' },
+        { key: '4', value: '4' },
+        { key: '5', value: '5' },
+    ]
+    const dormitorios = [
+        { key: '1', value: '1' },
+        { key: '2', value: '2' },
+        { key: '3', value: '3' },
+        { key: '4', value: '4' },
+        { key: '5', value: '5' },
+    ]
+    const baños = [
+        { key: '1', value: '1' },
+        { key: '2', value: '2' },
+        { key: '3', value: '3' },
+    ]
 
     const [propertyTypes, setPropertyTypes] = useState(initialPropertyTypes);
     const [characteristicsProp, setCharacteristicsProp] = useState(initialCharacteristics);
@@ -134,8 +241,29 @@ const PropertiesToRegister = () => {
     const [stateTypes, setStateTypes] = useState(initialState);
     const [isDollar, setIsDollar] = useState(false);
     const [imageUrls, setImageUrls] = useState([]);
+    const [provinciaSeleccionada, setProvinciaSeleccionada] = useState('');
+    const [barrioSeleccionado, setBarrioSeleccionado] = useState('');
+    const [paisSeleccionado, setPaisSeleccionado] = useState('');
+    const [ambientesSeleccionados, setAmbientesSeleccionados] = useState('');
+    const [dormitoriosSeleccionados, setDormitoriosSeleccionados] = useState('');
+    const [banosSeleccionados, setBanosSeleccionados] = useState('');
 
+    // Estado para manejar las opciones de Localidad/Barrio
+    const [localidadBarrioOpciones, setLocalidadBarrioOpciones] = useState(barrios);
 
+    // Manejador para el cambio de selección de provincia
+    const onProvinciaChange = (selectedProvincia) => {
+        setProvinciaSeleccionada(selectedProvincia);
+
+        // Cambiar las opciones de localidad/barrio según la provincia
+        if (selectedProvincia === 'CABA') {
+            setLocalidadBarrioOpciones(barrios);
+        } else if (selectedProvincia === 'Buenos Aires') {
+            setLocalidadBarrioOpciones(localidades);
+        } else {
+            setLocalidadBarrioOpciones([]);
+        }
+    };
 
     //TIPO DE PROPIEDAD
     const handlePropertyTypeChange = (propertyType) => {
@@ -264,7 +392,7 @@ const PropertiesToRegister = () => {
             //obtener coordenadas
 
             // Uso de la función para obtener coordenadas desde una dirección
-            const address = `${textInputData.calle} ${textInputData.numero}, ${textInputData.localidad}, ${textInputData.pais}`;
+            const address = `${textInputData.calle} ${textInputData.numero}, ${provinciaSeleccionada}, ${textInputData.pais}`;
             const coordinatesdata = await getCoordinatesFromAddress(address);
             const coordinates = `${coordinatesdata.latitude}, ${coordinatesdata.longitude}`;
 
@@ -279,8 +407,9 @@ const PropertiesToRegister = () => {
                 numero: textInputData.numero,
                 piso: textInputData.piso,
                 departamento: textInputData.departamento,
-                localidad: textInputData.localidad,
-                pais: textInputData.pais,
+                localidad: barrioSeleccionado,
+                pais: paisSeleccionado,
+                provincia: provinciaSeleccionada,
                 coordenadas: coordinates,
                 house: propertyTypes.house,
                 ph: propertyTypes.ph,
@@ -291,9 +420,9 @@ const PropertiesToRegister = () => {
                 m2cubiert: textInputData.m2cubiert,
                 m2semidescubiert: textInputData.m2semidescubiert,
                 m2descubiert: textInputData.m2descubiert,
-                cantambient: textInputData.cantambient,
-                cantcuartos: textInputData.cantcuartos,
-                cantbaños: textInputData.cantbaños,
+                cantambient: ambientesSeleccionados,
+                cantcuartos: dormitoriosSeleccionados,
+                cantbaños: banosSeleccionados,
                 terraza: characteristicsProp.terraza,
                 balcon: characteristicsProp.balcon,
                 cochera: characteristicsProp.cochera,
@@ -384,7 +513,21 @@ const PropertiesToRegister = () => {
                     value={textInputData.departamento}
                     onChangeText={(text) => setUbicacionData({ ...textInputData, departamento: text })}
                 />
-                <CustomTextInput
+                <SelectList //Pais
+                    boxStyles={styles.listBox}
+                    dropdownStyles={styles.dropdown}
+                    inputStyles={styles.textDropList}
+                    dropdownTextStyles={styles.dropdownTextStyles}
+                    setSelected={setPaisSeleccionado}
+                    data={pais}
+                    search={true}
+                    maxHeight={100}
+                    placeholder={I18n.t('country')}
+                    searchPlaceholder={I18n.t('search')}
+                    notFoundText={"No se encontro resultado"}
+                    save='value'
+                />
+                {/*<CustomTextInput
                     label={I18n.t('country')}
                     value={textInputData.pais}
                     onChangeText={(text) => {
@@ -392,8 +535,22 @@ const PropertiesToRegister = () => {
                         text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
                         setUbicacionData({ ...textInputData, pais: text });
                     }}
+                />*/}
+                <SelectList //Provincia
+                    boxStyles={styles.listBox}
+                    dropdownStyles={styles.dropdown}
+                    inputStyles={styles.textDropList}
+                    dropdownTextStyles={styles.dropdownTextStyles}
+                    setSelected={onProvinciaChange}
+                    data={provincia}
+                    search={true}
+                    maxHeight={100}
+                    placeholder={I18n.t('state')}
+                    searchPlaceholder={I18n.t('search')}
+                    notFoundText={"No se encontro resultado"}
+                    save='value'
                 />
-                <CustomTextInput
+                {/*<CustomTextInput
                     label={I18n.t('state')}
                     value={textInputData.provincia}
                     onChangeText={(text) => {
@@ -401,8 +558,22 @@ const PropertiesToRegister = () => {
                         text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
                         setUbicacionData({ ...textInputData, provincia: text });
                     }}
+                />*/}
+                <SelectList //Localidad-Barrio
+                    boxStyles={styles.listBox}
+                    dropdownStyles={styles.dropdown}
+                    inputStyles={styles.textDropList}
+                    dropdownTextStyles={styles.dropdownTextStyles}
+                    setSelected={setBarrioSeleccionado}
+                    data={localidadBarrioOpciones}
+                    search={true}
+                    maxHeight={300}
+                    placeholder={I18n.t('city')}
+                    searchPlaceholder={I18n.t('search')}
+                    notFoundText={"No se encontro resultado"}
+                    save='value'
                 />
-                <CustomTextInput
+                {/*<CustomTextInput
                     label={I18n.t('city')}
                     value={textInputData.localidad}
                     onChangeText={(text) => {
@@ -410,7 +581,7 @@ const PropertiesToRegister = () => {
                         text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
                         setUbicacionData({ ...textInputData, localidad: text });
                     }}
-                />
+                />*/}
                 <CustomTextInput
                     label={I18n.t('latLong')}
                     disabled={true}
@@ -463,7 +634,21 @@ const PropertiesToRegister = () => {
                     }}
                     keyboardType="numeric"
                 />
-                <CustomTextInput
+                <SelectList //Ambientes
+                    boxStyles={styles.listBox}
+                    dropdownStyles={styles.dropdown}
+                    inputStyles={styles.textDropList}
+                    dropdownTextStyles={styles.dropdownTextStyles}
+                    setSelected={setAmbientesSeleccionados}
+                    data={ambientes}
+                    search={false}
+                    maxHeight={200}
+                    placeholder={I18n.t('cantambient')}
+                    searchPlaceholder={I18n.t('search')}
+                    notFoundText={"No se encontro resultado"}
+                    save='value'
+                />
+                {/*<CustomTextInput
                     label={I18n.t('cantambient')}
                     value={textInputData.cantambient}
                     onChangeText={(text) => {
@@ -472,8 +657,23 @@ const PropertiesToRegister = () => {
                         setUbicacionData({ ...textInputData, cantambient: numericText });
                     }}
                     keyboardType="numeric"
+                />*/}
+                <SelectList //Dormitorios
+                    boxStyles={styles.listBox}
+                    dropdownStyles={styles.dropdown}
+                    inputStyles={styles.textDropList}
+                    dropdownTextStyles={styles.dropdownTextStyles}
+                    setSelected={setDormitoriosSeleccionados}
+                    data={dormitorios}
+                    search={false}
+                    maxHeight={200}
+                    placeholder={I18n.t('cantcuartos')}
+                    searchPlaceholder={I18n.t('search')}
+                    notFoundText={"No se encontro resultado"}
+                    save='value'
                 />
-                <CustomTextInput
+
+                {/*<CustomTextInput
                     label={I18n.t('cantcuartos')}
                     value={textInputData.cantcuartos}
                     onChangeText={(text) => {
@@ -482,8 +682,25 @@ const PropertiesToRegister = () => {
                         setUbicacionData({ ...textInputData, cantcuartos: numericText });
                     }}
                     keyboardType="numeric"
+                />*/}
+
+                <SelectList //Baños
+                    boxStyles={styles.listBox}
+                    dropdownStyles={styles.dropdown}
+                    inputStyles={styles.textDropList}
+                    dropdownTextStyles={styles.dropdownTextStyles}
+                    setSelected={setBanosSeleccionados}
+                    data={baños}
+                    search={false}
+                    maxHeight={120}
+                    placeholder={I18n.t('cantbaños')}
+                    searchPlaceholder={I18n.t('search')}
+                    notFoundText={"No se encontro resultado"}
+                    save='value'
                 />
-                <CustomTextInput
+
+
+                {/*<CustomTextInput
                     label={I18n.t('cantbaños')}
                     value={textInputData.cantbaños}
                     onChangeText={(text) => {
@@ -492,7 +709,7 @@ const PropertiesToRegister = () => {
                         setUbicacionData({ ...textInputData, cantbaños: numericText });
                     }}
                     keyboardType="numeric"
-                />
+                />*/}
 
                 <Text />
 
@@ -703,6 +920,24 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%',
+    },
+    listBox: {
+        width: 300,
+        marginTop: 10,
+        marginBottom: 10,
+        backgroundColor: '#E0E4F2',
+        borderRadius: 100,
+        borderColor: '#E0E4F2',
+    },
+    dropdown: {
+        backgroundColor: '#E0E4F2',
+        borderColor: '#E0E4F2',
+    },
+    textDropList: {
+        color: 'black'
+    },
+    dropdownTextStyles: {
+        color: 'black'
     },
 });
 

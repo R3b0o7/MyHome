@@ -4,7 +4,6 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import CheckBox from '@react-native-community/checkbox';
 import { Title, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import Slider from '@react-native-community/slider';
 
 import I18n from '../../../../assets/strings/I18';
@@ -42,6 +41,24 @@ const SearchPropertie = () => {
 
     // Para SelectList de Antigüedad
     const [antiguedadSeleccionada, setAntiguedadSeleccionada] = useState('');
+    
+    // Estado para manejar las opciones de Localidad/Barrio
+    const [localidadBarrioOpciones, setLocalidadBarrioOpciones] = useState(barrios);
+
+    // Manejador para el cambio de selección de provincia
+    const onProvinciaChange = (selectedProvincia) => {
+        setProvinciaSeleccionada(selectedProvincia);
+
+        // Cambiar las opciones de localidad/barrio según la provincia
+        if (selectedProvincia === 'CABA') {
+            setLocalidadBarrioOpciones(barrios);
+        } else if (selectedProvincia === 'Buenos Aires') {
+            setLocalidadBarrioOpciones(localidades);
+        } else {
+            setLocalidadBarrioOpciones([]);
+        }
+    };
+    
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
 
@@ -186,6 +203,34 @@ const SearchPropertie = () => {
         { key: '1', value: 'CABA' },
         { key: '2', value: 'Buenos Aires' },
     ]
+    const localidades = [
+        { key: '1', value: 'Almirante Brown' },
+        { key: '2', value: 'Avellaneda' },
+        { key: '3', value: 'Berazategui' },
+        { key: '4', value: 'Esteban Echeverría' },
+        { key: '5', value: 'Ezeiza' },
+        { key: '6', value: 'Florencio Varela' },
+        { key: '7', value: 'General San Martín' },
+        { key: '8', value: 'Hurlingham' },
+        { key: '9', value: 'Ituzaingó' },
+        { key: '10', value: 'José C. Paz' },
+        { key: '11', value: 'Lanús' },
+        { key: '12', value: 'La Matanza' },
+        { key: '13', value: 'Lomas de Zamora' },
+        { key: '14', value: 'Malvinas Argentinas' },
+        { key: '15', value: 'Merlo' },
+        { key: '16', value: 'Moreno' },
+        { key: '17', value: 'Morón' },
+        { key: '18', value: 'Pilar' },
+        { key: '19', value: 'Presidente Perón' },
+        { key: '20', value: 'Quilmes' },
+        { key: '21', value: 'San Fernando' },
+        { key: '22', value: 'San Isidro' },
+        { key: '23', value: 'San Miguel' },
+        { key: '24', value: 'Tigre' },
+        { key: '25', value: 'Tres de Febrero' },
+        { key: '26', value: 'Vicente López' },
+    ];
     const barrios = [
         { key: '1', value: 'Agronomía' },
         { key: '2', value: 'Almagro' },
@@ -380,7 +425,7 @@ const SearchPropertie = () => {
                     dropdownStyles={styles.dropdown}
                     inputStyles={styles.textDropList}
                     dropdownTextStyles={styles.dropdownTextStyles}
-                    setSelected={setProvinciaSeleccionada}
+                    setSelected={onProvinciaChange}
                     data={provincia}
                     search={true}
                     maxHeight={100}
@@ -395,7 +440,7 @@ const SearchPropertie = () => {
                     inputStyles={styles.textDropList}
                     dropdownTextStyles={styles.dropdownTextStyles}
                     setSelected={setBarrioSeleccionado}
-                    data={barrios}
+                    data={localidadBarrioOpciones}
                     search={true}
                     maxHeight={300}
                     placeholder={"Localidad/Barrio"}

@@ -67,18 +67,8 @@ const IndividualPropertieScreen = ({ route }) => {
     const fetchPropertyData = async () => {
         try {
             const propertyId = route.params.propertyId;
-            const authToken = await AsyncStorage.getItem('authToken');
 
-            if (!authToken) {
-                console.error('Token de autorización no encontrado en AsyncStorage');
-                return;
-            }
-
-            const response = await axios.get(`${SERVER_URL}/api/properties/${propertyId}`, {
-                headers: {
-                    Authorization: authToken,
-                }
-            });
+            const response = await axios.get(`${SERVER_URL}/api/properties/${propertyId}`);
 
             if (response.status === 200) {
                 setPropertyData(response.data);

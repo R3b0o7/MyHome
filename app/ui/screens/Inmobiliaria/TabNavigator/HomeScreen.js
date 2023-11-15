@@ -163,15 +163,15 @@ const HomeScreen = () => {
                             key={index}
                             address={data.calle + ' ' + data.numero + ' ' + data.piso + ' ' + data.departamento}
                             operation={
-                                data.alquiler
+                            data.alquiler
                                     ? 'Alquiler'
                                     : data.venta
-                                        ? 'Venta'
-                                        : data.reservada
-                                            ? 'Reservada'
-                                            : data.alquiladaVendida
-                                                ? 'Alquilada o Vendida'
-                                                : '' // Añade una operación predeterminada si ninguna está en true
+                                    ? 'Venta'
+                                    : data.reservada
+                                    ? 'Reservada'
+                                    : data.alquiladaVendida
+                                    ? 'Alquilada o Vendida'
+                                    : '' // Añade una operación predeterminada si ninguna está en true
                             }
                             coverUrl={getRandomImageUrl(data.photos)}
                             onPress={() => handleCardHorizontalPress(data._id)} // Pasa el ID de la propiedad al presionar

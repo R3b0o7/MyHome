@@ -5,6 +5,7 @@ import CheckBox from '@react-native-community/checkbox';
 import { Title, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
+import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 
 import I18n from '../../../../assets/strings/I18';
 import ImageCustomButton from '../../../components/ImageCustomButton'
@@ -15,33 +16,20 @@ import { SERVER_URL } from '../../../../config/config';
 const SearchPropertie = () => {
     const navigation = useNavigation();
 
-    // Para SelectList de Venta/Alquiler
     const [ventaAlquiler, setVentaAlquiler] = useState('');
-
-    // Para SelectList de Tipo de Propiedad
     const [tipoPropiedad, setTipoPropiedad] = useState('');
-
-    // Para SelectList de Provincia
     const [provinciaSeleccionada, setProvinciaSeleccionada] = useState('');
-
-    // Para SelectList de Barrio
     const [barrioSeleccionado, setBarrioSeleccionado] = useState('');
-
-    // Para SelectList de Moneda
     const [monedaSeleccionada, setMonedaSeleccionada] = useState('');
-
-    // Para SelectList de Ambientes
     const [ambientesSeleccionados, setAmbientesSeleccionados] = useState('');
-
-    // Para SelectList de Dormitorios
     const [dormitoriosSeleccionados, setDormitoriosSeleccionados] = useState('');
-
-    // Para SelectList de Baños
     const [banosSeleccionados, setBanosSeleccionados] = useState('');
-
-    // Para SelectList de Antigüedad
     const [antiguedadSeleccionada, setAntiguedadSeleccionada] = useState('');
-    
+
+    //SLIDER
+    const [minSliderState, setMinSliderState] = useState(0);
+    const [maxSliderState, setMaxSliderState] = useState(-1000000);
+
     // Estado para manejar las opciones de Localidad/Barrio
     const [localidadBarrioOpciones, setLocalidadBarrioOpciones] = useState(barrios);
 
@@ -66,6 +54,7 @@ const SearchPropertie = () => {
         return unsubscribe;
     }, [navigation]);
 
+    //BOTON SEARCH
     const handleSearch = async () => {
         try {
             // Establecer los valores de 'venta' y 'alquiler' basándose en la selección
@@ -162,10 +151,7 @@ const SearchPropertie = () => {
                 orientsur: orientTypes.orientsur,
                 orienteste: orientTypes.orienteste,
                 orientOeste: orientTypes.orientOeste,
-
             };
-
-            //console.log(requestBody);
 
             // Realizar la petición al servidor
             const response = await axios.post(`${SERVER_URL}/api/properties/search`, requestBody);
@@ -173,7 +159,7 @@ const SearchPropertie = () => {
             if (response.status === 200) {
                 // Manejar la respuesta del servidor
                 console.log('Respuesta del servidor:', response.data);
-                //navigation.push(NavigatorConstant.SEARCH_.RESULTS, { properties: response.data });
+                navigation.push(NavigatorConstant.SEARCH_.RESULTS, { properties: response.data });
             } else {
                 console.error('Respuesta no exitosa:', response);
             }
@@ -181,10 +167,6 @@ const SearchPropertie = () => {
             console.error('Error en la petición de búsqueda:', error);
         }
     };
-
-
-    //CATEGORIAS
-    const [category, setCategory] = useState([]);
 
     const estado = [
         { key: '1', value: 'Venta' },
@@ -309,11 +291,7 @@ const SearchPropertie = () => {
         { key: '3', value: 'Entre 10 y 30 años' },
         { key: '4', value: 'Más de 30 años' },
     ]
-    //SLIDER
-    const [minSliderState, setMinSliderState] = useState(0);
-    const [maxSliderState, setMaxSliderState] = useState(-1000000);
-
-    //AMENITIES
+    
     const initialAmenities = {
         sum: false,
         pool: false,
@@ -325,7 +303,6 @@ const SearchPropertie = () => {
         coworking: false,
         microcine: false,
     };
-
     const initialCharacteristics = {
         terraza: false,
         balcon: false,

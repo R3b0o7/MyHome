@@ -4,12 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import { Text, Title } from 'react-native-paper';
 import I18n from '../../../../assets/strings/I18';
-import axios from 'axios';
-import { SERVER_URL } from '../../../../config/config';
-import CustomButton from '../../../components/CustomButton';
 import CustomCard from '../../../components/CustomCard';
-import HorizontalCustomCard from '../../../components/HorizontalCustomCard';
-
 
 const ResultPropertie = ({ route }) => {
     
@@ -17,14 +12,6 @@ const ResultPropertie = ({ route }) => {
 
     // Crear un estado para almacenar los IDs de las propiedades
     const [propiedades, setPropiedades] = useState([]);
-
-    const handleLogin = async () => {
-
-        console.log(propiedades);
-
-        //navigation.push(NavigatorConstant.SEARCH_.PROPERTIES_USER);
-      
-    };
 
     const handleCardHorizontalPress = (propertyId) => {
         // Navega a la pantalla 'Detalle' y pasa el ID de la propiedad como parámetro
@@ -49,7 +36,6 @@ const ResultPropertie = ({ route }) => {
         return images[randomIndex];
     };
 
-    
     return (
         <ScrollView>
             

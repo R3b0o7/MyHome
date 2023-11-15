@@ -155,7 +155,9 @@ const SearchPropertie = () => {
             if (response.status === 200) {
                 // Manejar la respuesta del servidor
                 console.log('Respuesta del servidor:', response.data);
-                navigation.push(NavigatorConstant.SEARCH_.RESULTS, { properties: response.data });
+                navigation.push(NavigatorConstant.SEARCH_.RESULTS, { 
+                    properties: response.data 
+                });
             } else {
                 console.error('Respuesta no exitosa:', response);
             }

@@ -8,7 +8,7 @@ import { SERVER_URL } from '../../../../config/config';
 import CustomButton from '../../../components/CustomButton';
 
 
-const ResultPropertie = () => {
+const ResultPropertie = ({ route }) => {
     
     const navigation = useNavigation();
 

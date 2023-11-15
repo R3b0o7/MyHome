@@ -19,7 +19,7 @@ const PropertiesScreen = () => {
         // Obtén el token de AsyncStorage
         const authToken = await AsyncStorage.getItem('authToken');
 
-        // Realiza una solicitud GET para obtener las propiedades del usuario desde tu backend
+        // Realiza una solicitud GET para obtener las propiedades del usuario
         try {
             const response = await axios.get(`${SERVER_URL}/api/properties/user-properties`, {
                 headers: {

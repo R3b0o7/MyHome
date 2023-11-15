@@ -25,11 +25,7 @@ const SearchPropertie = () => {
     const [dormitoriosSeleccionados, setDormitoriosSeleccionados] = useState('');
     const [banosSeleccionados, setBanosSeleccionados] = useState('');
     const [antiguedadSeleccionada, setAntiguedadSeleccionada] = useState('');
-
-    //SLIDER
-    const [minSliderState, setMinSliderState] = useState(0);
-    const [maxSliderState, setMaxSliderState] = useState(-1000000);
-
+    
     // Estado para manejar las opciones de Localidad/Barrio
     const [localidadBarrioOpciones, setLocalidadBarrioOpciones] = useState(barrios);
 
@@ -54,7 +50,6 @@ const SearchPropertie = () => {
         return unsubscribe;
     }, [navigation]);
 
-    //BOTON SEARCH
     const handleSearch = async () => {
         try {
             // Establecer los valores de 'venta' y 'alquiler' basándose en la selección
@@ -151,6 +146,7 @@ const SearchPropertie = () => {
                 orientsur: orientTypes.orientsur,
                 orienteste: orientTypes.orienteste,
                 orientOeste: orientTypes.orientOeste,
+
             };
 
             // Realizar la petición al servidor
@@ -291,7 +287,11 @@ const SearchPropertie = () => {
         { key: '3', value: 'Entre 10 y 30 años' },
         { key: '4', value: 'Más de 30 años' },
     ]
-    
+    //SLIDER
+    const [minSliderState, setMinSliderState] = useState(0);
+    const [maxSliderState, setMaxSliderState] = useState(-1000000);
+
+    //AMENITIES
     const initialAmenities = {
         sum: false,
         pool: false,
@@ -303,6 +303,7 @@ const SearchPropertie = () => {
         coworking: false,
         microcine: false,
     };
+
     const initialCharacteristics = {
         terraza: false,
         balcon: false,

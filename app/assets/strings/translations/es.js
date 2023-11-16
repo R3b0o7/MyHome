@@ -86,6 +86,7 @@ export default {
     alquiler: 'Alquier',
     venta: 'Venta',
     reservada: 'Reservada',
+    reserv:'Reservar',
     alquiladaVendida: 'Alquilada o Vendida',
     statePropertie: 'Estado de la Propiedad',
     changePasword: 'Cambiar Contraseña',
@@ -93,6 +94,7 @@ export default {
     inmobiliaria: 'Inmobiliaria',
     usuario: 'Usuario',
     search: 'Buscar',
+    contact: 'Contactar',
     logGoogle: 'Iniciar sesión con Google',
     imageType: {
         svg: 'SVG File',

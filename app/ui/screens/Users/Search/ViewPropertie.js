@@ -196,8 +196,8 @@ const ViewPropertie = ({route}) => {
                 {/* Contenedor inferior (1/4 de la pantalla) */}
 
                 <ImageCustomButton 
-                    title={I18n.t('usuario')} 
-                    imageSource={require('../../../../assets/images/Icons/lightMode/perfil.png')}
+                    title={I18n.t('reserv')} 
+                    imageSource={require('../../../../assets/images/Icons/lightMode/default.png')}
                     onPress={handleReserv}
                     style={styles.boton} 
                     />
@@ -208,8 +208,8 @@ const ViewPropertie = ({route}) => {
                     onPress={pressHandlerFavorite}
                 />
                 <ImageCustomButton 
-                    title={I18n.t('inmobiliaria')} 
-                    imageSource={require('../../../../assets/images/Icons/darckMode/corporate.png')}
+                    title={I18n.t('contact')} 
+                    imageSource={require('../../../../assets/images/Icons/lightMode/mail.png')}
                     onPress={handleContact}
                     style={styles.boton} 
                     />
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     boton: {
-        width: 100,
+        width: 145,
         marginRight: 10,
         marginLeft: 10
     },

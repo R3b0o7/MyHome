@@ -10,35 +10,56 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
+import Geolocation from '@react-native-community/geolocation';
 
 const HomeUser = () => {
     const navigation = useNavigation();
 
     const [userProperties, setUserProperties] = useState([]); // Estado para almacenar las propiedades del usuario
+    
+    const fetchUserProperties = async () => {
 
-   /* const fetchUserProperties = async () => {
-        // Obtén el token de AsyncStorage
-        const authToken = await AsyncStorage.getItem('authToken');
-
-        // Realiza una solicitud GET para obtener las propiedades del usuario desde tu backend
         try {
-            const response = await axios.get(`${SERVER_URL}/api/properties/user-properties`, {
-                headers: {
-                    Authorization: authToken,
-                }
-            });
+            const requestBody = {};            
+
+            // Realizar la petición al servidor
+            const response = await axios.post(`${SERVER_URL}/api/properties/search`, requestBody);
+
             if (response.status === 200) {
+                // Manejar la respuesta del servidor
                 setUserProperties(response.data);
+                
+            } else {
+                console.error('Respuesta no exitosa:', response);
             }
         } catch (error) {
-            console.error('Error al obtener las propiedades del usuario:', error);
+            console.error('Error en la petición de búsqueda:', error);
         }
-    };*/
+        
+    };
+
+    //OBTENER UBICAION
+    const getCurrentLocation = () => {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                const currentLocation = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                };
+
+                console.log(currentLocation);
+                // Aquí puedes llamar a una función para obtener y ordenar las propiedades
+            },
+            (error) => console.error(error),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+    };
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             // Este código se ejecutará cada vez que la pantalla esté en primer plano
-           // fetchUserProperties();
+            getCurrentLocation();
+            fetchUserProperties();
         });
 
         return unsubscribe;

@@ -29,11 +29,14 @@ const HomeUser = () => {
             if (response.status === 200) {
                 // Manejar la respuesta del servidor
                 const propertiesWithDistance = response.data.map(prop => {
-                    const [lat, lon] = prop.coordenadas.split(', ').map(Number);
-                    const distance = calculateDistance(currentLocation.latitude, currentLocation.longitude, lat, lon);
-                    return { ...prop, distance };
+                    if (prop.coordenadas && prop.coordenadas.latitude && prop.coordenadas.longitude) {
+                        const distance = calculateDistance(currentLocation.latitude, currentLocation.longitude, prop.coordenadas.latitude, prop.coordenadas.longitude);
+                        return { ...prop, distance };
+                    } else {
+                        return { ...prop, distance: Number.MAX_VALUE };
+                    }
                 });
-
+    
                 const sortedProperties = propertiesWithDistance.sort((a, b) => a.distance - b.distance);
                 setUserProperties(sortedProperties);
 
@@ -83,6 +86,7 @@ const HomeUser = () => {
             return granted === PermissionsAndroid.RESULTS.GRANTED;
         }
     };
+    const [currentLocation, setCurrentLocation] = useState(null);
 
     //OBTENER UBICAION
     const getCurrentLocation = async () => {
@@ -94,7 +98,7 @@ const HomeUser = () => {
         }
         Geolocation.getCurrentPosition(
             (position) => {
-                const currentLocation = {
+                const location  = {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
                 };

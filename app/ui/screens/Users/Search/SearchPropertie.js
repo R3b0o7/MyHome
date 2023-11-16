@@ -25,7 +25,7 @@ const SearchPropertie = () => {
     const [dormitoriosSeleccionados, setDormitoriosSeleccionados] = useState('');
     const [banosSeleccionados, setBanosSeleccionados] = useState('');
     const [antiguedadSeleccionada, setAntiguedadSeleccionada] = useState('');
-    
+
     // Estado para manejar las opciones de Localidad/Barrio
     const [localidadBarrioOpciones, setLocalidadBarrioOpciones] = useState(barrios);
 
@@ -33,8 +33,10 @@ const SearchPropertie = () => {
     const onProvinciaChange = (selectedProvincia) => {
         setProvinciaSeleccionada(selectedProvincia);
 
-        // Cambiar las opciones de localidad/barrio según la provincia
-        if (selectedProvincia === 'CABA') {
+        if (selectedProvincia === 'Seleccionar Provincia') {
+            setLocalidadBarrioOpciones([]);
+            setBarrioSeleccionado(''); // Resetear la selección de barrio/localidad
+        } else if (selectedProvincia === 'CABA') {
             setLocalidadBarrioOpciones(barrios);
         } else if (selectedProvincia === 'Buenos Aires') {
             setLocalidadBarrioOpciones(localidades);
@@ -42,7 +44,7 @@ const SearchPropertie = () => {
             setLocalidadBarrioOpciones([]);
         }
     };
-    
+
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
 
@@ -107,6 +109,7 @@ const SearchPropertie = () => {
                 territory = true;
             }
 
+
             // Construir el cuerpo de la petición
             const requestBody = {
                 venta: venta,
@@ -118,8 +121,8 @@ const SearchPropertie = () => {
                 office: office,
                 galpon: galpon,
                 territory: territory,
-                provincia: provinciaSeleccionada,
-                localidad: barrioSeleccionado,
+                //  provincia: provinciaSeleccionada,
+                //  localidad: barrioSeleccionado,
                 dolar: dolar,
                 cantambient: ambientesSeleccionados,
                 cantcuartos: dormitoriosSeleccionados,
@@ -149,13 +152,22 @@ const SearchPropertie = () => {
 
             };
 
+            // Agregar provincia y localidad si no son las opciones por defecto
+            if (provinciaSeleccionada && provinciaSeleccionada !== 'Seleccionar Provincia') {
+                requestBody.provincia = provinciaSeleccionada;
+            }
+            if (barrioSeleccionado && barrioSeleccionado !== 'Seleccionar Barrio') {
+                requestBody.localidad = barrioSeleccionado;
+            }
+            
+
             // Realizar la petición al servidor
             const response = await axios.post(`${SERVER_URL}/api/properties/search`, requestBody);
 
             if (response.status === 200) {
                 // Manejar la respuesta del servidor
-                navigation.push(NavigatorConstant.SEARCH_.RESULTS, { 
-                    propertyIds: response.data 
+                navigation.push(NavigatorConstant.SEARCH_.RESULTS, {
+                    propertyIds: response.data
                 });
             } else {
                 console.error('Respuesta no exitosa:', response);
@@ -166,6 +178,7 @@ const SearchPropertie = () => {
     };
 
     const estado = [
+        { key: '', value: 'Seleccionar Operacion' },
         { key: '1', value: 'Venta' },
         { key: '2', value: 'Alquiler' },
     ]
@@ -179,10 +192,12 @@ const SearchPropertie = () => {
         { key: '7', value: 'Terreno' },
     ]
     const provincia = [
+        { key: '0', value: 'Seleccionar Provincia' },
         { key: '1', value: 'CABA' },
         { key: '2', value: 'Buenos Aires' },
     ]
     const localidades = [
+        { key: '0', value: 'Seleccionar Barrio' },
         { key: '1', value: 'Almirante Brown' },
         { key: '2', value: 'Avellaneda' },
         { key: '3', value: 'Berazategui' },
@@ -211,6 +226,7 @@ const SearchPropertie = () => {
         { key: '26', value: 'Vicente López' },
     ];
     const barrios = [
+        { key: '0', value: 'Seleccionar Barrio' },
         { key: '1', value: 'Agronomía' },
         { key: '2', value: 'Almagro' },
         { key: '3', value: 'Balvanera' },
@@ -408,7 +424,7 @@ const SearchPropertie = () => {
                     data={provincia}
                     search={true}
                     maxHeight={100}
-                    placeholder={"Provincia"}
+                    placeholder={"Seleccionar Provincia"}
                     searchPlaceholder={"Buscar"}
                     notFoundText={"No se encontro resultado"}
                     save='value'
@@ -419,10 +435,10 @@ const SearchPropertie = () => {
                     inputStyles={styles.textDropList}
                     dropdownTextStyles={styles.dropdownTextStyles}
                     setSelected={setBarrioSeleccionado}
-                    data={localidadBarrioOpciones}
+                    data={localidadBarrioOpciones || []}
                     search={true}
                     maxHeight={300}
-                    placeholder={"Localidad/Barrio"}
+                    placeholder={"Seleccionar Localidad/Barrio"}
                     searchPlaceholder={"Buscar"}
                     notFoundText={"No se encontro resultado"}
                     save='value'

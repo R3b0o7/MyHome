@@ -44,8 +44,6 @@ const ViewPropertie = ({ route }) => {
     }, [isFocused]);
 
 
-
-
     const handleReserv = (propertyId) => {
         navigation.push(NavigatorConstant.SEARCH_.RESERVE_PROPERTIES, {
             propertyId: route.params.propertyId
@@ -53,8 +51,29 @@ const ViewPropertie = ({ route }) => {
     };
 
     const pressHandlerFavorite = async () => {
+        try {
 
+            // Obtener el token del usuario desde AsyncStorage
+            const token = await AsyncStorage.getItem('authToken');
+
+            // Configuración para la solicitud axios (headers con token)
+            const config = {
+                headers: { Authorization: token }
+            };
+
+            // Enviar solicitud para agregar/eliminar de favoritos
+            const response = await axios.put(`${SERVER_URL}/api/usersComun/toggleFavorite`, {
+                propertyId: route.params.propertyId
+            }, config);
+
+            // Mostrar alerta con la respuesta del servidor
+            Alert.alert(response.data.message);
+        } catch (error) {
+            console.error('Error al modificar favoritos:', error);
+            Alert.alert('Error', 'No se pudo modificar la lista de favoritos');
+        }
     };
+
 
     const handleContact = async () => {
 

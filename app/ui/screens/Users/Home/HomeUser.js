@@ -17,6 +17,8 @@ const HomeUser = () => {
     const navigation = useNavigation();
 
     const [userProperties, setUserProperties] = useState([]); // Estado para almacenar las propiedades del usuario
+    const [currentLocation, setCurrentLocation] = useState(null);
+    const [userPropertiesFavorites, setUserPropertiesFavorites] = useState([]); // Estado para almacenar las propiedades FAVORITAS del usuario
 
     //CALCULADORA DE DISTANCIA
     const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -121,16 +123,45 @@ const HomeUser = () => {
             return granted === PermissionsAndroid.RESULTS.GRANTED;
         }
     };
-    const [currentLocation, setCurrentLocation] = useState(null);
+    
 
-    //console.log(userProperties);
+    const fetchFavoritesProperties = async () => {
+        try {
+            // Obtener el token de autenticación del usuario
+            const token = await AsyncStorage.getItem('authToken');
 
+            // Si no hay token, no proceder
+            if (!token) {
+                console.error('No se encontró el token de autenticación');
+                return;
+            }
+
+            // Configuración para la solicitud axios (headers con token)
+            const config = {
+                headers: { Authorization: token }
+            };
+
+            // Hacer la solicitud GET al endpoint de favoritos
+            const response = await axios.get(`${SERVER_URL}/api/usersComun/favorites`, config);
+
+            if (response.status === 200) {
+                // Aquí puedes actualizar un estado con las propiedades favoritas, o hacer lo que necesites con estos datos
+                setUserPropertiesFavorites(response.data.properties);
+
+            } else {
+                console.error('Error al obtener propiedades favoritas:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Error al obtener propiedades favoritas:', error);
+        }
+    };
 
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             // Este código se ejecutará cada vez que la pantalla esté en primer plano
             getCurrentLocation();
+            fetchFavoritesProperties();
         });
     
         // Devuelve una función de limpieza para desuscribir el listener cuando el componente se desmonte
@@ -202,37 +233,32 @@ const HomeUser = () => {
                 <Title style={styles.title}>Favoritos</Title>
             </View>
             <View style={styles.cardsContainer}>
-
-                {userProperties
-                    .filter((data) => data.reservada)
-                    .map((data, index) => (
-                        <HorizontalCustomCard
-                            key={index}
-                            address={data.calle + ' ' + data.numero + ' ' + data.piso + ' ' + data.departamento}
-                            operation={
-                                data.alquiler
-                                    ? 'Alquiler'
-                                    : data.venta
-                                        ? 'Venta'
-                                        : data.reservada
-                                            ? 'Reservada'
-                                            : data.alquiladaVendida
-                                                ? 'Alquilada o Vendida'
-                                                : '' // Añade una operación predeterminada si ninguna está en true
-                            }
-                            coverUrl={'https://picsum.photos/701'}
-                            onPress={() => handleCardHorizontalPress(data._id)} // Pasa el ID de la propiedad al presionar
-                        />
-                    ))
-                }
-                {userProperties.filter((data) => data.reservada).length === 0 && (
-                    <Text style={styles.noPropertiesText}>
-                        No tienes propiedades en favoritos.
-                    </Text>
-                )}
-
-
-            </View>
+    {
+        userPropertiesFavorites.length > 0
+            ? userPropertiesFavorites.map((data, index) => (
+                <HorizontalCustomCard
+                    key={index}
+                    address={data.calle + ' ' + data.numero + ' ' + data.piso + ' ' + data.departamento}
+                    operation={
+                        data.alquiler
+                            ? 'Alquiler'
+                            : data.venta
+                                ? 'Venta'
+                                : data.reservada
+                                    ? 'Reservada'
+                                    : data.alquiladaVendida
+                                        ? 'Alquilada o Vendida'
+                                        : '' // Añade una operación predeterminada si ninguna está en true
+                    }
+                    coverUrl={getRandomImageUrl(data.photos)}
+                    onPress={() => handleCardHorizontalPress(data._id)} // Pasa el ID de la propiedad al presionar
+                />
+            ))
+            : <Text style={styles.noPropertiesText}>
+                No tienes propiedades en favoritos.
+              </Text>
+    }
+</View>
         </ScrollView>
 
     );

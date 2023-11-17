@@ -12,23 +12,21 @@ import CustomButton from '../../../components/CustomButton';
 
 const ReservePropertie = ({route}) => {
 
-    // const [textInputData, setFacturacionnData] = useState({
-    //     numTarjeta: '',
-    //     mmVencimiento: '',
-    //     yyVencimiento: '',
-    //     csv: '',
-    //     titular: '',
-    //     dni: '',
-    //     direccion: '',
-    // });
+    const [textInputData, setFacturacionnData] = useState({
+        numTarjeta: '',
+        mmVencimiento: '',
+        yyVencimiento: '',
+        csv: '',
+        titular: '',
+        dni: '',
+        direccion: '',
+    });
     
     //NAVEGACION
     const navigation = useNavigation();
 
     const handlePay = async () => {
-
-        navigation.replace(NavigatorConstant.SEARCH_.PAY_RESERVE);
-       
+        navigation.push(NavigatorConstant.SEARCH_.PAY_RESERVE, {textInputData});
     };
     const handleCancel = async () => {
 
@@ -99,11 +97,11 @@ const ReservePropertie = ({route}) => {
                     label={I18n.t('numTarjeta')}
                     mode= 'outlined'
                     activeOutlineColor= '#4363AC'
-                    // value={textInputData.numTarjeta}
-                    // onChangeText={(text) => {
-                    //     const numericText = text.replace(/[^0-9]/g, ''); 
-                    //     setFacturacionnData({ ...textInputData, numTarjeta: numericText });
-                    // }}
+                    value={textInputData.numTarjeta}
+                    onChangeText={(text) => {
+                        const numericText = text.replace(/[^0-9]/g, ''); 
+                        setFacturacionnData({ ...textInputData, numTarjeta: numericText });
+                    }}
                     keyboardType="numeric"
                 />
 
@@ -113,11 +111,11 @@ const ReservePropertie = ({route}) => {
                         label={I18n.t('mmVencimiento')}
                         mode= 'outlined'
                         activeOutlineColor= '#4363AC'
-                        // value={textInputData.mmVencimiento}
-                        // onChangeText={(text) => {
-                        //     const numericText = text.replace(/[^0-9]/g, ''); 
-                        //     setFacturacionnData({ ...textInputData, mmVencimiento: numericText });
-                        // }}
+                        value={textInputData.mmVencimiento}
+                        onChangeText={(text) => {
+                            const numericText = text.replace(/[^0-9]/g, ''); 
+                            setFacturacionnData({ ...textInputData, mmVencimiento: numericText });
+                        }}
                         keyboardType="numeric"
                     />
                     <TextInput
@@ -125,11 +123,11 @@ const ReservePropertie = ({route}) => {
                         label={I18n.t('yyVencimiento')}
                         mode= 'outlined'
                         activeOutlineColor= '#4363AC'
-                        // value={textInputData.yyVencimiento}
-                        // onChangeText={(text) => {
-                        //     const numericText = text.replace(/[^0-9]/g, ''); 
-                        //     setFacturacionnData({ ...textInputData, yyVencimiento: numericText });
-                        // }}
+                        value={textInputData.yyVencimiento}
+                        onChangeText={(text) => {
+                            const numericText = text.replace(/[^0-9]/g, ''); 
+                            setFacturacionnData({ ...textInputData, yyVencimiento: numericText });
+                        }}
                     keyboardType="numeric"
                     />
                 </View>  
@@ -139,11 +137,11 @@ const ReservePropertie = ({route}) => {
                     label={I18n.t('csv')}
                     mode= 'outlined'
                     activeOutlineColor= '#4363AC'
-                    // value={textInputData.csv}
-                    // onChangeText={(text) => {
-                    //     const numericText = text.replace(/[^0-9]/g, ''); 
-                    //     setFacturacionnData({ ...textInputData, csv: numericText });
-                    // }}
+                    value={textInputData.csv}
+                    onChangeText={(text) => {
+                        const numericText = text.replace(/[^0-9]/g, ''); 
+                        setFacturacionnData({ ...textInputData, csv: numericText });
+                    }}
                     keyboardType="numeric"
                 />
 
@@ -152,10 +150,10 @@ const ReservePropertie = ({route}) => {
                     label={I18n.t('titular')}
                     mode= 'outlined'
                     activeOutlineColor= '#4363AC'
-                    // value={textInputData.titular}
-                    // onChangeText={(text) => {
-                    //     setFacturacionnData({ ...textInputData, titular: numericText });
-                    // }}
+                    value={textInputData.titular}
+                    onChangeText={(text) => {
+                        setFacturacionnData({ ...textInputData, titular: text});
+                    }}
                 />
 
                 <TextInput
@@ -163,11 +161,11 @@ const ReservePropertie = ({route}) => {
                     label={I18n.t('dni')}
                     mode= 'outlined'
                     activeOutlineColor= '#4363AC'
-                    // value={textInputData.dni}
-                    // onChangeText={(text) => {
-                    //     const numericText = text.replace(/[^0-9]/g, ''); 
-                    //     setFacturacionnData({ ...textInputData, dni: numericText });
-                    // }}
+                    value={textInputData.dni}
+                    onChangeText={(text) => {
+                        const numericText = text.replace(/[^0-9]/g, ''); 
+                        setFacturacionnData({ ...textInputData, dni: numericText });
+                    }}
                     keyboardType="numeric"
                 />
 
@@ -176,15 +174,23 @@ const ReservePropertie = ({route}) => {
                     label={I18n.t('dirFacturacion')}
                     mode= 'outlined'
                     activeOutlineColor= '#4363AC'
-                    // value={textInputData.direccion}
-                    // onChangeText={(text) => {
-                    //     setFacturacionnData({ ...textInputData, direccion: numericText });
-                    // }}
+                    value={textInputData.direccion}
+                    onChangeText={(text) => {
+                        setFacturacionnData({ ...textInputData, direccion: text });
+                    }}
                 />
 
                 <View style={styles.contentContainer}>
-                    <CustomButton title='CANCELAR' color="blue" onPress={handleCancel} style={styles.butons} />
-                    <CustomButton title='PAGAR' color="blue" onPress={handlePay} style={styles.butons} />
+                    <CustomButton 
+                        title='CANCELAR' 
+                        color="blue" 
+                        onPress={handleCancel} 
+                        style={styles.butons} />
+                    <CustomButton 
+                        title='PAGAR' 
+                        color="blue" 
+                        onPress={handlePay} 
+                        style={styles.butons} />
                 </View>   
                 
             </ScrollView>

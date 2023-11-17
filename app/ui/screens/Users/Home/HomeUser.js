@@ -20,7 +20,7 @@ const HomeUser = () => {
 
     //CALCULADORA DE DISTANCIA
     const calculateDistance = (lat1, lon1, lat2, lon2) => {
-        console.log(`Calculando distancia entre (${lat1}, ${lon1}) y (${lat2}, ${lon2})`);
+        //console.log(`Calculando distancia entre (${lat1}, ${lon1}) y (${lat2}, ${lon2})`);
         const R = 6371; // Radio de la Tierra en km
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -35,7 +35,7 @@ const HomeUser = () => {
     const getCurrentLocation = async () => {
         const hasPermission = await requestLocationPermission();
         if (!hasPermission) {
-            console.log('Location permission not granted');
+            console.log('Locationa permission not granted');
             return;
         }
 
@@ -46,7 +46,7 @@ const HomeUser = () => {
                     longitude: position.coords.longitude,
                 };
 
-                console.log(`Ubicación actual: ${JSON.stringify(location)}`); // Convertir a cadena JSON
+                //console.log(`Ubicación actual: ${JSON.stringify(location)}`); // Convertir a cadena JSON
                 setCurrentLocation(location); // Asegúrate de que esto se ejecute antes de llamar a fetchUserProperties
                 fetchUserProperties(location); // Llama a fetchUserProperties con la ubicación actual
             },
@@ -77,7 +77,7 @@ const HomeUser = () => {
                 setUserProperties(sortedProperties);
 
                 //MUESTRA LAS COORDENADAS DE LA PROPIEDAD
-                sortedProperties.forEach(propiedad => {
+                /*sortedProperties.forEach(propiedad => {
                     // Verificar si la propiedad tiene coordenadas
                     if (propiedad.coordenadas && Array.isArray(propiedad.coordenadas.coordinates)) {
                         // Acceder a las coordenadas
@@ -93,7 +93,7 @@ const HomeUser = () => {
                         // Manejo de casos donde no hay coordenadas disponibles
                         console.log(`Propiedad ID: ${propiedad._id} no tiene coordenadas disponibles.`);
                     }
-                });
+                });*/
             } else {
                 console.error('Respuesta no exitosa:', response);
             }
@@ -128,8 +128,14 @@ const HomeUser = () => {
 
 
     useEffect(() => {
-        getCurrentLocation();
-    }, []);
+        const unsubscribe = navigation.addListener('focus', () => {
+            // Este código se ejecutará cada vez que la pantalla esté en primer plano
+            getCurrentLocation();
+        });
+    
+        // Devuelve una función de limpieza para desuscribir el listener cuando el componente se desmonte
+        return unsubscribe;
+    }, [navigation]);
 
     const handleCardHorizontalPress = () => {
         // Define aquí la lógica de navegación

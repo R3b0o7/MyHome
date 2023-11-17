@@ -45,12 +45,11 @@ const ViewPropertie = ({ route }) => {
 
 
 
-    const handleReserv = async () => {
 
-
-        navigation.push(NavigatorConstant.SEARCH_.RESERVE_PROPERTIES);
-
-
+    const handleReserv = (propertyId) => {
+        navigation.push(NavigatorConstant.SEARCH_.RESERVE_PROPERTIES, {
+            propertyId: route.params.propertyId
+        });
     };
 
     const pressHandlerFavorite = async () => {

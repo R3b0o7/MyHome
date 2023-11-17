@@ -12,6 +12,7 @@ import { SERVER_URL } from '../../../../config/config';
 
 const PropertiesScreen = () => {
     const navigation = useNavigation();
+    //const { propertyInfo } = route.params;  PASARLO DE RESULT PROPERTIE
 
     const [userProperties, setUserProperties] = useState([]); // Estado para almacenar las propiedades del usuario
 

@@ -81,7 +81,7 @@ const ContactPropertie = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.upperContainer}>
+            <View style={styles.insideContainer}>
                 <Text variant="headlineSmall" style={styles.title}>
                     Mensaje de Contacto
                 </Text>
@@ -116,11 +116,8 @@ const ContactPropertie = () => {
                     inputMode="start"
                     mode="outlined"
                 />
-
-            </View>
-            <View style={styles.lowerContainer}>
-                {/* Contenedor inferior (1/4 de la pantalla) */}
-                <CustomButton
+                <CustomButton 
+                    style = {styles.button}
                     title={I18n.t('send')}
                     onPress={handleSend}
                 />
@@ -166,18 +163,17 @@ const styles = StyleSheet.create({
     checkboxText: {
         fontSize: 16,
     },
-    upperContainer: {
+    button: {
+        margin: 50,
+        marginLeft: 120,
+        marginRight: 120,
+    },
+    insideContainer: {
         flex: 3, // Este contenedor ocupará 3/4 de la pantalla
         width: '80%',
         justifyContent: 'start',
         alignItems: 'start',
         // Puedes agregar estilos adicionales según tus necesidades
-    },
-    lowerContainer: {
-        flex: 0.5, // Este contenedor ocupará 1/4 de la pantalla
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
 
 });

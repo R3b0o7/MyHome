@@ -96,6 +96,13 @@ export default {
     search: 'Buscar',
     contact: 'Contactar',
     logGoogle: 'Iniciar sesión con Google',
+    numTarjeta: 'Número de tarjeta',
+    mmVencimiento: 'Mes vencimiento',
+    yyVencimiento: 'Año Vencimiento',
+    csv: 'CSV',
+    titular: 'Nombre y apellido del titular',
+    dni: 'DNI',
+    dirFacturacion: 'Dirección de facturación',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

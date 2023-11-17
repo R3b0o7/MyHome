@@ -410,7 +410,10 @@ const PropertiesToRegister = () => {
                 localidad: barrioSeleccionado,
                 pais: paisSeleccionado,
                 provincia: provinciaSeleccionada,
-                coordenadas: coordinates,
+                coordenadas: {
+                    type: 'Point',
+                    coordinates: [coordinatesdata.latitude, coordinatesdata.longitude] // Longitud, Latitud
+                },
                 house: propertyTypes.house,
                 ph: propertyTypes.ph,
                 apartment: propertyTypes.apartment,

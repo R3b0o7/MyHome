@@ -73,6 +73,13 @@ const PropertiesUpdate = ({ route }) => {
                     setImageUrls([]);
                 }
 
+                // Accede a las coordenadas
+                const coordenadas = response.data.coordenadas.coordinates;
+
+                // Longitud y Latitud
+                const longitud = coordenadas[1];
+                const latitud = coordenadas[0];
+
 
                 setUbicacionData({
                     ...textInputData,
@@ -83,7 +90,7 @@ const PropertiesUpdate = ({ route }) => {
                     localidad: response.data.localidad,
                     provincia: response.data.provincia,
                     pais: response.data.pais,
-                    coordenadas: response.data.coordenadas,
+                    coordenadas: `${longitud}, ${latitud}`,
                     m2cubiert: response.data.m2cubiert,
                     m2semidescubiert: response.data.m2semidescubiert,
                     m2descubiert: response.data.m2descubiert,
@@ -421,7 +428,10 @@ const PropertiesUpdate = ({ route }) => {
                 localidad: textInputData.localidad,
                 provincia: textInputData.provincia,
                 pais: textInputData.pais,
-                coordenadas: coordinates,
+                coordenadas: {
+                    type: 'Point',
+                    coordinates: [coordinatesdata.latitude, coordinatesdata.longitude] // Longitud, Latitud
+                },
                 m2cubiert: textInputData.m2cubiert,
                 m2semidescubiert: textInputData.m2semidescubiert,
                 m2descubiert: textInputData.m2descubiert,

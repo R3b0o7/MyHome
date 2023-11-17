@@ -13,8 +13,8 @@ import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import ImageCustomButton from '../../../components/ImageCustomButton';
 
 
-const ViewPropertie = ({route}) => {
-    
+const ViewPropertie = ({ route }) => {
+
     const navigation = useNavigation();
     const isFocused = useIsFocused();
 
@@ -45,13 +45,14 @@ const ViewPropertie = ({route}) => {
 
 
 
+
     const handleReserv = (propertyId) => {
         navigation.push(NavigatorConstant.SEARCH_.RESERVE_PROPERTIES, {
             propertyId: route.params.propertyId
         });
     };
 
-    const pressHandlerFavorite = async () =>{
+    const pressHandlerFavorite = async () => {
 
     };
 
@@ -59,16 +60,16 @@ const ViewPropertie = ({route}) => {
 
         navigation.push(NavigatorConstant.SEARCH_.CONTACT_PROPERTIES);
 
-       
+
     };
 
-    const carouselItems = propertyData.photos 
+    const carouselItems = propertyData.photos
         ? propertyData.photos.map((photoUrl, index) => ({
             id: index,
             coverUrl: photoUrl,
         }))
         : [];
-    
+
     const chipsData = [
         { icon: require('../../../../assets/images/Icons/black/m2.png'), label: `${propertyData.m2cubiert}m2` },
         { icon: require('../../../../assets/images/Icons/black/ambientes.png'), label: `${propertyData.cantambient} amb.` },
@@ -105,7 +106,7 @@ const ViewPropertie = ({route}) => {
         );
     };
 
-    
+
     return (
 
         <View style={styles.container}>
@@ -121,7 +122,7 @@ const ViewPropertie = ({route}) => {
 
                 <Text variant="headlineMedium" style={styles.title}>
                     {propertyData.calle + ' ' + propertyData.numero + ' ' +
-                     propertyData.piso + '° ' + propertyData.departamento
+                        propertyData.piso + '° ' + propertyData.departamento
                     }
                 </Text>
 
@@ -183,7 +184,7 @@ const ViewPropertie = ({route}) => {
                     {propertyData.descripcion}
                 </Text>
 
-                <Text/>
+                <Text />
 
 
             </ScrollView>
@@ -193,24 +194,27 @@ const ViewPropertie = ({route}) => {
             <View style={styles.lowerContainer}>
                 {/* Contenedor inferior (1/4 de la pantalla) */}
 
-                <ImageCustomButton 
-                    title={I18n.t('usuario')} 
-                    imageSource={require('../../../../assets/images/Icons/lightMode/perfil.png')}
-                    onPress={handleReserv}
-                    style={styles.boton} 
+                {/* Condición para renderizar el botón de reserva solo si 'venta' es falso */}
+                {!propertyData.venta && (
+                    <ImageCustomButton
+                        title={I18n.t('reserv')}
+                        imageSource={require('../../../../assets/images/Icons/lightMode/default.png')}
+                        onPress={handleReserv}
+                        style={styles.boton}
                     />
+                )}
                 <ImageCustomButton
                     style={styles.ImageBoton}
                     imageSource={require('../../../../assets/images/Stars/starFull.png')}
-                // title={I18n.t('favorite')}
+                    // title={I18n.t('favorite')}
                     onPress={pressHandlerFavorite}
                 />
-                <ImageCustomButton 
-                    title={I18n.t('inmobiliaria')} 
-                    imageSource={require('../../../../assets/images/Icons/darckMode/corporate.png')}
+                <ImageCustomButton
+                    title={I18n.t('contact')}
+                    imageSource={require('../../../../assets/images/Icons/lightMode/mail.png')}
                     onPress={handleContact}
-                    style={styles.boton} 
-                    />
+                    style={styles.boton}
+                />
 
             </View>
         </View>
@@ -261,7 +265,7 @@ const styles = StyleSheet.create({
 
         bottom: 0,
         padding: 10,
-       //backgroundColor: '#e3e3e3',
+        //backgroundColor: '#e3e3e3',
         //flex: 0.5, // Este contenedor ocupará 1/4 de la pantalla
         //width: '100%',
         flexDirection: 'row',
@@ -269,7 +273,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     boton: {
-        width: 100,
+        width: 145,
         marginRight: 10,
         marginLeft: 10
     },

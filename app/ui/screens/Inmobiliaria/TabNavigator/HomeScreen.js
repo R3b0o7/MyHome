@@ -15,6 +15,7 @@ const HomeScreen = () => {
     const navigation = useNavigation();
 
     const [userProperties, setUserProperties] = useState([]); // Estado para almacenar las propiedades del usuario
+    const [userPropertiesFavorites, setUserPropertiesFavorites] = useState([]);
 
     const fetchUserProperties = async () => {
         // Obtén el token de AsyncStorage
@@ -34,11 +35,42 @@ const HomeScreen = () => {
             console.error('Error al obtener las propiedades del usuario:', error);
         }
     };
+    const fetchFavoritesProperties = async () => {
+        try {
+            // Obtener el token de autenticación del usuario
+            const token = await AsyncStorage.getItem('authToken');
+
+            // Si no hay token, no proceder
+            if (!token) {
+                console.error('No se encontró el token de autenticación');
+                return;
+            }
+
+            // Configuración para la solicitud axios (headers con token)
+            const config = {
+                headers: { Authorization: token }
+            };
+
+            // Hacer la solicitud GET al endpoint de favoritos
+            const response = await axios.get(`${SERVER_URL}/api/users/favorites`, config);
+
+            if (response.status === 200) {
+                // Aquí puedes actualizar un estado con las propiedades favoritas, o hacer lo que necesites con estos datos
+                setUserPropertiesFavorites(response.data.properties);
+
+            } else {
+                console.error('Error al obtener propiedades favoritas:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Error al obtener propiedades favoritas:', error);
+        }
+    };
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             // Este código se ejecutará cada vez que la pantalla esté en primer plano
             fetchUserProperties();
+            fetchFavoritesProperties();
         });
 
         return unsubscribe;
@@ -110,15 +142,23 @@ const HomeScreen = () => {
     ];
 
 
+
     const renderItem = ({ item, index }) => {
         return (
             <View style={styles.slide}>
                 <CustomCard
-                    address={item.address}
-                    description={item.description}
-                    coverUrl={item.coverUrl}
-                    CustomButtonTitle={item.CustomButtonTitle}
-                    onCustomButtonPress={handleCardPress} // Pasa la función personalizada
+                    key={index}
+                    address={item.calle + ' ' + item.numero}
+                    description={
+                        (item.alquiler ? 'Alquiler' :
+                            item.venta ? 'Venta' :
+                                item.reservada ? 'Reservada' :
+                                    item.alquiladaVendida ? 'Alquilada o Vendida' : '')
+                        + ' - ' + item.localidad // Aquí puedes añadir tu texto
+                    }
+                    coverUrl={getRandomImageUrl(item.photos)}
+                    CustomButtonTitle={I18n.t('view')}
+                    onCustomButtonPress={() => handleCardPress(item._id)} // Pasa la función personalizada
                 />
             </View>
         );
@@ -137,18 +177,25 @@ const HomeScreen = () => {
 
         <ScrollView>
             <View style={styles.headerContainer}>
-                <Image source={require('../../../../assets/images/Icons/destacadas.png')} style={{width: 20, height: 24,marginRight: 8,}}/>
+                <Image source={require('../../../../assets/images/Icons/destacadas.png')} style={{ width: 20, height: 24, marginRight: 8, }} />
                 <Title style={styles.title}>Mis destacadas</Title>
             </View>
-            <View style={styles.carouselContainer}>
-
-                <Carousel
-                    data={carouselItems}
-                    renderItem={renderItem}
-                    sliderWidth={Dimensions.get('window').width}
-                    itemWidth={250} // Ancho de cada tarjeta en el carrusel
-                />
-            </View>
+            {
+                userPropertiesFavorites.length > 0
+                    ? (
+                        <View style={styles.carouselContainer}>
+                            <Carousel
+                                data={userPropertiesFavorites}
+                                renderItem={renderItem}
+                                sliderWidth={Dimensions.get('window').width}
+                                itemWidth={250} // Ancho de cada tarjeta en el carrusel
+                            />
+                        </View>
+                    )
+                    : <Text style={styles.noPropertiesText}>
+                        No tienes propiedades favoritas.
+                    </Text>
+            }
 
             <View style={styles.headerContainer}>
                 <Image source={require('../../../../assets/images/Icons/propiedades.png')} style={styles.icon} />
@@ -163,15 +210,15 @@ const HomeScreen = () => {
                             key={index}
                             address={data.calle + ' ' + data.numero + ' ' + data.piso + ' ' + data.departamento}
                             operation={
-                            data.alquiler
+                                data.alquiler
                                     ? 'Alquiler'
                                     : data.venta
-                                    ? 'Venta'
-                                    : data.reservada
-                                    ? 'Reservada'
-                                    : data.alquiladaVendida
-                                    ? 'Alquilada o Vendida'
-                                    : '' // Añade una operación predeterminada si ninguna está en true
+                                        ? 'Venta'
+                                        : data.reservada
+                                            ? 'Reservada'
+                                            : data.alquiladaVendida
+                                                ? 'Alquilada o Vendida'
+                                                : '' // Añade una operación predeterminada si ninguna está en true
                             }
                             coverUrl={getRandomImageUrl(data.photos)}
                             onPress={() => handleCardHorizontalPress(data._id)} // Pasa el ID de la propiedad al presionar

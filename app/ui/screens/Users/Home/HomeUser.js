@@ -168,14 +168,14 @@ const HomeUser = () => {
         return unsubscribe;
     }, [navigation]);
 
-    const handleCardHorizontalPress = () => {
+    const handleCardHorizontalPress = (propertyId) => {
         // Define aquí la lógica de navegación
 
         //navigation.push(NavigatorConstant.LOGIN_STACK.REGISTER); // Navega a la pantalla 'Detalle'
 
     };
 
-    const handleCardPress = () => {
+    const handleCardPress = (propertyId) => {
 
 
     };

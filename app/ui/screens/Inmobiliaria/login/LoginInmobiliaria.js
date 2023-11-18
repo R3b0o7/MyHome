@@ -40,10 +40,20 @@ const LoginScreen = () => {
                 alert('Credenciales inválidas');
             }
         } catch (error) {
-            // Manejar errores de red u otros errores
-            alert('Error en el inicio de sesión, recuerda activar tu cuenta en el link que te llego a tu correo');
-
-
+            if (error.response) {
+                // El servidor respondió con un estado fuera del rango 2xx
+                const errorMessage = error.response.data.message;
+                alert(errorMessage);
+            } else if (error.message === "Network Error") {
+                // Manejo de errores de red, como la ausencia de conexión a Internet
+                alert('No hay conexión a Internet. Por favor, verifica tu conexión.');
+            } else if (error.request) {
+                // La solicitud se realizó pero no se recibió respuesta
+                alert('No se recibió respuesta del servidor');
+            }  else {
+                // Algo ocurrió al configurar la solicitud que desencadenó un error
+                alert('Error al realizar la solicitud');
+            }
         }
     };
 

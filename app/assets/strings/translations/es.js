@@ -103,6 +103,7 @@ export default {
     titular: 'Nombre y apellido del titular',
     dni: 'DNI',
     dirFacturacion: 'Dirección de facturación',
+    pay: 'Pago',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

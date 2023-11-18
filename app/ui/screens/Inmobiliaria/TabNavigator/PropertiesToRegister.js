@@ -132,10 +132,12 @@ const PropertiesToRegister = () => {
     ]
 
     const provincia = [
+        { key: '0', value: 'Seleccionar Provincia' },
         { key: '1', value: 'CABA' },
         { key: '2', value: 'Buenos Aires' },
     ]
     const localidades = [
+        { key: '0', value: 'Seleccionar Barrio' },
         { key: '1', value: 'Almirante Brown' },
         { key: '2', value: 'Avellaneda' },
         { key: '3', value: 'Berazategui' },
@@ -255,8 +257,10 @@ const PropertiesToRegister = () => {
     const onProvinciaChange = (selectedProvincia) => {
         setProvinciaSeleccionada(selectedProvincia);
 
-        // Cambiar las opciones de localidad/barrio según la provincia
-        if (selectedProvincia === 'CABA') {
+        if (selectedProvincia === 'Seleccionar Provincia') {
+            setLocalidadBarrioOpciones([]);
+            setBarrioSeleccionado(''); // Resetear la selección de barrio/localidad
+        } else if (selectedProvincia === 'CABA') {
             setLocalidadBarrioOpciones(barrios);
         } else if (selectedProvincia === 'Buenos Aires') {
             setLocalidadBarrioOpciones(localidades);
@@ -264,7 +268,6 @@ const PropertiesToRegister = () => {
             setLocalidadBarrioOpciones([]);
         }
     };
-
     //TIPO DE PROPIEDAD
     const handlePropertyTypeChange = (propertyType) => {
         const updatedPropertyTypes = { ...initialPropertyTypes };
@@ -385,6 +388,10 @@ const PropertiesToRegister = () => {
 
             if (emptyFields.length > 0) {
                 alert(`Los campos (${emptyFields.join(', ')}) están vacíos. Por favor, completa todos los campos.`);
+                return;
+            }
+            if (imageUrls.length < 2) {
+                alert('Por favor, carga al menos dos fotos de la propiedad.');
                 return;
             }
 
@@ -573,7 +580,7 @@ const PropertiesToRegister = () => {
                     inputStyles={styles.textDropList}
                     dropdownTextStyles={styles.dropdownTextStyles}
                     setSelected={setBarrioSeleccionado}
-                    data={localidadBarrioOpciones}
+                    data={localidadBarrioOpciones || []}
                     search={true}
                     maxHeight={300}
                     placeholder={I18n.t('city')}

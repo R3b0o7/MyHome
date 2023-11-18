@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, TouchableOpacity  } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import CustomTextInput from '../../../components/CustomTextInput';
 import { SelectList } from 'react-native-dropdown-select-list';
@@ -314,18 +314,23 @@ const PropertiesToRegister = () => {
         ImagePicker.openPicker({
             multiple: true,
             // ... otras opciones ...
-        }).then(images => {
-            // Solo almacenar la información de la imagen, no subirla
-            const imageInfo = images.map(image => ({
+        }).then(newImages => {
+            const newImageInfo = newImages.map(image => ({
                 uri: image.path,
                 type: image.mime,
                 name: image.filename || `image-${Date.now()}`
             }));
 
-            setImageUrls(imageInfo);
+            // Concatenar nuevas imágenes con las existentes
+            setImageUrls(prevImages => [...prevImages, ...newImageInfo]);
         }).catch(error => {
             console.log('Error al seleccionar imágenes:', error);
         });
+    };
+
+
+    const removeImage = (indexToRemove) => {
+        setImageUrls(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
     };
 
     const uploadImages = async () => {
@@ -797,19 +802,22 @@ const PropertiesToRegister = () => {
                 <Title style={styles.titleUpload}>{I18n.t('requeredPhoto')}</Title>
 
                 {
-                    imageUrls.length > 0 && (
-                        <View style={styles.selectedImagesContainer}>
-                            {imageUrls.map((image, index) => (
-                                <View key={index} style={styles.imageContainer}>
-                                    <Image
-                                        source={{ uri: image.uri }}
-                                        style={styles.image}
-                                    />
-                                </View>
-                            ))}
-                        </View>
-                    )
-                }
+                        imageUrls.length > 0 && (
+                            <View style={styles.selectedImagesContainer}>
+                                {imageUrls.map((image, index) => (
+                                    <View key={index} style={styles.imageContainer}>
+                                        <Image
+                                            source={{ uri: image.uri }}
+                                            style={styles.image}
+                                        />
+                                        <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeButton}>
+                                            <Text style={styles.removeButtonText}>Eliminar</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                ))}
+                            </View>
+                        )
+                    }
 
                 <CustomButton title={I18n.t('uploadVideo')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
                 <Text />
@@ -941,6 +949,17 @@ const styles = StyleSheet.create({
     },
     dropdownTextStyles: {
         color: 'black'
+    },
+    removeButton: {
+        position: 'absolute',
+        top: 5,
+        right: 5,
+        backgroundColor: 'red',
+        padding: 5,
+        borderRadius: 10,
+    },
+    removeButtonText: {
+        color: 'white',
     },
 });
 

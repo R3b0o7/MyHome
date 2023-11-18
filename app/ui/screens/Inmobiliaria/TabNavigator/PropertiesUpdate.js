@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, ScrollView, Image, TouchableOpacity  } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import CustomTextInput from '../../../components/CustomTextInput';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
@@ -327,45 +327,58 @@ const PropertiesUpdate = ({ route }) => {
         ImagePicker.openPicker({
             multiple: true,
             // ... otras opciones ...
-        }).then(images => {
-            const imageInfo = images.map(image => ({
+        }).then(newImages => {
+            const newImageInfo = newImages.map(image => ({
                 uri: image.path,
                 type: image.mime,
                 name: image.filename || `image-${Date.now()}`
             }));
 
-            setImageUrls(imageInfo);
+            // Concatenar nuevas imágenes con las existentes
+            setImageUrls(prevImages => [...prevImages, ...newImageInfo]);
         }).catch(error => {
             console.log('Error al seleccionar imágenes:', error);
         });
     };
+
+    // Función para eliminar una foto específica
+    const removeImage = (indexToRemove) => {
+        setImageUrls(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
+    };
+
     const uploadImages = async () => {
         const uploadedUrls = [];
 
         for (const image of imageUrls) {
-            const formData = new FormData();
-            formData.append('file', {
-                uri: image.uri,
-                type: image.type,
-                name: image.name,
-            });
-            formData.append('upload_preset', 'Myhome');
+            // Verificar si la imagen ya está en Cloudinary
+            if (!image.uri.startsWith('https://res.cloudinary.com')) {
+                const formData = new FormData();
+                formData.append('file', {
+                    uri: image.uri,
+                    type: image.type,
+                    name: image.name,
+                });
+                formData.append('upload_preset', 'Myhome');
 
-            try {
-                const uploadResponse = await axios.post(
-                    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-                    formData,
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                    }
-                );
+                try {
+                    const uploadResponse = await axios.post(
+                        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+                        formData,
+                        {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                        }
+                    );
 
-                uploadedUrls.push(uploadResponse.data.secure_url);
-            } catch (error) {
-                console.log('Error al subir la imagen:', error);
-                throw error; // Si una imagen falla, puedes decidir si continuar o detener todo el proceso
+                    uploadedUrls.push(uploadResponse.data.secure_url);
+                } catch (error) {
+                    console.log('Error al subir la imagen:', error);
+                    throw error; // Si una imagen falla, puedes decidir si continuar o detener todo el proceso
+                }
+            } else {
+                // Si la imagen ya está en Cloudinary, simplemente añadir su URL
+                uploadedUrls.push(image.uri);
             }
         }
 
@@ -740,6 +753,9 @@ const PropertiesUpdate = ({ route }) => {
                                             source={{ uri: image.uri }}
                                             style={styles.image}
                                         />
+                                        <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeButton}>
+                                            <Text style={styles.removeButtonText}>Eliminar</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 ))}
                             </View>
@@ -859,6 +875,17 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%',
+    },
+    removeButton: {
+        position: 'absolute',
+        top: 5,
+        right: 5,
+        backgroundColor: 'red',
+        padding: 5,
+        borderRadius: 10,
+    },
+    removeButtonText: {
+        color: 'white',
     },
 });
 

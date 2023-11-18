@@ -115,6 +115,7 @@ const ContactPropertie = () => {
                     onChange={(d) => setInputDate(d)}
                     inputMode="start"
                     mode="outlined"
+                    calendarIcon={require('../../../../assets/images/Icons/lightMode/calendar.png')}
                 />
                 <CustomButton 
                     style = {styles.button}

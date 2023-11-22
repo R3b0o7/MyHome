@@ -103,6 +103,8 @@ export default {
     titular: 'Nombre y apellido del titular',
     dni: 'DNI',
     dirFacturacion: 'Dirección de facturación',
+    calificarAhora: 'Calificar ahora',
+    calificarLuego: 'Calificar luego',
     pay: 'Pago',
     imageType: {
         svg: 'SVG File',

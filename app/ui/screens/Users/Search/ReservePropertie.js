@@ -12,16 +12,6 @@ import CustomButton from '../../../components/CustomButton';
 
 const ReservePropertie = ({route}) => {
 
-    const [textInputData, setFacturacionnData] = useState({
-        numTarjeta: '',
-        mmVencimiento: '',
-        yyVencimiento: '',
-        csv: '',
-        titular: '',
-        dni: '',
-        direccion: '',
-    });
-    
     //NAVEGACION
     const navigation = useNavigation();
 
@@ -37,10 +27,14 @@ const ReservePropertie = ({route}) => {
     //DAROS PROPIEDAD
     const isFocused = useIsFocused();
 
-    const initialCharacteristics = {};
+    const initialCharacteristics = {
+        precio: 0,
+        dolar: false};
+
     const [propertyData, setPropertyData] = useState(initialCharacteristics);
 
     const fetchPropertyData = async () => {
+
         try {
             const propertyId = route.params.propertyId;
 
@@ -48,6 +42,7 @@ const ReservePropertie = ({route}) => {
 
             if (response.status === 200) {
                 setPropertyData(response.data);
+                console.log("propertyData.dolar después de cada cambio:", response.data.dolar);
             } else {
                 console.error('Error al obtener los datos de la propiedad:', response.data.message);
             }
@@ -56,11 +51,61 @@ const ReservePropertie = ({route}) => {
         }
     };
 
+    //OJO QUE ESTA HARDCODEADO!!! -> SACAR VALORES CUANDO ESTE LA TERMINADA PANTALLA DE PAGO
+
+    
+
+    const [textInputData, setFacturacionnData] = useState({
+        numTarjeta: '3587000458632',
+        mmVencimiento: '02',
+        yyVencimiento: '24',
+        csv: '158',
+        titular: 'Luciano Dodaro',
+        dni: '36687671',
+        direccion: 'Antezana 560',
+        moneda: propertyData.dolar ? 'U$S' : 'AR$',
+        valor: propertyData.precio
+    });
+
+    useEffect(() => {
+        // Comprueba si propertyData.precio está disponible
+        if (propertyData.precio !== undefined) {
+            // Si está disponible, actualiza el estado
+            setFacturacionnData(prevState => ({
+                ...prevState,
+                valor: propertyData.precio,
+            }));
+        }
+    }, [propertyData.precio]);
+
+    useEffect(() => {
+        // Comprueba si propertyData.dolar está disponible
+        if (propertyData.dolar !== undefined) {
+            // Si está disponible, actualiza el estado
+            setFacturacionnData(prevState => ({
+                ...prevState,
+                moneda: propertyData.dolar ? 'U$S' : 'AR$',
+                valor: propertyData.precio
+            }));
+        }
+    }, [propertyData.dolar]);
+
     useEffect(() => {
         if (isFocused) {
             fetchPropertyData();
         }
     }, [isFocused]);
+
+    //Revisión del logo por que el precio arranca como "undefined" por lo que no se enviaba a la pantalla siguiente,
+    //corregido con la comprobación de arriba de este comentario
+
+    // useEffect(() => {
+    //     console.log("propertyData.precio al inicializar el estado:", propertyData.dolar);
+    // }, []); // Este efecto se ejecuta solo una vez al montar el componente
+    
+    // useEffect(() => {
+    //     console.log("propertyData.precio después de cada cambio:", propertyData.dolar);
+    // }, [propertyData.precio]);
 
     return (
         <View style={styles.container}>
@@ -202,16 +247,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
+        width: '100%'
     },
     contentContainer: {
         justifyContent: 'center',
         alignContent:'center',
         flexDirection: 'row',
+        width: '100%'
     },
     currencyContainer:{
         justifyContent: 'center',
         alignContent:'center',
         flexDirection: 'row',
+        width: '100%',
         marginTop: 10
     },
     title: {

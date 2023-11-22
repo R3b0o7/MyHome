@@ -42,7 +42,7 @@ const ReservePropertie = ({route}) => {
 
             if (response.status === 200) {
                 setPropertyData(response.data);
-                console.log("propertyData.dolar después de cada cambio:", response.data.dolar);
+                //console.log("propertyData.dolar después de cada cambio:", response.data.dolar);
             } else {
                 console.error('Error al obtener los datos de la propiedad:', response.data.message);
             }
@@ -56,13 +56,13 @@ const ReservePropertie = ({route}) => {
     
 
     const [textInputData, setFacturacionnData] = useState({
-        numTarjeta: '3587000458632',
-        mmVencimiento: '02',
-        yyVencimiento: '24',
-        csv: '158',
-        titular: 'Luciano Dodaro',
-        dni: '36687671',
-        direccion: 'Antezana 560',
+        numTarjeta: '',
+        mmVencimiento: '',
+        yyVencimiento: '',
+        csv: '',
+        titular: '',
+        dni: '',
+        direccion: '',
         moneda: propertyData.dolar ? 'U$S' : 'AR$',
         valor: propertyData.precio
     });

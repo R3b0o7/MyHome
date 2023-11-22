@@ -7,7 +7,7 @@ import I18n from '../../../../assets/strings/I18';
 import CustomCard from '../../../components/CustomCard';
 
 const ResultPropertie = ({ route }) => {
-    
+
     const navigation = useNavigation();
 
     // Crear un estado para almacenar los IDs de las propiedades
@@ -38,7 +38,7 @@ const ResultPropertie = ({ route }) => {
 
     return (
         <ScrollView>
-            
+
             <View style={styles.headerContainer}>
                 <Image source={require('../../../../assets/images/Icons/propiedades.png')} style={styles.icon} />
                 <Title style={styles.title}>Resultados</Title>
@@ -47,24 +47,27 @@ const ResultPropertie = ({ route }) => {
 
                 {propiedades
                     .map((data, index) => (
-                        <CustomCard
-                            key={index}
-                            address={data.calle + ' ' + data.numero }
-                            description={
-                                (data.alquiler ? 'Alquiler' :
-                                data.venta ? 'Venta' :
-                                data.reservada ? 'Reservada' :
-                                data.alquiladaVendida ? 'Alquilada o Vendida' : '') 
-                                + ' - ' + data.localidad // Aquí puedes añadir tu texto
-                            }
-                            coverUrl={getRandomImageUrl(data.photos)}
-                            CustomButtonTitle={I18n.t('view')}
-                            //onPress={() => handleCardHorizontalPress(data._id)}
-                            onCustomButtonPress={() => handleCardHorizontalPress(data._id)}// Pasa el ID de la propiedad al presionar
-                        />
+                        <View key={index} style={styles.cardStyle}>
+                            <CustomCard
+                                key={index}
+                                address={data.calle + ' ' + data.numero}
+                                description={
+                                    (data.alquiler ? 'Alquiler' :
+                                        data.venta ? 'Venta' :
+                                            data.reservada ? 'Reservada' :
+                                                data.alquiladaVendida ? 'Alquilada o Vendida' : '')
+                                    + ' - ' + data.localidad // Aquí puedes añadir tu texto
+                                }
+                                coverUrl={getRandomImageUrl(data.photos)}
+                                CustomButtonTitle={I18n.t('view')}
+                                //onPress={() => handleCardHorizontalPress(data._id)}
+                                onCustomButtonPress={() => handleCardHorizontalPress(data._id)}// Pasa el ID de la propiedad al presionar
+                            />
+                        </View>
                     ))
+
                 }
-                
+
 
             </View>
         </ScrollView>
@@ -115,6 +118,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 12,
         elevation: 3,
+    },
+    cardStyle: {
+        marginVertical: 10, // Ajusta este valor según el espacio deseado
     },
 });
 

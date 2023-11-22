@@ -6,6 +6,7 @@ import { Image } from 'react-native';
 import SearchNavigator from './SearchNavigator';
 import HomeUser from '../ui/screens/Users/Home/HomeUser';
 import ProfileUserStackNavigator from './ProfileUserStackNavigator';
+import HomeStackNavigator from './HomeStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +29,7 @@ export default LandingTabUserNavigator = () => {
       />
       <Tab.Screen
         name={NavigatorConstant.TAB_STACK_USER.HOME}
-        component={HomeUser}
+        component={HomeStackNavigator}
         options={{
           title: I18n.t('home'),
           headerShown: false,

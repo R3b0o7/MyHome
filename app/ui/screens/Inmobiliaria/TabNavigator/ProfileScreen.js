@@ -137,6 +137,7 @@ const ProfileScreen = () => {
             title={I18n.t('closeSesion')}
             imageSource={require('../../../../assets/images/Icons/lightMode/cancel.png')}
             onPress={() => pressHandler()} />
+            <Text/>
         </View>
       </ScrollView>
     </View>

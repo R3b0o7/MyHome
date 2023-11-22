@@ -168,14 +168,21 @@ const HomeUser = () => {
         return unsubscribe;
     }, [navigation]);
 
-    const handleCardHorizontalPress = () => {
+    const handleCardHorizontalPress = (propertyId) => {
         // Define aquí la lógica de navegación
 
-        //navigation.push(NavigatorConstant.LOGIN_STACK.REGISTER); // Navega a la pantalla 'Detalle'
+        // Navega a la pantalla 'Detalle' y pasa el ID de la propiedad como parámetro
+        navigation.push(NavigatorConstant.HOME_USER_STACK.VIEW_PROPERTIE, {
+            propertyId: propertyId,
+        });
 
     };
 
-    const handleCardPress = () => {
+    const handleCardPress = (propertyId) => {
+
+        navigation.push(NavigatorConstant.HOME_USER_STACK.VIEW_PROPERTIE, {
+            propertyId: propertyId,
+        });
 
 
     };

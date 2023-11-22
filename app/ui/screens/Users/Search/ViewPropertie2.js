@@ -10,76 +10,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../../../components/CustomButton';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
-import ImageCustomButton from '../../../components/ImageCustomButton'
+import ImageCustomButton from '../../../components/ImageCustomButton';
 
 
-const IndividualPropertieScreen = ({ route }) => {
+const ViewPropertie2 = ({ route }) => {
+
     const navigation = useNavigation();
     const isFocused = useIsFocused();
-
-    const pressHandler = () => {
-        Alert.alert("Eliminar propiedad", "¿Estás seguro de que deseas eliminar la propiedad?", [
-            { text: "Sí", onPress: () => handleToDelete() },
-            { text: "No" }
-        ]);
-    }
-
-    const pressEdit = () => {
-        const propertyId = route.params.propertyId;
-        navigation.push(NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_UPDATE, {
-            propertyId: propertyId,
-        });
-    }
-
-    const handleToDelete = async () => {
-        try {
-            const propertyId = route.params.propertyId;
-            const authToken = await AsyncStorage.getItem('authToken');
-
-            if (!authToken) {
-                console.error('Token de autorización no encontrado en AsyncStorage');
-                return;
-            }
-
-            const response = await axios.delete(`${SERVER_URL}/api/properties/${propertyId}`, {
-                headers: {
-                    Authorization: authToken,
-                },
-            });
-
-            if (response.status === 200) {
-                alert('Se borró la propiedad con éxito');
-                navigation.goBack();
-            } else {
-                console.error('Error al eliminar la propiedad:', response.data.message);
-            }
-        } catch (error) {
-            console.error('Error al eliminar la propiedad:', error);
-        }
-    };
-    const pressHandlerFavorite = async () => {
-        try {
-
-            // Obtener el token del usuario desde AsyncStorage
-            const token = await AsyncStorage.getItem('authToken');
-
-            // Configuración para la solicitud axios (headers con token)
-            const config = {
-                headers: { Authorization: token }
-            };
-
-            // Enviar solicitud para agregar/eliminar de favoritos
-            const response = await axios.put(`${SERVER_URL}/api/users/toggleFavorite`, {
-                propertyId: route.params.propertyId
-            }, config);
-
-            // Mostrar alerta con la respuesta del servidor
-            Alert.alert(response.data.message);
-        } catch (error) {
-            console.error('Error al modificar favoritos:', error);
-            Alert.alert('Error', 'No se pudo modificar la lista de favoritos');
-        }
-    };
 
     const initialCharacteristics = {};
     const [propertyData, setPropertyData] = useState(initialCharacteristics);
@@ -106,13 +43,51 @@ const IndividualPropertieScreen = ({ route }) => {
         }
     }, [isFocused]);
 
-    const carouselItems = propertyData.photos 
+
+    const handleReserv = () => {
+        navigation.push(NavigatorConstant.HOME_USER_STACK.RESERVE, {
+            propertyId: route.params.propertyId
+        });
+    };
+
+    const pressHandlerFavorite = async () => {
+        try {
+
+            // Obtener el token del usuario desde AsyncStorage
+            const token = await AsyncStorage.getItem('authToken');
+
+            // Configuración para la solicitud axios (headers con token)
+            const config = {
+                headers: { Authorization: token }
+            };
+
+            // Enviar solicitud para agregar/eliminar de favoritos
+            const response = await axios.put(`${SERVER_URL}/api/usersComun/toggleFavorite`, {
+                propertyId: route.params.propertyId
+            }, config);
+
+            // Mostrar alerta con la respuesta del servidor
+            Alert.alert(response.data.message);
+        } catch (error) {
+            console.error('Error al modificar favoritos:', error);
+            Alert.alert('Error', 'No se pudo modificar la lista de favoritos');
+        }
+    };
+
+
+    const handleContact = async () => {
+
+        navigation.push(NavigatorConstant.HOME_USER_STACK.CONTACT_PROPERTIES);
+
+    };
+
+    const carouselItems = propertyData.photos
         ? propertyData.photos.map((photoUrl, index) => ({
             id: index,
             coverUrl: photoUrl,
         }))
         : [];
-    
+
     const chipsData = [
         { icon: require('../../../../assets/images/Icons/black/m2.png'), label: `${propertyData.m2cubiert}m2` },
         { icon: require('../../../../assets/images/Icons/black/ambientes.png'), label: `${propertyData.cantambient} amb.` },
@@ -149,6 +124,7 @@ const IndividualPropertieScreen = ({ route }) => {
         );
     };
 
+
     return (
 
         <View style={styles.container}>
@@ -163,7 +139,9 @@ const IndividualPropertieScreen = ({ route }) => {
                 </View>
 
                 <Text variant="headlineMedium" style={styles.title}>
-                    {propertyData.calle} {propertyData.numero} {propertyData.piso} {propertyData.departamento}
+                    {propertyData.calle + ' ' + propertyData.numero + ' ' +
+                        propertyData.piso + '° ' + propertyData.departamento
+                    }
                 </Text>
 
                 <Divider style={styles.divider} />
@@ -224,7 +202,7 @@ const IndividualPropertieScreen = ({ route }) => {
                     {propertyData.descripcion}
                 </Text>
 
-                <Text/>
+                <Text />
 
 
             </ScrollView>
@@ -234,23 +212,26 @@ const IndividualPropertieScreen = ({ route }) => {
             <View style={styles.lowerContainer}>
                 {/* Contenedor inferior (1/4 de la pantalla) */}
 
-                <CustomButton
-                    style={styles.boton}
-                    title={I18n.t('edit')}
-                    onPress={pressEdit}
-                />
-
+                {/* Condición para renderizar el botón de reserva solo si 'venta' es falso */}
+                {!propertyData.venta && (
+                    <ImageCustomButton
+                        title={I18n.t('reserv')}
+                        imageSource={require('../../../../assets/images/Icons/lightMode/default.png')}
+                        onPress={handleReserv}
+                        style={styles.boton}
+                    />
+                )}
                 <ImageCustomButton
                     style={styles.ImageBoton}
                     imageSource={require('../../../../assets/images/Stars/starFull.png')}
-                // title={I18n.t('favorite')}
+                    // title={I18n.t('favorite')}
                     onPress={pressHandlerFavorite}
                 />
-
-                <CustomButton
+                <ImageCustomButton
+                    title={I18n.t('contact')}
+                    imageSource={require('../../../../assets/images/Icons/lightMode/mail.png')}
+                    onPress={handleContact}
                     style={styles.boton}
-                    title={I18n.t('deletePropertie')}
-                    onPress={pressHandler}
                 />
 
             </View>
@@ -302,7 +283,7 @@ const styles = StyleSheet.create({
 
         bottom: 0,
         padding: 10,
-       //backgroundColor: '#e3e3e3',
+        //backgroundColor: '#e3e3e3',
         //flex: 0.5, // Este contenedor ocupará 1/4 de la pantalla
         //width: '100%',
         flexDirection: 'row',
@@ -310,7 +291,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     boton: {
-        width: 100,
+        width: 145,
         marginRight: 10,
         marginLeft: 10
     },
@@ -323,4 +304,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default IndividualPropertieScreen;
+export default ViewPropertie2;

@@ -105,6 +105,7 @@ export default {
     dirFacturacion: 'Dirección de facturación',
     calificarAhora: 'Calificar ahora',
     calificarLuego: 'Calificar luego',
+    pay: 'Pago',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

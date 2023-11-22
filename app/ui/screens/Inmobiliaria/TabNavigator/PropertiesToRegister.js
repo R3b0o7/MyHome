@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, TouchableOpacity  } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import CustomTextInput from '../../../components/CustomTextInput';
 import { SelectList } from 'react-native-dropdown-select-list';
@@ -132,10 +132,12 @@ const PropertiesToRegister = () => {
     ]
 
     const provincia = [
+        { key: '0', value: 'Seleccionar Provincia' },
         { key: '1', value: 'CABA' },
         { key: '2', value: 'Buenos Aires' },
     ]
     const localidades = [
+        { key: '0', value: 'Seleccionar Barrio' },
         { key: '1', value: 'Almirante Brown' },
         { key: '2', value: 'Avellaneda' },
         { key: '3', value: 'Berazategui' },
@@ -255,8 +257,10 @@ const PropertiesToRegister = () => {
     const onProvinciaChange = (selectedProvincia) => {
         setProvinciaSeleccionada(selectedProvincia);
 
-        // Cambiar las opciones de localidad/barrio según la provincia
-        if (selectedProvincia === 'CABA') {
+        if (selectedProvincia === 'Seleccionar Provincia') {
+            setLocalidadBarrioOpciones([]);
+            setBarrioSeleccionado(''); // Resetear la selección de barrio/localidad
+        } else if (selectedProvincia === 'CABA') {
             setLocalidadBarrioOpciones(barrios);
         } else if (selectedProvincia === 'Buenos Aires') {
             setLocalidadBarrioOpciones(localidades);
@@ -264,7 +268,6 @@ const PropertiesToRegister = () => {
             setLocalidadBarrioOpciones([]);
         }
     };
-
     //TIPO DE PROPIEDAD
     const handlePropertyTypeChange = (propertyType) => {
         const updatedPropertyTypes = { ...initialPropertyTypes };
@@ -314,18 +317,23 @@ const PropertiesToRegister = () => {
         ImagePicker.openPicker({
             multiple: true,
             // ... otras opciones ...
-        }).then(images => {
-            // Solo almacenar la información de la imagen, no subirla
-            const imageInfo = images.map(image => ({
+        }).then(newImages => {
+            const newImageInfo = newImages.map(image => ({
                 uri: image.path,
                 type: image.mime,
                 name: image.filename || `image-${Date.now()}`
             }));
 
-            setImageUrls(imageInfo);
+            // Concatenar nuevas imágenes con las existentes
+            setImageUrls(prevImages => [...prevImages, ...newImageInfo]);
         }).catch(error => {
             console.log('Error al seleccionar imágenes:', error);
         });
+    };
+
+
+    const removeImage = (indexToRemove) => {
+        setImageUrls(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
     };
 
     const uploadImages = async () => {
@@ -380,6 +388,10 @@ const PropertiesToRegister = () => {
 
             if (emptyFields.length > 0) {
                 alert(`Los campos (${emptyFields.join(', ')}) están vacíos. Por favor, completa todos los campos.`);
+                return;
+            }
+            if (imageUrls.length < 2) {
+                alert('Por favor, carga al menos dos fotos de la propiedad.');
                 return;
             }
 
@@ -568,7 +580,7 @@ const PropertiesToRegister = () => {
                     inputStyles={styles.textDropList}
                     dropdownTextStyles={styles.dropdownTextStyles}
                     setSelected={setBarrioSeleccionado}
-                    data={localidadBarrioOpciones}
+                    data={localidadBarrioOpciones || []}
                     search={true}
                     maxHeight={300}
                     placeholder={I18n.t('city')}
@@ -797,19 +809,22 @@ const PropertiesToRegister = () => {
                 <Title style={styles.titleUpload}>{I18n.t('requeredPhoto')}</Title>
 
                 {
-                    imageUrls.length > 0 && (
-                        <View style={styles.selectedImagesContainer}>
-                            {imageUrls.map((image, index) => (
-                                <View key={index} style={styles.imageContainer}>
-                                    <Image
-                                        source={{ uri: image.uri }}
-                                        style={styles.image}
-                                    />
-                                </View>
-                            ))}
-                        </View>
-                    )
-                }
+                        imageUrls.length > 0 && (
+                            <View style={styles.selectedImagesContainer}>
+                                {imageUrls.map((image, index) => (
+                                    <View key={index} style={styles.imageContainer}>
+                                        <Image
+                                            source={{ uri: image.uri }}
+                                            style={styles.image}
+                                        />
+                                        <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeButton}>
+                                            <Text style={styles.removeButtonText}>Eliminar</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                ))}
+                            </View>
+                        )
+                    }
 
                 <CustomButton title={I18n.t('uploadVideo')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
                 <Text />
@@ -941,6 +956,17 @@ const styles = StyleSheet.create({
     },
     dropdownTextStyles: {
         color: 'black'
+    },
+    removeButton: {
+        position: 'absolute',
+        top: 5,
+        right: 5,
+        backgroundColor: 'red',
+        padding: 5,
+        borderRadius: 10,
+    },
+    removeButtonText: {
+        color: 'white',
     },
 });
 

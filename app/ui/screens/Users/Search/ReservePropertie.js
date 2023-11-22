@@ -96,17 +96,6 @@ const ReservePropertie = ({route}) => {
         }
     }, [isFocused]);
 
-    //Revisión del logo por que el precio arranca como "undefined" por lo que no se enviaba a la pantalla siguiente,
-    //corregido con la comprobación de arriba de este comentario
-
-    // useEffect(() => {
-    //     console.log("propertyData.precio al inicializar el estado:", propertyData.dolar);
-    // }, []); // Este efecto se ejecuta solo una vez al montar el componente
-    
-    // useEffect(() => {
-    //     console.log("propertyData.precio después de cada cambio:", propertyData.dolar);
-    // }, [propertyData.precio]);
-
     return (
         <View style={styles.container}>
              <ScrollView

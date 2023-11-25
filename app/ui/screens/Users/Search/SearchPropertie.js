@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import CheckBox from '@react-native-community/checkbox';
-import { Title, Text } from 'react-native-paper';
+import { Title, Text, Divider, TextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
@@ -304,6 +304,7 @@ const SearchPropertie = () => {
         { key: '3', value: 'Entre 10 y 30 años' },
         { key: '4', value: 'Más de 30 años' },
     ]
+
     //SLIDER
     const [minSliderState, setMinSliderState] = useState(0);
     const [maxSliderState, setMaxSliderState] = useState(-1000000);
@@ -343,7 +344,6 @@ const SearchPropertie = () => {
     const [frenteTypes, setFrenteTypes] = useState(initialFrenteTypes);
     const [orientTypes, setOrientTypes] = useState(initialOrientTypes);
 
-    //AMENITIES
     const handleAmenitiesChange = (amenitiesCh) => {
         const updatedAmenities = { ...amenities };
         updatedAmenities[amenitiesCh] = !amenities[amenitiesCh];
@@ -386,6 +386,8 @@ const SearchPropertie = () => {
                     style={styles.Button}
                     imageStyle={styles.imageButtonStyle}
                 />
+
+                {/* BLOQUE DE LISTAS SELECCIONABLES */}
 
                 <SelectList //Venta/Alquiler
                     boxStyles={styles.listBox} //Asigna estilo al box
@@ -457,6 +459,8 @@ const SearchPropertie = () => {
                     notFoundText={"No se encontro resultado"}
                     save='value'
                 />
+                
+                {/* BLOQUE DE SLIDERS */}
 
                 <Text style={{ fontSize: 20 }}>Mínimo, expresado en miles</Text>
 
@@ -472,7 +476,26 @@ const SearchPropertie = () => {
                     maximumTrackTintColor="#233460"
                 />
 
-                <Text style={styles.textSlider}>{minSliderState.toFixed(0)}</Text>
+            {/* const [minSliderState, setMinSliderState] = useState(0);
+                const [maxSliderState, setMaxSliderState] = useState(-1000000); */}
+
+                <TextInput
+                    style={styles.textImput}
+                    mode= 'outlined'
+                    outlineStyle= {{borderRadius: 20}}
+                    activeOutlineColor= '#4363AC'
+                    value={minSliderState.toFixed(0)}
+                    onChangeText={(value) => setMinSliderState(Number(value))}
+                    // onChangeText={(value) => {
+                    //     const numericValue = Number(value);
+                    //         if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= -maxSliderState) {
+                    //             setMinSliderState(numericValue);
+                    //         }
+                    // }}
+                    keyboardType="numeric"
+                />
+
+                {/* <Text style={styles.textSlider}>{minSliderState.toFixed(0)}</Text> */}
                 {/* toFixed muestra la cantidad de decimales del valor seleccionado en el slider */}
 
                 <Text style={{ fontSize: 20 }}>Máximo, expresado en miles</Text>
@@ -490,8 +513,26 @@ const SearchPropertie = () => {
                     maximumTrackTintColor="#acb4cc"
                 />
 
-                <Text style={styles.textSlider}>{-maxSliderState.toFixed(0)}</Text>
+                <TextInput
+                    style={styles.textImput}
+                    mode= 'outlined'
+                    outlineStyle= {{borderRadius: 20}}
+                    activeOutlineColor= '#4363AC'
+                    value={Math.abs(maxSliderState).toFixed(0)}
+                    onChangeText={(value) => setMaxSliderState(Number(value)* -1)}
+                    // onChangeText={(value) => {
+                    //     const numericValue = Number(value);
+                    //         if (!isNaN(numericValue) && numericValue <= 0 && numericValue >= -minSliderState) {
+                    //             setMaxSliderState(numericValue * -1);
+                    //         }
+                    // }}
+                    keyboardType="numeric"
+                />
+
+                {/* <Text style={styles.textSlider}>{-maxSliderState.toFixed(0)}</Text> */}
                 {/* toFixed muestra la cantidad de decimales del valor seleccionado en el slider */}
+
+                {/* BLOQUE DE LISTAS SELECCIONABLES */}
 
                 <SelectList //Ambientes
                     boxStyles={styles.listBox}
@@ -550,6 +591,10 @@ const SearchPropertie = () => {
                     save='value'
                 />
 
+                {/* BLOQUE DE CHECKBOX */}
+
+                <Divider style={styles.divider} />
+
                 <Title style={styles.title}>{I18n.t('amenities')}</Title>
 
                 {Object.keys(amenities).map((amenitiesCh) => (
@@ -563,9 +608,9 @@ const SearchPropertie = () => {
                     </View>
                 ))}
 
-                <Title style={styles.title}>{I18n.t('characteristics')}</Title>
+                <Divider style={styles.divider} />
 
-                <Text />
+                <Title style={styles.title}>{I18n.t('characteristics')}</Title>
 
                 {Object.keys(characteristicsProp).map((characteristics) => (
                     <View style={styles.checkboxRow} key={characteristics}>
@@ -577,7 +622,8 @@ const SearchPropertie = () => {
                         />
                     </View>
                 ))}
-                <Text />
+                
+                <Divider style={styles.divider} />
 
                 {Object.keys(frenteTypes).map((type) => (
                     <View style={styles.checkboxRow} key={type}>
@@ -590,7 +636,7 @@ const SearchPropertie = () => {
                     </View>
                 ))}
 
-                <Text />
+                <Divider style={styles.divider} />
 
                 {Object.keys(orientTypes).map((type) => (
                     <View style={styles.checkboxRow} key={type}>
@@ -602,9 +648,6 @@ const SearchPropertie = () => {
                         />
                     </View>
                 ))}
-
-                <Text />
-
 
             </ScrollView>
         </View>
@@ -670,6 +713,21 @@ const styles = StyleSheet.create({
     },
     checkboxText: {
         fontSize: 16,
+    },
+    divider: {
+        marginTop: 5,
+        marginBottom: 5,
+        height: 2
+    },
+    textImput: {
+        //marginTop: 10,
+        // marginLeft: 20,
+        // marginRight: 20,
+        marginBottom: 10,
+        width: 100,
+        height: 30,
+        textAlign: 'center',
+        fontWeight: 'bold',
     },
 });
 

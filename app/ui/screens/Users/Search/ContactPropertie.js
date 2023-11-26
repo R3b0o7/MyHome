@@ -15,7 +15,6 @@ const ContactPropertie = () => {
 
 
     const navigation = useNavigation();
-    //const { propertyInfo } = route.params; // NECESITO CREAR EN RESULT PROPERTY
     
     const [text, setText] = React.useState("");
     const [characterCount, setCharacterCount] = useState(0);
@@ -60,7 +59,7 @@ const ContactPropertie = () => {
                 mañana: mañana,
                 tarde: tarde,
                 date: inputDate,
-                property: propertyInfo.id,
+                property: route.params.propertyId,
             };
 
             // Realiza la solicitud POST al servidor

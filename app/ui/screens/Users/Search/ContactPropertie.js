@@ -8,6 +8,7 @@ import I18n from '../../../../assets/strings/I18';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 import CustomButton from '../../../components/CustomButton';
+import { SelectList } from 'yarn add react-native-vector-icons';
 
 
 const ContactPropertie = () => {
@@ -20,23 +21,16 @@ const ContactPropertie = () => {
     const [characterCount, setCharacterCount] = useState(0);
     const maxCharacterLimit = 500;
 
-    const initialScheduleTypes = {
-        morning: false,
-        afternoon: false,
-    };
+    const turnos = [
+        { key: '1', value: 'Mañana' },
+        { key: '2', value: 'Tarde' },
+    ];
 
-    const [scheduleTypes, setScheduleTypes] = useState(initialScheduleTypes);
+    const [turno, setTurno] = useState(''); 
 
     const handleTextChange = (inputText) => {
       setText(inputText);
       setCharacterCount(inputText.length);
-    };
-
-    //Tipo de Turno
-    const handleScheduleChange = (scheduleTypes) => {
-        const updatedScheduleTypes = { ...initialScheduleTypes };
-        updatedScheduleTypes[scheduleTypes] = !scheduleTypes[scheduleTypes];
-        setScheduleTypes(updatedScheduleTypes);
     };
 
     //Input Date
@@ -50,14 +44,24 @@ const ContactPropertie = () => {
             // Obtiene el token de AsyncStorage
             const token = await AsyncStorage.getItem('authToken');
 
-            // Define los datos a enviar en la solicitud
-            const contactData = {
+            // Establecer los valores de 'mañana' y 'tarde' basándose en la selección
+            let mañana = false;
+            let tarde = false;
+
+            if (turno === 'Mañana') {
+                mañana = true;
+            } else if (turno === 'Tarde') {
+                tarde = true;
+            }
+
+            // Construir el cuerpo de la petición
+            const requestBody = {
                 message: text,
-                morning: scheduleTypes.morning,
-                afternoon: scheduleTypes.afternoon,
+                mañana: mañana,
+                tarde: tarde,
                 date: inputDate,
                 property: propertyInfo.id,
-            }
+            };
 
             // Realiza la solicitud POST al servidor
             const response = await axios.post(apiUrl, contactData, {
@@ -97,16 +101,20 @@ const ContactPropertie = () => {
 
                 <Divider style={styles.divider} />
 
-                {Object.keys(scheduleTypes).map((type) => (
-                    <View style={styles.checkboxRow} key={type}>
-                        <Text style={styles.checkboxText}>{I18n.t(type)}</Text>
-                        <CheckBox
-                            value={scheduleTypes[type]}
-                            onValueChange={() => handleScheduleChange(type)}
-                            tintColors={{ true: '#4363AC', false: '#49454F' }}
-                        />
-                    </View>
-                ))}
+                <SelectList //Turno
+                    boxStyles={styles.listBox} //Asigna estilo al box
+                    dropdownStyles={styles.dropdown} //Asigna estilo al dropdown
+                    inputStyles={styles.textDropList} //Asigna estilo al texto del contenido
+                    dropdownTextStyles={styles.dropdownTextStyles} //Asigna estilo al texto del dropdown
+                    setSelected={setTurno}
+                    data={turnos}
+                    search={false} //Habilita o no el buscador
+                    maxHeight={100} //50 por cada item que haya
+                    placeholder={"Turno"} //Texto a mostrar antes de la selección
+                    searchPlaceholder={"Buscar"}
+                    notFoundText={"No se encontro resultado"} //Texto si no encuentra resultados el buscador
+                    save='value' //Guarda el value o la key de la lista
+                />
 
                 <DatePickerInput
                     locale={I18n.locale}
@@ -154,16 +162,6 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         height: 2
     },
-    checkboxRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginLeft: 40,
-        marginRight: 40,
-    },
-    checkboxText: {
-        fontSize: 16,
-    },
     button: {
         margin: 50,
         marginLeft: 120,
@@ -175,6 +173,24 @@ const styles = StyleSheet.create({
         justifyContent: 'start',
         alignItems: 'start',
         // Puedes agregar estilos adicionales según tus necesidades
+    },
+    listBox: {
+        width: 300,
+        marginTop: 10,
+        marginBottom: 10,
+        backgroundColor: '#E0E4F2',
+        borderRadius: 100,
+        borderColor: '#E0E4F2',
+    },
+    dropdown: {
+        backgroundColor: '#E0E4F2',
+        borderColor: '#E0E4F2',
+    },
+    textDropList: {
+        color: 'black'
+    },
+    dropdownTextStyles: {
+        color: 'black'
     },
 
 });

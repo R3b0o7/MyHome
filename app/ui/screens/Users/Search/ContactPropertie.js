@@ -32,6 +32,31 @@ const ContactPropertie = () => {
       setCharacterCount(inputText.length);
     };
 
+    //Get user id
+
+    const [userId, setUserId] = useState('');
+    
+    const fetchUserData = async () => {
+        try {
+          // Obtiene el token de AsyncStorage
+          const token = await AsyncStorage.getItem('authToken');
+    
+          // Realiza una solicitud GET para obtener los datos del usuario desde tu backend
+          const response = await axios.get(`${SERVER_URL}/api/usersComun/me`, {
+            headers: {
+              Authorization: token,
+            },
+          });
+    
+          if (response.status === 200) {
+            setUserId(response.data.id);
+          }
+        } catch (error) {
+          console.error('Error al obtener los datos del usuario:', error);
+        }
+    };
+    
+
     //Input Date
     const [inputDate, setInputDate] = React.useState(undefined)
 
@@ -60,6 +85,7 @@ const ContactPropertie = () => {
                 tarde: tarde,
                 date: inputDate,
                 property: route.params.propertyId,
+                user: userId,
             };
 
             // Realiza la solicitud POST al servidor

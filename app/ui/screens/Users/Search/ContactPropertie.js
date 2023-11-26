@@ -8,7 +8,7 @@ import I18n from '../../../../assets/strings/I18';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 import CustomButton from '../../../components/CustomButton';
-import { SelectList } from 'yarn add react-native-vector-icons';
+import { SelectList } from 'react-native-dropdown-select-list';
 
 
 const ContactPropertie = () => {

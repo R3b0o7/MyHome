@@ -95,6 +95,10 @@ export default {
     morning: 'Mañana',
     afternoon: 'Tarde',
     date: 'Fecha',
+    next: 'Continuar',
+    save: 'Guardar',
+    close: 'Cerrar',
+    previous: 'Volver',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

@@ -141,7 +141,7 @@ const ContactPropertie = () => {
                 />
 
                 <DatePickerInput
-                    locale={I18n.locale}
+                    //locale={I18n.locale}
                     label={I18n.t('date')}
                     value={inputDate}
                     onChange={(d) => setInputDate(d)}

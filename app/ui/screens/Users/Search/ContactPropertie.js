@@ -3,7 +3,6 @@ import { View, StyleSheet, Text} from 'react-native';
 import { TextInput, Divider} from 'react-native-paper';
 import { DatePickerInput, registerTranslation } from 'react-native-paper-dates';
 import { useNavigation } from '@react-navigation/native';
-import CheckBox from '@react-native-community/checkbox';
 import I18n from '../../../../assets/strings/I18';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';

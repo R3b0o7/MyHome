@@ -1,48 +1,48 @@
-import * as React from 'react';
-import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Text, Image } from 'react-native';
 import CustomCommentsCard from '../../../components/CustomCommentsCard';
-import { Image } from 'react-native';
-import Stars from '../../../components/Stars';
+import CustomCommentsList from '../../../components/CustomCommentsCard';
 
 const ComentsScreen = () => {
-    return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Image
-                    source={require('../../../../assets/images/PaginaEnConstruccion.png')}
-                    // source={require('../../../../assets/images/Icons/lightMode/message.png')}
-                    style={styles.image}
-                />
-                {/* <Text style={styles.title}>Histórico de Comentarios</Text> */}
-            </View>
-            {/* <CustomCommentsCard /> */}
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        {/* Agrega el icono aquí */}
+        <Image
+          source={require('../../../../assets/images/Icons/message.png')} // Ajusta la ruta de tu icono
+          style={styles.icon}
+        />
+        {/* Título */}
+        <Text style={styles.title}>Histórico de comentarios</Text>
+      </View>
+      {/* Contenido de los comentarios */}
+      <CustomCommentsList />
+    </View>
+  );
 };
 
-
 const styles = StyleSheet.create({
-    container: {
-        //flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop:200,
-        paddingHorizontal: 20, // Espacio horizontal dentro del contenedor
-    },
-    header: {
-        flexDirection: 'row', // Coloca la imagen y el título en fila
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    title: {
-        fontSize: 25, // Tamaño del título
-        marginBottom: 10, // Espacio inferior
-    },
-    image: {
-        width: 300, // Ancho de la imagen
-        height: 350, // Altura de la imagen
-        //marginRight: 10, // Espacio entre la imagen y el título
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    paddingTop: 15,
+  },
+  icon: {
+    width: 24, // Ajusta el ancho de tu icono según tus necesidades
+    height: 24, // Ajusta la altura de tu icono según tus necesidades
+    marginRight: 10, // Ajusta el margen derecho según tus necesidades
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
 
 export default ComentsScreen;

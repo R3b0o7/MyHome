@@ -74,12 +74,10 @@ const ViewPropertie = ({ route }) => {
         }
     };
 
-
-    const handleContact = async () => {
-
-        navigation.push(NavigatorConstant.SEARCH_.CONTACT_PROPERTIES);
-
-
+    const handleContact = () => {
+        navigation.push(NavigatorConstant.SEARCH_.CONTACT_PROPERTIES, {
+            propertyId: route.params.propertyId
+        });
     };
 
     const carouselItems = propertyData.photos

@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import type {PropsWithChildren} from 'react';
 
+import { en, es, registerTranslation } from 'react-native-paper-dates'
+registerTranslation('en', en)
+registerTranslation('es', es)
+
 import {
   Platform,
   PlatformColor,

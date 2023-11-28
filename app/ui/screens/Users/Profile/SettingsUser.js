@@ -86,25 +86,36 @@ const SettingsUser = () => {
     try {
         const token = await getToken(); // Espera a obtener el token
 
-        const photoUrl = await uploadImages(); // Espera a subir la imagen y obtener la URL
+        // Inicializa photoUrl como null
+        let photoUrl = null;
+
+        // Comprueba si imageUrls tiene algún valor antes de llamar a uploadImages
+        if (imageUrls.length > 0) {
+            // Si hay una imagen seleccionada, sube esa imagen y obtiene la URL
+            photoUrl = await uploadImages();
+        } else {
+            // Si no hay imagen seleccionada, conserva la URL de la foto actual
+            photoUrl = userData.photo;
+        }
 
         // Realizar una solicitud PUT para actualizar los datos del usuario
         await axios.put(`${SERVER_URL}/api/usersComun/saveChanges`, {
             userName: userData.userName,
             email: userData.email,
             direccion: userData.direccion,
-            photo: photoUrl, // Usa la URL obtenida de la imagen subida
+            photo: photoUrl, // Usa la URL de la imagen actual o la nueva
         }, {
             headers: {
                 Authorization: token,
             },
         });
 
-        alert('Datos actualizados con éxito');
+        Alert.alert('Éxito', 'Datos actualizados con éxito');
         navigation.goBack(); // Regresa a la pantalla anterior
     } catch (error) {
         console.error('Error al actualizar los datos del usuario:', error);
         // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
+        Alert.alert('Error', 'Error al actualizar los datos del usuario');
     }
 };
 

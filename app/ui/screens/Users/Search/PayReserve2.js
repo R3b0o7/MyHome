@@ -9,7 +9,7 @@ import { SERVER_URL } from '../../../../config/config';
 import CustomButton from '../../../components/CustomButton';
 import ImageButton from '../../../components/ImageButton';
 
-const PayReserve = ({route}) => {
+const PayReserve2 = ({route}) => {
     
     //NAVEGACION
     const navigation = useNavigation();
@@ -198,4 +198,4 @@ const styles = StyleSheet.create({
     },    
 });
 
-export default PayReserve;
+export default PayReserve2;

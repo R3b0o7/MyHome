@@ -213,7 +213,7 @@ const ViewPropertie2 = ({ route }) => {
                 {/* Contenedor inferior (1/4 de la pantalla) */}
 
                 {/* Condición para renderizar el botón de reserva solo si 'venta' es falso */}
-                {!propertyData.venta && (
+                {!propertyData.venta && !propertyData.reservada &&  (
                     <ImageCustomButton
                         title={I18n.t('reserv')}
                         imageSource={require('../../../../assets/images/Icons/lightMode/default.png')}
@@ -227,12 +227,14 @@ const ViewPropertie2 = ({ route }) => {
                     // title={I18n.t('favorite')}
                     onPress={pressHandlerFavorite}
                 />
+                {!propertyData.reservada &&  (
                 <ImageCustomButton
                     title={I18n.t('contact')}
                     imageSource={require('../../../../assets/images/Icons/lightMode/mail.png')}
                     onPress={handleContact}
                     style={styles.boton}
                 />
+                )}
 
             </View>
         </View>

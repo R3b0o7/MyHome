@@ -16,7 +16,36 @@ const ReservePropertie = ({route}) => {
     const navigation = useNavigation();
 
     const handlePay = async () => {
-        navigation.push(NavigatorConstant.SEARCH_.PAY_RESERVE, {textInputData});
+
+        try {
+            const propertyId = route.params.propertyId;
+            console.log(propertyId);
+            const response = await axios.put(`${SERVER_URL}/api/properties/reserve/${propertyId}`);
+
+            if (response.status === 200) {
+
+                navigation.push(NavigatorConstant.SEARCH_.PAY_RESERVE, {textInputData});                
+        
+            } else {
+                console.error('Error al obtener los datos de la propiedad:', response.data.message);
+            }
+        } catch (error) {
+            if (error.response) {
+                // El servidor respondió con un estado fuera del rango 2xx
+                const errorMessage = error.response.data.message;
+                alert(errorMessage);
+            } else if (error.message === "Network Error") {
+                // Manejo de errores de red, como la ausencia de conexión a Internet
+                alert('No hay conexión a Internet. Por favor, verifica tu conexión.');
+            } else if (error.request) {
+                // La solicitud se realizó pero no se recibió respuesta
+                alert('No se recibió respuesta del servidor');
+            }  else {
+                // Algo ocurrió al configurar la solicitud que desencadenó un error
+                alert('Error al realizar la solicitud');
+            }
+        }
+
     };
     const handleCancel = async () => {
 

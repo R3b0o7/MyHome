@@ -11,7 +11,7 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const ContactPropertie = () => {
+const ContactPropertie = ({ route }) => {
 
 
     const navigation = useNavigation();

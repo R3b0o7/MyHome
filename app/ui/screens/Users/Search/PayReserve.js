@@ -114,11 +114,13 @@ const PayReserve = ({route}) => {
                     <Text> Aprobado </Text>
                 </View>
                 
-                <ImageButton
+                {/* TODO: DESCARGAR COMO PDF */}
+                
+                {/* <ImageButton
                     imageStyle={styles.downloadIcon}
                     imageSource={require('../../../../assets/images/Icons/lightMode/download.png')}
                     
-                />
+                /> */}
 
             </View>
 

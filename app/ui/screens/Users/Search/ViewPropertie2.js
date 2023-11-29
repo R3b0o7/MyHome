@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, Dimensions, Alert, ScrollView } from 'react-native';
-import { Chip, Divider, Text } from 'react-native-paper';
+import { View, StyleSheet, FlatList, Dimensions, Alert, ScrollView, Image } from 'react-native';
+import { Chip, Divider, Text, Card } from 'react-native-paper';
 import ImagePop from '../../../components/ImagePop';
 import Carousel from 'react-native-snap-carousel';
 import I18n from '../../../../assets/strings/I18';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomButton from '../../../components/CustomButton';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 import ImageCustomButton from '../../../components/ImageCustomButton';
+import InmobiliariaCard from '../../../components/InmobiliariaCard';
 
 
-const ViewPropertie2 = ({ route }) => {
+const ViewPropertie = ({ route }) => {
 
     const navigation = useNavigation();
     const isFocused = useIsFocused();
@@ -44,10 +44,14 @@ const ViewPropertie2 = ({ route }) => {
     }, [isFocused]);
 
 
-    const handleReserv = () => {
-        navigation.push(NavigatorConstant.HOME_USER_STACK.RESERVE, {
+    const handleReserv = (propertyId) => {
+        navigation.push(NavigatorConstant.SEARCH_.RESERVE_PROPERTIES, {
             propertyId: route.params.propertyId
         });
+    };
+
+    const handleComents = () => {
+        navigation.push(NavigatorConstant.SEARCH_.COMENTS_PROPERTIES);
     };
 
     const pressHandlerFavorite = async () => {
@@ -74,11 +78,10 @@ const ViewPropertie2 = ({ route }) => {
         }
     };
 
-
-    const handleContact = async () => {
-
-        navigation.push(NavigatorConstant.HOME_USER_STACK.CONTACT_PROPERTIES);
-
+    const handleContact = () => {
+        navigation.push(NavigatorConstant.SEARCH_.CONTACT_PROPERTIES, {
+            propertyId: route.params.propertyId
+        });
     };
 
     const carouselItems = propertyData.photos
@@ -146,15 +149,15 @@ const ViewPropertie2 = ({ route }) => {
 
                 <Divider style={styles.divider} />
 
-                <View>
-                    <Text style={{ fontSize: 30, alignSelf: 'center' }}>
-                        {propertyData.dolar ? 'US$' : '$'}
-                        {propertyData.precio}
+                <View style={styles.currencyContainer}>
+                    <Text style={styles.currency}>
+                        {propertyData.dolar ? 'U$S' : 'AR$'}
                     </Text>
-                    <Text style={{ fontSize: 15, alignSelf: 'center' }}>
-                        $ {propertyData.expensas} pesos/mes
+                    <Text style={styles.price}>
+                        {/* el 'en-US' deberia mostrar el separador de miles como . y no como , pero no funciona */}
+                        {Number(propertyData.precio).toLocaleString('en-US')} 
                     </Text>
-                </View>
+                </View>        
 
                 <Divider style={styles.divider} />
 
@@ -162,7 +165,6 @@ const ViewPropertie2 = ({ route }) => {
                     Caracteristicas
 
                 </Text>
-
 
                 <ScrollView horizontal>
                     <FlatList
@@ -202,9 +204,17 @@ const ViewPropertie2 = ({ route }) => {
                     {propertyData.descripcion}
                 </Text>
 
-                <Text />
+                <Divider style={styles.divider} />
 
-
+                <View style={{alignSelf: 'center'}}>
+                    <InmobiliariaCard  //HARCODEADO!!!
+                        nombre= "Inmobiliara SRL"
+                        rating={4} 
+                        coverUrl= 'https://picsum.photos/701'
+                        onPress={handleComents}
+                    /> 
+                </View>                
+            
             </ScrollView>
 
             <Divider style={{ marginTop: 5, marginBottom: 0 }} />
@@ -219,10 +229,13 @@ const ViewPropertie2 = ({ route }) => {
                         imageSource={require('../../../../assets/images/Icons/lightMode/default.png')}
                         onPress={handleReserv}
                         style={styles.boton}
+                        imageStyle={styles.BotonImageStyle}
+                        textStyle={styles.ButonTextStyle}
                     />
                 )}
                 <ImageCustomButton
                     style={styles.ImageBoton}
+                    imageStyle={styles.ImageStyle}
                     imageSource={require('../../../../assets/images/Stars/starFull.png')}
                     // title={I18n.t('favorite')}
                     onPress={pressHandlerFavorite}
@@ -232,6 +245,8 @@ const ViewPropertie2 = ({ route }) => {
                     imageSource={require('../../../../assets/images/Icons/lightMode/mail.png')}
                     onPress={handleContact}
                     style={styles.boton}
+                    imageStyle={{width: 23, height: 18, marginRight: 5}}
+                    textStyle={styles.ButonTextStyle}
                 />
 
             </View>
@@ -280,7 +295,6 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     lowerContainer: {
-
         bottom: 0,
         padding: 10,
         //backgroundColor: '#e3e3e3',
@@ -290,18 +304,68 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    //BOTONES INFERIORES
     boton: {
-        width: 145,
+        width: 135,
+        height: 38,
         marginRight: 10,
         marginLeft: 10
     },
+    BotonImageStyle:{
+        width: 20,
+        height: 20,
+        marginRight: 5
+    },
+    ButonTextStyle:{
+        fontSize:18
+    },
     ImageBoton: {
-        width: 50,
-        height: 40,
+        width: 40,
+        height: 38,
         marginRight: 10,
         marginLeft: 10
-
+    },
+    ImageStyle:{
+        marginLeft: -1,
+        height: 22, 
+        width: 22, 
+    },
+    //VISTA DE PRECIO Y MONEDA
+    currencyContainer:{
+        justifyContent: 'center',
+        alignContent:'center',
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: 10
+    },
+    currency: {
+        zIndex: 2,
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        borderRadius: 12,
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#E0E4F2',
+        backgroundColor: '#707787',
+        position: 'relative',
+        marginRight: 140,
+        width: 60,
+        height:35
+    },
+    price: {
+        zIndex: 1,
+        textAlign: 'center',
+        paddingLeft: 50,
+        textAlignVertical: 'center',
+        borderRadius: 12,
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'black',
+        backgroundColor: '#ACB4CB',
+        position: 'absolute',
+        width: 200,
+        height:35
     },
 });
 
-export default ViewPropertie2;
+export default ViewPropertie;

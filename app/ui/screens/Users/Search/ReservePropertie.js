@@ -285,13 +285,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
         marginTop: 10,
-        marginLeft: 30
+        paddingLeft: 30
     },
     description: {
         fontSize: 15,
         color: 'grey',
-        marginLeft: 30,
-        marginRight: 30
+        paddingLeft: 30,
+        paddingRight: 30
     },
     currency: {
         zIndex: 2,

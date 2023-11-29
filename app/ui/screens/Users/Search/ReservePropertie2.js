@@ -10,23 +10,13 @@ import axios from 'axios';
 
 import CustomButton from '../../../components/CustomButton';
 
-const ReservePropertie2 = ({route}) => {
+const ReservePropertie = ({route}) => {
 
-    const [textInputData, setFacturacionnData] = useState({
-        numTarjeta: '',
-        mmVencimiento: '',
-        yyVencimiento: '',
-        csv: '',
-        titular: '',
-        dni: '',
-        direccion: '',
-    });
-    
     //NAVEGACION
     const navigation = useNavigation();
 
     const handlePay = async () => {
-        //navigation.push(NavigatorConstant.HOME_USER_STACK.PAY_RESERVE, {textInputData});
+        navigation.push(NavigatorConstant.SEARCH_.PAY_RESERVE, {textInputData});
     };
     const handleCancel = async () => {
 
@@ -37,10 +27,14 @@ const ReservePropertie2 = ({route}) => {
     //DAROS PROPIEDAD
     const isFocused = useIsFocused();
 
-    const initialCharacteristics = {};
+    const initialCharacteristics = {
+        precio: 0,
+        dolar: false};
+
     const [propertyData, setPropertyData] = useState(initialCharacteristics);
 
     const fetchPropertyData = async () => {
+
         try {
             const propertyId = route.params.propertyId;
 
@@ -48,6 +42,7 @@ const ReservePropertie2 = ({route}) => {
 
             if (response.status === 200) {
                 setPropertyData(response.data);
+                //console.log("propertyData.dolar después de cada cambio:", response.data.dolar);
             } else {
                 console.error('Error al obtener los datos de la propiedad:', response.data.message);
             }
@@ -55,6 +50,45 @@ const ReservePropertie2 = ({route}) => {
             console.error('Error al obtener los datos de la propiedad:', error);
         }
     };
+
+    //OJO QUE ESTA HARDCODEADO!!! -> SACAR VALORES CUANDO ESTE LA TERMINADA PANTALLA DE PAGO
+
+    
+
+    const [textInputData, setFacturacionnData] = useState({
+        numTarjeta: '',
+        mmVencimiento: '',
+        yyVencimiento: '',
+        csv: '',
+        titular: '',
+        dni: '',
+        direccion: '',
+        moneda: propertyData.dolar ? 'U$S' : 'AR$',
+        valor: propertyData.precio
+    });
+
+    useEffect(() => {
+        // Comprueba si propertyData.precio está disponible
+        if (propertyData.precio !== undefined) {
+            // Si está disponible, actualiza el estado
+            setFacturacionnData(prevState => ({
+                ...prevState,
+                valor: propertyData.precio,
+            }));
+        }
+    }, [propertyData.precio]);
+
+    useEffect(() => {
+        // Comprueba si propertyData.dolar está disponible
+        if (propertyData.dolar !== undefined) {
+            // Si está disponible, actualiza el estado
+            setFacturacionnData(prevState => ({
+                ...prevState,
+                moneda: propertyData.dolar ? 'U$S' : 'AR$',
+                valor: propertyData.precio
+            }));
+        }
+    }, [propertyData.dolar]);
 
     useEffect(() => {
         if (isFocused) {
@@ -136,7 +170,6 @@ const ReservePropertie2 = ({route}) => {
                     style={{width: 100, alignSelf: 'center'}}
                     label={I18n.t('csv')}
                     mode= 'outlined'
-                    secureTextEntry={true}
                     activeOutlineColor= '#4363AC'
                     value={textInputData.csv}
                     onChangeText={(text) => {
@@ -203,16 +236,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
+        width: '100%'
     },
     contentContainer: {
         justifyContent: 'center',
         alignContent:'center',
         flexDirection: 'row',
+        width: '100%'
     },
     currencyContainer:{
         justifyContent: 'center',
         alignContent:'center',
         flexDirection: 'row',
+        width: '100%',
         marginTop: 10
     },
     title: {
@@ -220,13 +256,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
         marginTop: 10,
-        marginLeft: 30
+        paddingLeft: 30
     },
     description: {
         fontSize: 15,
         color: 'grey',
-        marginLeft: 30,
-        marginRight: 30
+        paddingLeft: 30,
+        paddingRight: 30
     },
     currency: {
         zIndex: 2,
@@ -274,4 +310,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ReservePropertie2;
+export default ReservePropertie;

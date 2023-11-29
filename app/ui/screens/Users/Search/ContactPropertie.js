@@ -78,7 +78,7 @@ const ContactPropertie = ({ route }) => {
             if (response.status === 200) {
 
                 // Muestra una alerta de registro exitoso
-                alert('Contacto creado exitosamente!');
+                alert('Turno creado exitosamente!');
 
                 navigation.goBack();
             }

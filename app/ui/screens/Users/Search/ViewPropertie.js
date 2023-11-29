@@ -52,7 +52,7 @@ const ViewPropertie = ({ route }) => {
 
     const handleComents = () => {
         //pantalla de comentarios de la inmobiliaria
-       // navigation.push(NavigatorConstant.SEARCH_.COMENTS_PROPERTIES);
+        navigation.push(NavigatorConstant.SEARCH_.COMENTS_PROPERTIES);
     };
 
     const pressHandlerFavorite = async () => {

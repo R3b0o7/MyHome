@@ -8,15 +8,16 @@ import { SERVER_URL } from '../../../../config/config';
 import CustomButton from '../../../components/CustomButton';
 
 
-const ComentsPropertie = () => {
+const ComentsPropertie2 = () => {
     
     const navigation = useNavigation();
 
+    
 
     
     return (
         <View>
-           <Text> COMENTARIOS DE INMOBILIARIA</Text>
+           <Text> COMENTARIOS DE INMOBILIARIA2</Text>
            
         </View>
     );
@@ -26,4 +27,4 @@ const styles = StyleSheet.create({
     
 });
 
-export default ComentsPropertie;
+export default ComentsPropertie2;

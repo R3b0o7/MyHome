@@ -8,6 +8,7 @@ import ReservePropertie2 from "../ui/screens/Users/Search/ReservePropertie2";
 import ContactPropertie2 from "../ui/screens/Users/Search/ContactPropertie2";
 import PayReserve2 from "../ui/screens/Users/Search/PayReserve2";
 import CalificationInmobiliaria2 from "../ui/screens/Users/Search/CalificationInmobiliaria2";
+import ComentsPropertie2 from "../ui/screens/Users/Search/ComentsPropertie2";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,24 +28,29 @@ export default PropertiesNavigator = () => {
                 options={{ title: ''}}
             />
             <Stack.Screen
-                name={NavigatorConstant.HOME_USER_STACK.RESERVE}
-                component={ReservePropertie2}
-                options={{ title: I18n.t('pay') }}
+                name={NavigatorConstant.HOME_USER_STACK.COMENTS_PROPERTIES}
+                component={ComentsPropertie2}
+                options={{ title: ''}}
             />
             <Stack.Screen
                 name={NavigatorConstant.HOME_USER_STACK.CONTACT_PROPERTIES}
                 component={ContactPropertie2}
-                options={{ title: I18n.t('pay') }}
+                options={{ title: ''}}
+            />
+            <Stack.Screen
+                name={NavigatorConstant.HOME_USER_STACK.RESERVE}
+                component={ReservePropertie2}
+                options={{ title: ''}}
             />
             <Stack.Screen
                 name={NavigatorConstant.HOME_USER_STACK.PAY_RESERVE}
                 component={PayReserve2}
-                options={{ title: I18n.t('pay') }}
+                options={{ title: ''}}
             />
             <Stack.Screen
                 name={NavigatorConstant.HOME_USER_STACK.CALIFICATION_INM}
                 component={CalificationInmobiliaria2}
-                options={{ title: I18n.t('pay') }}
+                options={{ title: ''}}
             />
             
         </Stack.Navigator >

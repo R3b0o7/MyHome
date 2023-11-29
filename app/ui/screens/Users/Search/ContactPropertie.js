@@ -8,6 +8,7 @@ import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 import CustomButton from '../../../components/CustomButton';
 import { SelectList } from 'react-native-dropdown-select-list';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const ContactPropertie = () => {

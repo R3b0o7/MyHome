@@ -40,8 +40,6 @@ const ContactPropertie = ({ route }) => {
 
         try {
 
-
-
             const apiUrl = `${SERVER_URL}/api/contact/create`;
 
             // Obtiene el token de AsyncStorage

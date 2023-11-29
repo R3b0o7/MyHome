@@ -51,7 +51,8 @@ const ViewPropertie = ({ route }) => {
     };
 
     const handleComents = () => {
-        navigation.push(NavigatorConstant.HOME_USER_STACK.CONTACT_PROPERTIES);
+        //pantalla de comentarios de la inmobiliaria
+        //navigation.push(NavigatorConstant.HOME_USER_STACK.CONTACT_PROPERTIES);
     };
 
     const pressHandlerFavorite = async () => {

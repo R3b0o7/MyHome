@@ -30,30 +30,6 @@ const ContactPropertie = () => {
       setText(inputText);
       setCharacterCount(inputText.length);
     };
-
-    //Get user id
-
-    const [userId, setUserId] = useState('');
-    
-    const fetchUserData = async () => {
-        try {
-          // Obtiene el token de AsyncStorage
-          const token = await AsyncStorage.getItem('authToken');
-    
-          // Realiza una solicitud GET para obtener los datos del usuario desde tu backend
-          const response = await axios.get(`${SERVER_URL}/api/usersComun/me`, {
-            headers: {
-              Authorization: token,
-            },
-          });
-    
-          if (response.status === 200) {
-            setUserId(response.data.id);
-          }
-        } catch (error) {
-          console.error('Error al obtener los datos del usuario:', error);
-        }
-    };
     
 
     //Input Date
@@ -78,7 +54,7 @@ const ContactPropertie = () => {
             }
 
             // Construir el cuerpo de la petición
-            const requestBody = {
+            const contactData = {
                 message: text,
                 mañana: mañana,
                 tarde: tarde,

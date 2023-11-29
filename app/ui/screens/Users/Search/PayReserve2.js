@@ -15,7 +15,7 @@ const PayReserve2 = ({route}) => {
     const navigation = useNavigation();
 
     const handleRate = async () => {
-        navigation.push(NavigatorConstant.SEARCH_.CALIFICATION_INM);
+        navigation.push(NavigatorConstant.HOME_USER_STACK.CALIFICATION_INM);
     };
 
     const handleRateLater = async () => {

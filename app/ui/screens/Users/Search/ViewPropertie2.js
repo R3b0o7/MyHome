@@ -44,14 +44,14 @@ const ViewPropertie = ({ route }) => {
     }, [isFocused]);
 
 
-    const handleReserv = (propertyId) => {
-        navigation.push(NavigatorConstant.SEARCH_.RESERVE_PROPERTIES, {
+    const handleReserv = () => {
+        navigation.push(NavigatorConstant.HOME_USER_STACK.RESERVE, {
             propertyId: route.params.propertyId
         });
     };
 
     const handleComents = () => {
-        navigation.push(NavigatorConstant.SEARCH_.COMENTS_PROPERTIES);
+        navigation.push(NavigatorConstant.HOME_USER_STACK.CONTACT_PROPERTIES);
     };
 
     const pressHandlerFavorite = async () => {
@@ -79,7 +79,7 @@ const ViewPropertie = ({ route }) => {
     };
 
     const handleContact = () => {
-        navigation.push(NavigatorConstant.SEARCH_.CONTACT_PROPERTIES, {
+        navigation.push(NavigatorConstant.HOME_USER_STACK.CONTACT_PROPERTIES, {
             propertyId: route.params.propertyId
         });
     };

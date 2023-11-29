@@ -6,6 +6,8 @@ import HomeUser from "../ui/screens/Users/Home/HomeUser";
 import ViewPropertie2 from "../ui/screens/Users/Search/ViewPropertie2";
 import ReservePropertie2 from "../ui/screens/Users/Search/ReservePropertie2";
 import ContactPropertie2 from "../ui/screens/Users/Search/ContactPropertie2";
+import PayReserve2 from "../ui/screens/Users/Search/PayReserve2";
+import CalificationInmobiliaria2 from "../ui/screens/Users/Search/CalificationInmobiliaria2";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +34,16 @@ export default PropertiesNavigator = () => {
             <Stack.Screen
                 name={NavigatorConstant.HOME_USER_STACK.CONTACT_PROPERTIES}
                 component={ContactPropertie2}
+                options={{ title: I18n.t('pay') }}
+            />
+            <Stack.Screen
+                name={NavigatorConstant.HOME_USER_STACK.PAY_RESERVE}
+                component={PayReserve2}
+                options={{ title: I18n.t('pay') }}
+            />
+            <Stack.Screen
+                name={NavigatorConstant.HOME_USER_STACK.CALIFICATION_INM}
+                component={CalificationInmobiliaria2}
                 options={{ title: I18n.t('pay') }}
             />
             

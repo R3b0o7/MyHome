@@ -19,7 +19,6 @@ const ReservePropertie = ({route}) => {
 
         try {
             const propertyId = route.params.propertyId;
-            console.log(propertyId);
             const response = await axios.put(`${SERVER_URL}/api/properties/reserve/${propertyId}`);
 
             if (response.status === 200) {
@@ -200,6 +199,7 @@ const ReservePropertie = ({route}) => {
                     label={I18n.t('csv')}
                     mode= 'outlined'
                     activeOutlineColor= '#4363AC'
+                    secureTextEntry={true}
                     value={textInputData.csv}
                     onChangeText={(text) => {
                         const numericText = text.replace(/[^0-9]/g, ''); 

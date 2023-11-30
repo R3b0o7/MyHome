@@ -127,9 +127,10 @@ const HomeUser = () => {
 
     const fetchFavoritesProperties = async () => {
         try {
+            
             // Obtener el token de autenticación del usuario
             const token = await AsyncStorage.getItem('authToken');
-
+            
             // Si no hay token, no proceder
             if (!token) {
                 console.error('No se encontró el token de autenticación');
@@ -140,10 +141,11 @@ const HomeUser = () => {
             const config = {
                 headers: { Authorization: token }
             };
+            
 
             // Hacer la solicitud GET al endpoint de favoritos
             const response = await axios.get(`${SERVER_URL}/api/usersComun/favorites`, config);
-
+            
             if (response.status === 200) {
                 // Aquí puedes actualizar un estado con las propiedades favoritas, o hacer lo que necesites con estos datos
                 setUserPropertiesFavorites(response.data.properties);

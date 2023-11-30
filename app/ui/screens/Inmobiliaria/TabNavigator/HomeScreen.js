@@ -89,57 +89,6 @@ const HomeScreen = () => {
 
     };
 
-    const carouselItems = [
-        {
-            id: 1,
-            address: '123 Main St',
-            description: 'A beautiful place',
-            coverUrl: 'https://picsum.photos/700',
-            CustomButtonTitle: I18n.t('view'),
-        },
-        {
-            id: 2,
-            address: '456 Elm St',
-            description: 'Another beautiful place',
-            coverUrl: 'https://picsum.photos/701',
-            CustomButtonTitle: I18n.t('view'),
-        },
-        {
-            id: 3,
-            address: '789 Oak St',
-            description: 'Yet another beautiful place',
-            coverUrl: 'https://picsum.photos/702',
-            CustomButtonTitle: I18n.t('view'),
-        },
-        // Agrega más tarjetas si es necesario
-    ];
-
-    const horizontalCardData = [
-        {
-            id: 1,
-            address: '123 Main St',
-            operation: 'Venta',
-            coverUrl: 'https://picsum.photos/701',
-        },
-        {
-            id: 2,
-            address: '456 Elm St',
-            operation: 'Venta',
-            coverUrl: 'https://picsum.photos/702',
-        },
-        {
-            id: 3,
-            address: '789 Oak St',
-            operation: 'Venta',
-            coverUrl: 'https://picsum.photos/703',
-        },
-        {
-            id: 4,
-            address: '987 Elm St',
-            operation: 'Alquiler',
-            coverUrl: 'https://picsum.photos/704',
-        }
-    ];
 
 
 

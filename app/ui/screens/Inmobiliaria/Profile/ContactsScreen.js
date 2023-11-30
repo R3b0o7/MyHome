@@ -1,28 +1,57 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { TextInput, Divider } from 'react-native-paper';
+import { Paragraph, Modal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import I18n from '../../../../assets/strings/I18';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
-import CustomButton from '../../../components/CustomButton';
+import CustomContactsCard from '../../../components/CustomContactsCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const ContactsScreen = () => {
 
-
     const navigation = useNavigation();
 
-    const [userContacts, setUserContacts] = useState([{
-        message: 'Test Message',
+    const [userContacts, setUserContacts] = useState([
+        {message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ...',
         mañana: false,
         tarde: true,
         date: '12/12/2023',
-        property: 'Callao 2000',
+        address: 'Callao 2000 2do Piso',
         user:'Matias Gomila',
-      ]); // Estado para almacenar los turnos del usuario
-/*
+        photo: 'https://picsum.photos/701',},
+        {message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ...',
+        mañana: true,
+        tarde: false,
+        date: '1/1/2024',
+        address: 'Cordoba 1290 1er Piso',
+        user:'John Doe',
+        photo: 'https://picsum.photos/702',}
+    ]); // Estado para almacenar los turnos del usuario
+
+    const [visible, setVisible] = useState(false);
+    const [selectedContact, setSelectedContact] = useState({
+        address: '',
+        user: '',
+        message: '',
+        photo: null,
+        date: '',
+        mañana: true,
+        tarde: false,
+    });
+
+    const showModal = (contact) => {
+        setSelectedContact(contact);
+        setVisible(true);
+    };
+
+    const hideModal = () => {
+        setVisible(false);
+    };
+
+
+      /*
     const fetchUserContacts = async () => {
         // Obtén el token de AsyncStorage
         const authToken = await AsyncStorage.getItem('authToken');
@@ -53,31 +82,21 @@ const ContactsScreen = () => {
 
     //Crear noContactsCreated style
 
-    const handleCardHorizontalPress = (propertyId) => {
-        //Manejarlo
-    };
-
-    //Acordarse de borrar
-    const getRandomImageUrl = (images) => {
-        if (!Array.isArray(images) || images.length === 0) {
-            // Devuelve una URL predeterminada o null
-            return 'https://picsum.photos/701'; // O alguna otra URL de imagen predeterminada
-        }
-        const randomIndex = Math.floor(Math.random() * images.length);
-        return images[randomIndex];
-    };
 
     return (
-        <View style={styles.container}>
-            <Title style={styles.title}>{I18n.t('myContacts')}</Title>
+        <View style={styles.PrincipalContainer}>
             <ScrollView>
+                <View style={styles.TitleConteiner}>
+                    <Image style={styles.ImageTitle} source={require('../../../../assets/images/Icons/lightMode/calendar.png')} />
+                    <Text style={styles.Title}>{I18n.t('myContacts')}</Text>
+                </View>
                 {userContacts.length === 0 ? (
                     <Text style={styles.noContactsCreated}>
                         {I18n.t('noContactsCreated')}
                     </Text>
                 ) : (
                     userContacts.map((data, index) => ( //Buscar como tomar los datos de la property
-                        <HorizontalCustomCard
+                        <CustomContactsCard
                             key={index}
                             address={data.calle + ' ' + data.numero + ' ' + data.piso + ' ' + data.departamento}
                             username={data.username} //Tomar nombre del usuario en una constante arriba
@@ -89,25 +108,81 @@ const ContactsScreen = () => {
                                     ? 'Tarde'
                                     : '' // Añade una operación predeterminada si ninguna está en true
                             }
-                            onPress={() => handleCardHorizontalPress('a')}
+                            onPress={() => showModal(message)}
                             coverUrl={getRandomImageUrl(data.photos)} //poner url de verdad
                         />
                     ))
                 )}
             </ScrollView>
+            <Modal
+                visible={visible}
+                onDismiss={hideModal}
+                contentContainerStyle={[styles.modalContainer, styles.modalContent]}
+                dismissable={true}
+            >
+                <View>
+                    <View style={styles.topRow}>
+                        {selectedContact.photo !== null ? (
+                            <Image style={styles.imageStyle} source={{ uri: selectedContact.photo }} />
+                        ) : null}
+                        <Text style={styles.addressStyle}>{selectedContact.address}</Text>
+                    </View>
+                    <View style={styles.messageDetails}>
+                        <Paragraph>{selectedContact.message}</Paragraph>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    PrincipalContainer: {
         flex: 1,
+        alignItems: 'center'
+    },
+    TitleConteiner: {
+        flexDirection: 'row',
+        marginTop: 10,
+        padding: 10
+    },
+    ImageTitle: {
+        width: 35,
+        height: 35,
+        marginRight: 15,
+    },
+    Title: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: 'black'
+    },
+    modalContainer: {
+        backgroundColor: 'white',
+        padding: 20,
+        margin: 50,
+        borderRadius: 10,
+    },
+    modalContent: {
         justifyContent: 'center',
         alignItems: 'center',
     },
-    title: {
-        fontSize: 13,
-        marginTop: 50,
+    topRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    imageStyle: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        marginRight: 10,
+    },
+    addressStyle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    messageDetails: {
+        marginTop: 10,
+        textAlign: 'justify',
     },
 });
 

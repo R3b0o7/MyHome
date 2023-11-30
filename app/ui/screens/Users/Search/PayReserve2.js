@@ -15,7 +15,9 @@ const PayReserve2 = ({route}) => {
     const navigation = useNavigation();
 
     const handleRate = async () => {
-        navigation.push(NavigatorConstant.HOME_USER_STACK.CALIFICATION_INM);
+        navigation.push(NavigatorConstant.HOME_USER_STACK.CALIFICATION_INM, {
+            propertyId
+        });
     };
 
     const handleRateLater = async () => {
@@ -24,7 +26,7 @@ const PayReserve2 = ({route}) => {
 
     //DAROS PROPIEDAD
 
-    const { textInputData } = route.params;
+    const { textInputData, propertyId } = route.params;
 
     //DATOS DE FACTURA 
 

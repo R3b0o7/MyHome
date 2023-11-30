@@ -23,7 +23,7 @@ const ReservePropertie = ({route}) => {
 
             if (response.status === 200) {
 
-                navigation.push(NavigatorConstant.HOME_USER_STACK.PAY_RESERVE, {textInputData});                
+                navigation.push(NavigatorConstant.HOME_USER_STACK.PAY_RESERVE, { textInputData, propertyId });                
         
             } else {
                 console.error('Error al obtener los datos de la propiedad:', response.data.message);

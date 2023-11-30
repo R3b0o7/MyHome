@@ -14,7 +14,7 @@ const ReservePropertie = ({route}) => {
 
     //NAVEGACION
     const navigation = useNavigation();
-
+        
     const handlePay = async () => {
 
         try {
@@ -23,7 +23,7 @@ const ReservePropertie = ({route}) => {
 
             if (response.status === 200) {
 
-                navigation.push(NavigatorConstant.SEARCH_.PAY_RESERVE, {textInputData});                
+                navigation.push(NavigatorConstant.SEARCH_.PAY_RESERVE, { textInputData, propertyId });                
         
             } else {
                 console.error('Error al obtener los datos de la propiedad:', response.data.message);

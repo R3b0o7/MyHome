@@ -15,7 +15,9 @@ const PayReserve = ({route}) => {
     const navigation = useNavigation();
 
     const handleRate = async () => {
-        navigation.push(NavigatorConstant.SEARCH_.CALIFICATION_INM);
+        navigation.push(NavigatorConstant.SEARCH_.CALIFICATION_INM, {
+            propertyId
+        });
     };
 
     const handleRateLater = async () => {
@@ -24,8 +26,8 @@ const PayReserve = ({route}) => {
 
     //DAROS PROPIEDAD
 
-    const { textInputData } = route.params;
-
+    const { textInputData, propertyId } = route.params;
+    
     //DATOS DE FACTURA 
 
     // Generar un número aleatorio de 10 caracteres

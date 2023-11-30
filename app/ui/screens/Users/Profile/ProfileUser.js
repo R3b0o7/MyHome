@@ -96,13 +96,13 @@ const ProfileUser = () => {
 
         <View style={styles.container}>
           <CustomTextInput
-            label="Correo"
+            label={I18n.t('mail')}
             value={userData.email}
             disabled={true}
             icon={require('../../../../assets/images/Icons/lightMode/mail.png')}
           />
           <CustomTextInput
-            label="Dirección"
+            label={I18n.t('direc')}
             value={userData.direccion}
             disabled={true}
             icon={require('../../../../assets/images/Icons/lightMode/tag.png')}

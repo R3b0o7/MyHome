@@ -114,6 +114,13 @@ export default {
     save: 'Guardar',
     close: 'Cerrar',
     previous: 'Volver',
+    direc: 'Dirección',
+    name: 'Nombre',
+    ventaAlquiler: 'Venta/Alquiler',
+    tipoProp:'Tipo de propiedad',
+    selecProv:'Seleccionar Provincia',
+    selecLoc: 'Seleccionar Localidad/Barrio',
+    moneda: 'Moneda',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

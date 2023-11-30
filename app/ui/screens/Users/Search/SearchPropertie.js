@@ -399,7 +399,7 @@ const SearchPropertie = () => {
                     data={estado}
                     search={false} //Habilita o no el buscador
                     maxHeight={100} //50 por cada item que haya
-                    placeholder={"Venta/Alquiler"} //Texto a mostrar antes de la selección
+                    placeholder={I18n.t('ventaAlquiler')} //Texto a mostrar antes de la selección
                     searchPlaceholder={"Buscar"}
                     notFoundText={"No se encontro resultado"} //Texto si no encuentra resultados el buscador
                     save='value' //Guarda el value o la key de la lista
@@ -413,7 +413,7 @@ const SearchPropertie = () => {
                     data={tipoProp}
                     search={false}
                     maxHeight={170}
-                    placeholder={"Tipo de propiedad"}
+                    placeholder={I18n.t('tipoProp')}
                     searchPlaceholder={"Buscar"}
                     notFoundText={"No se encontro resultado"}
                     save='value'
@@ -427,7 +427,7 @@ const SearchPropertie = () => {
                     data={provincia}
                     search={true}
                     maxHeight={100}
-                    placeholder={"Seleccionar Provincia"}
+                    placeholder={I18n.t('selecProv')}
                     searchPlaceholder={"Buscar"}
                     notFoundText={"No se encontro resultado"}
                     save='value'
@@ -441,7 +441,7 @@ const SearchPropertie = () => {
                     data={localidadBarrioOpciones || []}
                     search={true}
                     maxHeight={300}
-                    placeholder={"Seleccionar Localidad/Barrio"}
+                    placeholder={I18n.t('selecLoc')}
                     searchPlaceholder={"Buscar"}
                     notFoundText={"No se encontro resultado"}
                     save='value'
@@ -455,7 +455,7 @@ const SearchPropertie = () => {
                     data={moneda}
                     search={false}
                     maxHeight={100}
-                    placeholder={"Moneda"}
+                    placeholder={I18n.t('moneda')}
                     searchPlaceholder={"Buscar"}
                     notFoundText={"No se encontro resultado"}
                     save='value'

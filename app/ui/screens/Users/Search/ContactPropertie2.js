@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import { View, StyleSheet, Text} from 'react-native';
-import { TextInput, Divider} from 'react-native-paper';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import { TextInput, Divider } from 'react-native-paper';
 import { DatePickerInput, registerTranslation } from 'react-native-paper-dates';
 import { useNavigation } from '@react-navigation/native';
 import I18n from '../../../../assets/strings/I18';
@@ -8,13 +8,13 @@ import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 import CustomButton from '../../../components/CustomButton';
 import { SelectList } from 'react-native-dropdown-select-list';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const ContactPropertie = () => {
-
-
-    const navigation = useNavigation();
+const ContactPropertie2 = ({ route }) => {
     
+    const navigation = useNavigation();
+
     const [text, setText] = React.useState("");
     const [characterCount, setCharacterCount] = useState(0);
     const maxCharacterLimit = 500;
@@ -24,37 +24,13 @@ const ContactPropertie = () => {
         { key: '2', value: 'Tarde' },
     ];
 
-    const [turno, setTurno] = useState(''); 
+    const [turno, setTurno] = useState('');
 
     const handleTextChange = (inputText) => {
-      setText(inputText);
-      setCharacterCount(inputText.length);
+        setText(inputText);
+        setCharacterCount(inputText.length);
     };
 
-    //Get user id
-
-    const [userId, setUserId] = useState('');
-    
-    const fetchUserData = async () => {
-        try {
-          // Obtiene el token de AsyncStorage
-          const token = await AsyncStorage.getItem('authToken');
-    
-          // Realiza una solicitud GET para obtener los datos del usuario desde tu backend
-          const response = await axios.get(`${SERVER_URL}/api/usersComun/me`, {
-            headers: {
-              Authorization: token,
-            },
-          });
-    
-          if (response.status === 200) {
-            setUserId(response.data.id);
-          }
-        } catch (error) {
-          console.error('Error al obtener los datos del usuario:', error);
-        }
-    };
-    
 
     //Input Date
     const [inputDate, setInputDate] = React.useState(undefined)
@@ -62,6 +38,7 @@ const ContactPropertie = () => {
     const handleSend = async () => {
 
         try {
+
             const apiUrl = `${SERVER_URL}/api/contact/create`;
 
             // Obtiene el token de AsyncStorage
@@ -77,15 +54,16 @@ const ContactPropertie = () => {
                 tarde = true;
             }
 
+
             // Construir el cuerpo de la petición
-            const requestBody = {
+            const contactData = {
                 message: text,
                 mañana: mañana,
                 tarde: tarde,
                 date: inputDate,
                 property: route.params.propertyId,
-                user: userId,
             };
+
 
             // Realiza la solicitud POST al servidor
             const response = await axios.post(apiUrl, contactData, {
@@ -94,16 +72,22 @@ const ContactPropertie = () => {
                 },
             });
 
-            // Muestra una alerta de registro exitoso
-            alert('Contacto creado exitosamente!');
+            if (response.status === 200) {
 
-            navigation.goBack();
+                // Muestra una alerta de registro exitoso
+                alert('Turno creado exitosamente!');
+
+                navigation.goBack();
+            }
+
+
+
 
         } catch (error) {
             // Muestra una alerta de error en la creacion
             alert('Error al crear el contacto');
         }
-       
+
     };
 
 
@@ -149,8 +133,8 @@ const ContactPropertie = () => {
                     mode="outlined"
                     calendarIcon={require('../../../../assets/images/Icons/lightMode/calendar.png')}
                 />
-                <CustomButton 
-                    style = {styles.button}
+                <CustomButton
+                    style={styles.button}
                     title={I18n.t('send')}
                     onPress={handleSend}
                 />
@@ -172,7 +156,7 @@ const styles = StyleSheet.create({
     textInput: {
         marginTop: 10,
         height: 300,
-        width:'100%',
+        width: '100%',
     },
     characterCount: {
         alignSelf: 'flex-end',
@@ -219,4 +203,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ContactPropertie;
+export default ContactPropertie2;

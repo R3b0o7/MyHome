@@ -245,20 +245,20 @@ const SettingsUser = () => {
 
       <View style={styles.container}>
         <CustomTextInput
-          label="Nombre"
+          label={I18n.t('name')}
           icon={require('../../../../assets/images/Icons/lightMode/perfil.png')}
           value={userData.userName}
           onChangeText={(value) => setUserData({ ...userData, userName: value })} // Actualizar el estado cuando el texto cambia
         />
         <CustomTextInput
-          label="Correo"
+          label={I18n.t('mail')}
           icon={require('../../../../assets/images/Icons/lightMode/mail.png')}
           value={userData.email}
           disabled={true}
           onChangeText={(value) => setUserData({ ...userData, email: value })} // Actualizar el estado cuando el texto cambia
         />
         <CustomTextInput
-          label="Dirección"
+          label={I18n.t('direc')}
           icon={require('../../../../assets/images/Icons/lightMode/tag.png')}
           value={userData.direccion}
           onChangeText={(value) => setUserData({ ...userData, direccion: value })} // Actualizar el estado cuando el texto cambia

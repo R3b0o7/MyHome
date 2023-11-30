@@ -12,8 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const ContactPropertie = ({ route }) => {
-
-
+    
     const navigation = useNavigation();
 
     const [text, setText] = React.useState("");

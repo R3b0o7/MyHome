@@ -20,6 +20,35 @@ const ViewPropertie = ({ route }) => {
 
     const initialCharacteristics = {};
     const [propertyData, setPropertyData] = useState(initialCharacteristics);
+    const [inmobiliariaData, setInmobiliariaData] = useState({ nombre: '', coverUrl: 'https://picsum.photos/701', id:'' });
+
+
+    const fetchInmobiliariaData = async (inmobiliariaId) => {
+        try {
+            const response = await axios.get(`${SERVER_URL}/api/users/inmobiliaria/${inmobiliariaId}`);
+            if (response.status === 200) {
+                // Suponiendo que el modelo de datos de la inmobiliaria tiene campos 'userName' y 'photo'
+                setInmobiliariaData({
+                    nombre: response.data.userName,
+                    coverUrl: response.data.photo || 'https://picsum.photos/701',
+                    id: response.data._id
+                });
+            } else {
+                console.error('Error al obtener datos de la inmobiliaria:', response.data.message);
+                setInmobiliariaData({
+        
+                    coverUrl: 'https://picsum.photos/701'
+                });
+            }
+        } catch (error) {
+            console.error('Error al obtener datos de la inmobiliaria:', error);
+            setInmobiliariaData({
+                nombre: 'Nombre no disponible',
+                coverUrl: 'https://ruta-a-tu-imagen-por-defecto.com/default-image.png'
+            });
+        }
+    };
+    
 
     const fetchPropertyData = async () => {
         try {
@@ -29,6 +58,7 @@ const ViewPropertie = ({ route }) => {
 
             if (response.status === 200) {
                 setPropertyData(response.data);
+                fetchInmobiliariaData(response.data.owner);
             } else {
                 console.error('Error al obtener los datos de la propiedad:', response.data.message);
             }
@@ -52,7 +82,9 @@ const ViewPropertie = ({ route }) => {
 
     const handleComents = () => {
         //pantalla de comentarios de la inmobiliaria
-        navigation.push(NavigatorConstant.SEARCH_.COMENTS_PROPERTIES);
+        navigation.push(NavigatorConstant.SEARCH_.COMENTS_PROPERTIES, {
+            idInmobiliaria: inmobiliariaData.id,
+        });
     };
 
     const pressHandlerFavorite = async () => {
@@ -156,9 +188,9 @@ const ViewPropertie = ({ route }) => {
                     </Text>
                     <Text style={styles.price}>
                         {/* el 'en-US' deberia mostrar el separador de miles como . y no como , pero no funciona */}
-                        {Number(propertyData.precio).toLocaleString('en-US')} 
+                        {Number(propertyData.precio).toLocaleString('en-US')}
                     </Text>
-                </View>        
+                </View>
 
                 <Divider style={styles.divider} />
 
@@ -167,7 +199,7 @@ const ViewPropertie = ({ route }) => {
 
                 </Text>
 
-                <ScrollView horizontal style={{alignSelf: 'center'}}>
+                <ScrollView horizontal style={{ alignSelf: 'center' }}>
                     <FlatList
                         data={chipsData}
                         renderItem={({ item }) => (
@@ -183,7 +215,7 @@ const ViewPropertie = ({ route }) => {
                     Amenities
                 </Text>
 
-                <ScrollView horizontal style={{alignSelf: 'center'}}>
+                <ScrollView horizontal style={{ alignSelf: 'center' }}>
                     <FlatList
                         data={amenidadesFiltradas}
                         renderItem={({ item }) => (
@@ -205,15 +237,15 @@ const ViewPropertie = ({ route }) => {
 
                 <Divider style={styles.divider} />
 
-                <View style={{alignSelf: 'center'}}>
-                    <InmobiliariaCard  //HARCODEADO!!!
-                        nombre= "Inmobiliara SRL"
-                        rating={4} 
-                        coverUrl= 'https://picsum.photos/701'
+                <View style={{ alignSelf: 'center' }}>
+                    <InmobiliariaCard
+                        nombre={inmobiliariaData.nombre}
+                        rating={4} // Aquí puedes poner la calificación de la inmobiliaria si la tienes
+                        coverUrl={inmobiliariaData.coverUrl}
                         onPress={handleComents}
-                    /> 
-                </View>                
-            
+                    />
+                </View>
+
             </ScrollView>
 
             <Divider style={{ marginTop: 5, marginBottom: 0 }} />
@@ -239,15 +271,15 @@ const ViewPropertie = ({ route }) => {
                     // title={I18n.t('favorite')}
                     onPress={pressHandlerFavorite}
                 />
-                {!propertyData.reservada &&  (
-                <ImageCustomButton
-                    title={I18n.t('contact')}
-                    imageSource={require('../../../../assets/images/Icons/lightMode/mail.png')}
-                    onPress={handleContact}
-                    style={styles.boton}
-                    imageStyle={{width: 23, height: 18, marginRight: 5}}
-                    textStyle={styles.ButonTextStyle}
-                />
+                {!propertyData.reservada && (
+                    <ImageCustomButton
+                        title={I18n.t('contact')}
+                        imageSource={require('../../../../assets/images/Icons/lightMode/mail.png')}
+                        onPress={handleContact}
+                        style={styles.boton}
+                        imageStyle={{ width: 23, height: 18, marginRight: 5 }}
+                        textStyle={styles.ButonTextStyle}
+                    />
                 )}
 
             </View>
@@ -312,13 +344,13 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginLeft: 10
     },
-    BotonImageStyle:{
+    BotonImageStyle: {
         width: 20,
         height: 20,
         marginRight: 5
     },
-    ButonTextStyle:{
-        fontSize:18
+    ButonTextStyle: {
+        fontSize: 18
     },
     ImageBoton: {
         width: 40,
@@ -326,15 +358,15 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginLeft: 10
     },
-    ImageStyle:{
+    ImageStyle: {
         marginLeft: -1,
-        height: 22, 
-        width: 22, 
+        height: 22,
+        width: 22,
     },
     //VISTA DE PRECIO Y MONEDA
-    currencyContainer:{
+    currencyContainer: {
         justifyContent: 'center',
-        alignContent:'center',
+        alignContent: 'center',
         flexDirection: 'row',
         width: '100%',
         marginTop: 10
@@ -351,7 +383,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         marginRight: 140,
         width: 60,
-        height:35
+        height: 35
     },
     price: {
         zIndex: 1,
@@ -365,7 +397,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ACB4CB',
         position: 'absolute',
         width: 200,
-        height:35
+        height: 35
     },
 });
 

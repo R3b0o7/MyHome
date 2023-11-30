@@ -104,7 +104,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     registerButton: {
-        marginTop: 100,
+        width: 200,
+        marginTop: 80,
     },
 });
 

@@ -69,7 +69,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     rescoveryPasswordButton: {
-        marginTop: 250,
+        width: 200,
+        marginTop: 180,
     },
 
 });

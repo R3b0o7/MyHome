@@ -91,7 +91,7 @@ const LoginScreen = () => {
                     onChangeText={(text) => setUserData({ ...userData, password: text })}
                 />
                 <CustomButton title={I18n.t('ingresar')} color="blue" onPress={handleLogin} style={styles.loginButton} />
-                <CustomButton title={I18n.t('registrarse')} color="green" onPress={handleRegister} />
+                <CustomButton title={I18n.t('registrarse')} color="green" onPress={handleRegister} style={styles.registerButton}/>
                 <CustomButton title={I18n.t('recoveryPasswordButton')} color="gray" onPress={handlePasswordRecovery} style={styles.passwordRecoveryButton} />
             </View>
         </View>
@@ -105,28 +105,29 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     topContainer: {
-        flex: 1.5, // Este contenedor ocupará la mitad superior de la pantalla
+        flex: 1.6, // Este contenedor ocupará la mitad superior de la pantalla
         width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        // Agregar estilos necesarios para el contenedor superior aquí
+        justifyContent: 'flex-start',
     },
     componentsContainer: {
         flex: 2,
         width: '100%',
-        justifyContent: 'flex-start', // Cambiar a 'flex-start' para reducir la distancia
+        justifyContent: 'flex-start', 
         alignItems: 'center',
-        paddingTop: 20, // Ajustar el valor según tu preferencia
+        //paddingTop: 0, 
     },
     loginButton: {
-        marginBottom: 45, // Establece la distancia solo para el botón "Ingresar"
-        marginTop: 30,
+        width: 200,
+        marginBottom: 20, 
+        marginTop: 35,
+    },
+    registerButton: {
+        width: 200,
+        marginTop: 20,
     },
     passwordRecoveryButton: {
-        marginTop: 23, // Establece la distancia solo para el botón "Recuperar Contraseña"
-    },
-    passwordRecoveryButton: {
-        marginTop: 23, // Establece la distancia solo para el botón "Recuperar Contraseña"
+        width: 200,
+        marginTop: 20, 
     },
     image: {
         width: '100%', // Ancho al 100% de la pantalla

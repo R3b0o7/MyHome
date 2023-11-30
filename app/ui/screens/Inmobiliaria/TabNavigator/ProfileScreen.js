@@ -67,6 +67,10 @@ const ProfileScreen = () => {
     navigation.push(NavigatorConstant.PROFILE_STACK.COMENTS);
   };
 
+  const handleContacts = () => {
+    navigation.push(NavigatorConstant.PROFILE_STACK.CONTACTS);
+  };
+
   const pressHandler = () => {
     Alert.alert("Cerrar Sesión", "Estás seguro que deseas cerrar la sesión?", [
       { text: "Sí", onPress: () => handleLogOut() },
@@ -134,10 +138,14 @@ const ProfileScreen = () => {
             onPress={handleSettings} />
           <ImageCustomButton
             style={styles.buttons}
+            title={I18n.t('contacts')}
+            imageSource={require('../../../../assets/images/Icons/lightMode/calendar.png')}
+            onPress={handleContacts} />
+          <ImageCustomButton
+            style={styles.buttons}
             title={I18n.t('closeSesion')}
             imageSource={require('../../../../assets/images/Icons/lightMode/cancel.png')}
             onPress={() => pressHandler()} />
-            <Text/>
         </View>
       </ScrollView>
     </View>

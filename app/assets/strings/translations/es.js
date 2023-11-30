@@ -114,6 +114,9 @@ export default {
     save: 'Guardar',
     close: 'Cerrar',
     previous: 'Volver',
+    contacts: 'Dates',
+    myContacts: 'Mis Turnos',
+    noContactsCreted: 'No tienes turnos pendientes',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

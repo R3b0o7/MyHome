@@ -43,7 +43,6 @@ const ViewPropertie = ({ route }) => {
         }
     }, [isFocused]);
 
-
     const handleReserv = () => {
         navigation.push(NavigatorConstant.SEARCH_.RESERVE_PROPERTIES, {
             propertyId: route.params.propertyId

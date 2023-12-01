@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 
-const RatingStars = ({ rating }) => {
+const RatingStars = ({ rating, starIcon, starIconFilled }) => {
     const starIcons = [];
     for (let i = 0; i < 5; i++) {
       starIcons.push(
-        <Text key={i} style={i < rating ? styles.starIconFilled : styles.starIcon}>
+        <Text key={i} style={i < rating ? [styles.starIconFilled, starIconFilled] : [styles.starIcon, starIcon]}>
           ★
         </Text>
       );

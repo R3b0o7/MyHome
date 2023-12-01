@@ -118,12 +118,12 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         width: 200,
-        marginBottom: 20, 
-        marginTop: 35,
+        marginBottom: 10, 
+        marginTop: 15,
     },
     registerButton: {
         width: 200,
-        marginTop: 20,
+        marginTop: 30,
     },
     passwordRecoveryButton: {
         width: 200,

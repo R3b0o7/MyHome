@@ -61,12 +61,10 @@ const ShiftsScreen =  ( route ) => {
     };
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            // Este código se ejecutará cada vez que la pantalla esté en primer plano
+        if (isFocused) {
             fetchUserShifts();
-        });
-        return unsubscribe;
-    }, [navigation]);
+        }
+    }, [isFocused]);
 
 
 

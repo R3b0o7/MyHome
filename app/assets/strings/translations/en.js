@@ -99,6 +99,7 @@ export default {
     save: 'Save',
     close: 'Close',
     previous: 'Previous',
+    myContacts: 'My Dates',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

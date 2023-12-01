@@ -99,6 +99,7 @@ export default {
     save: 'Guardar',
     close: 'Cerrar',
     previous: 'Volver',
+    myContacts: 'Mis Turnos',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

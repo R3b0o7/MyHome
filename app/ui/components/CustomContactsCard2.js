@@ -1,9 +1,22 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Title, Text, Avatar } from 'react-native-paper';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Paragraph, Title, Text, Avatar } from 'react-native-paper';
 
-const CustomContactsCard = ({ address, username, date, time, coverUrl, onPress }) => {
+const CustomContactsCard = ({ address, username, date, time, coverUrl, message, onPress }) => {
     
+    // Número máximo de líneas antes de agregar puntos suspensivos
+    const MAX_COMMENT_LINES = 2;
+
+    // Función para truncar el texto del comentario
+    const truncateComment = (message) => {
+      const lines = message.split('\n');
+      if (lines.length > MAX_COMMENT_LINES) {
+        const truncatedLines = lines.slice(0, MAX_COMMENT_LINES);
+        return `${truncatedLines.join('\n')}...`;
+      }
+      return message;
+    };
+
     return (
         <TouchableOpacity onPress={onPress}>
             <View style={styles.container}>
@@ -15,11 +28,8 @@ const CustomContactsCard = ({ address, username, date, time, coverUrl, onPress }
                 <View style={styles.textContainer}>
                     <Title style={styles.address}>{address}</Title>
                     <Text style={styles.date}>{date + ' - ' + time}</Text>
-                    <View style={styles.userContainer}>
-                        <Image style={styles.imageUser} source={require('../../assets/images/Icons/lightMode/perfil.png')} />
-                        <Text style={styles.username}>{username}</Text>
-                    </View>
-                    <Text style={styles.expand}>{'Ver Mensaje...'}</Text>
+                    <Text style={styles.username}>{username}</Text>
+                    <Paragraph numberOfLines={MAX_COMMENT_LINES} style={styles.message}>{truncateComment(message)}</Paragraph>
                 </View>
             </View>
         </TouchableOpacity>
@@ -31,7 +41,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         width: 340,
-        height: 115,
+        height: 140,
         margin: 10,
         borderRadius: 12,
         backgroundColor: '#E0E4F2',
@@ -54,26 +64,20 @@ const styles = StyleSheet.create({
     date: {
         fontSize: 16,
         marginTop: 2,
+        marginBottom: 2,
         fontWeight: 700,
     },
     username: {
         fontSize: 15,
-        marginLeft: 7,
+        marginTop: 2,
+        marginBottom: 2,
         fontWeight: 500,
     },
-    imageUser: {
-        width: 20,
-        height: 20,
-    },
-    userContainer: {
-        flexDirection: 'row',
-        marginTop: 8
-    },
-    expand: {
-        alignSelf: 'flex-end',
-        marginRight: 10,
-        color: '#797c80',
-    },
+    message: {
+        textAlign: 'justify',
+        marginBottom: -5,
+        paddingEnd: 20
+    }
 });
 
 export default CustomContactsCard;

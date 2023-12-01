@@ -11,10 +11,11 @@ const CustomTextInput = (props) => {
       right={<TextInput.Icon icon={props.icon} />}
       secureTextEntry={props.secureTextEntry}
       style={{
+        alignSelf: 'center',
         fontSize: 17,
         margin: 8,
-        marginLeft: 40,
-        marginRight: 40,
+        // marginLeft: 40,
+        // marginRight: 40,
         backgroundColor: '#E0E4F2',
         borderBottomColor: '#203562',
         color: '#1D1B20',

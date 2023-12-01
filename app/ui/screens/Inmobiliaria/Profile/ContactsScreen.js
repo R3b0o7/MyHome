@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { Paragraph, Modal } from 'react-native-paper';
+import { View, StyleSheet, ScrollView, Text, Image } from 'react-native';
+import { Paragraph, Modal, Title } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import I18n from '../../../../assets/strings/I18';
 import axios from 'axios';
@@ -37,8 +37,8 @@ const ContactsScreen = () => {
         message: '',
         photo: null,
         date: '',
-        mañana: true,
-        tarde: false,
+        mañana: null,
+        tarde: null,
     });
 
     const showModal = (contact) => {
@@ -49,7 +49,6 @@ const ContactsScreen = () => {
     const hideModal = () => {
         setVisible(false);
     };
-
 
       /*
     const fetchUserContacts = async () => {
@@ -98,8 +97,8 @@ const ContactsScreen = () => {
                     userContacts.map((data, index) => ( //Buscar como tomar los datos de la property
                         <CustomContactsCard
                             key={index}
-                            address={data.calle + ' ' + data.numero + ' ' + data.piso + ' ' + data.departamento}
-                            username={data.username} //Tomar nombre del usuario en una constante arriba
+                            address={data.address}
+                            username={data.user} //Tomar nombre del usuario en una constante arriba
                             date={data.date}
                             time={
                                 data.mañana
@@ -108,8 +107,9 @@ const ContactsScreen = () => {
                                     ? 'Tarde'
                                     : '' // Añade una operación predeterminada si ninguna está en true
                             }
-                            onPress={() => showModal(message)}
-                            coverUrl={getRandomImageUrl(data.photos)} //poner url de verdad
+                            onPress={() => showModal(data)}
+                            coverUrl={data.photo} //poner url de verdad
+                            message={data.message}
                         />
                     ))
                 )}
@@ -125,9 +125,24 @@ const ContactsScreen = () => {
                         {selectedContact.photo !== null ? (
                             <Image style={styles.imageStyle} source={{ uri: selectedContact.photo }} />
                         ) : null}
-                        <Text style={styles.addressStyle}>{selectedContact.address}</Text>
+                        <View>
+                            <Title style={styles.addressStyle}>{selectedContact.address}</Title>
+                            <Text style={styles.dateStyle}>
+                            {selectedContact.date + ' - ' +
+                                (selectedContact.mañana
+                                    ? 'Mañana'
+                                    : selectedContact.tarde
+                                    ? 'Tarde'
+                                    : '') // Parentheses to group the ternary operation
+                            }
+                        </Text>
+                        </View>
                     </View>
                     <View style={styles.messageDetails}>
+                        <View style={styles.userContainer}>
+                            <Image style={styles.imageUser} source={require('../../../../assets/images/Icons/lightMode/perfil.png')} />
+                            <Text style={styles.usernameStyle}>{selectedContact.user}</Text>
+                        </View>
                         <Paragraph>{selectedContact.message}</Paragraph>
                     </View>
                 </View>
@@ -157,7 +172,7 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     modalContainer: {
-        backgroundColor: 'white',
+        backgroundColor: '#E0E4F2',
         padding: 20,
         margin: 50,
         borderRadius: 10,
@@ -180,9 +195,26 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
+    dateStyle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginTop: -4,
+    },
+    usernameStyle: {
+        fontSize: 15,
+        marginLeft: 7,
+    },
     messageDetails: {
-        marginTop: 10,
+        marginTop: 15,
         textAlign: 'justify',
+    },
+    userContainer: {
+        flexDirection: 'row',
+        marginBottom: 10
+    },
+    imageUser: {
+        width: 20,
+        height: 20,
     },
 });
 

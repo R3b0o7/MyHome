@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ScrollView, Image } from 'react-native';
 import { Paragraph, Modal } from 'react-native-paper';
 import I18n from '../../../../assets/strings/I18';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
+import axios from 'axios';
 import RatingStars from '../../../components/RatingStars';
 import CustomCommentsCard from '../../../components/CustomCommentsCard';
+import { SERVER_URL } from '../../../../config/config';
 
-const ComentsPropertie = () => {
+const ComentsPropertie = ({ route }) => {
     const loremImpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ..."; // Texto largo de ejemplo
-
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
+    const isFocused = useIsFocused();
     const [selectedComment, setSelectedComment] = useState({
         userName: '',
         commentText: '',
@@ -18,22 +20,29 @@ const ComentsPropertie = () => {
         rating: 0,
     });
 
+    useEffect(() => {
+        if (isFocused) {
+            fetchComments();
+        }
+    }, [isFocused]);
+
+    const fetchComments = async () => {
+        try {
+            const propertyId = route.params.idInmobiliaria
+            
+            const response = await axios.get(`${SERVER_URL}/api/usersComun/comments/${propertyId}`);
+
+            if (response.status === 200) {
+                setComments(response.data);
+            }
+        } catch (error) {
+            console.error('Error al obtener los comentarios:', error);
+            // Manejar el error adecuadamente
+        }
+    };
+
     // Comentarios de ejemplo (podrían venir de una API)
-    const [comments, setComments] = useState([
-        {
-            userName: "Jhone Doe",
-            userPhoto: 'https://picsum.photos/701',
-            commentText: loremImpsum,
-            rating: 4,
-        },
-        {
-            userName: "Pepe",
-            userPhoto: 'https://picsum.photos/702',
-            commentText: loremImpsum,
-            rating: 2,
-        },
-        // Agrega más comentarios aquí si es necesario
-    ]);
+    const [comments, setComments] = useState([]);
 
     const showModal = (comment) => {
         setSelectedComment(comment);
@@ -56,8 +65,8 @@ const ComentsPropertie = () => {
                         key={index}
                         userName={comment.userName}
                         userPhoto={comment.userPhoto}
-                        commentText={comment.commentText}
-                        rating={comment.rating}
+                        commentText={comment.comment}
+                        rating={comment.calificacion}
                         onSelectComment={() => showModal(comment)}
                     />
                 ))}
@@ -77,7 +86,7 @@ const ComentsPropertie = () => {
                         <Text style={styles.userNameStyle}>{selectedComment.userName}</Text>
                     </View>
                     <View style={styles.commentDetails}>
-                        <Paragraph>{selectedComment.commentText}</Paragraph>
+                        <Paragraph>{selectedComment.comment}</Paragraph>
                     </View>
                     <View style={styles.starsContainer}>
                         <RatingStars rating={selectedComment.rating} />

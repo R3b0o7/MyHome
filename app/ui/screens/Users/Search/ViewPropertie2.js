@@ -20,22 +20,25 @@ const ViewPropertie2 = ({ route }) => {
 
     const initialCharacteristics = {};
     const [propertyData, setPropertyData] = useState(initialCharacteristics);
-    const [inmobiliariaData, setInmobiliariaData] = useState({ nombre: '', coverUrl: 'https://picsum.photos/701', id:''  });
+    const [inmobiliariaData, setInmobiliariaData] = useState({ nombre: '', coverUrl: 'https://picsum.photos/701', id: '' });
 
 
     const fetchInmobiliariaData = async (inmobiliariaId) => {
         try {
             const response = await axios.get(`${SERVER_URL}/api/users/inmobiliaria/${inmobiliariaId}`);
             if (response.status === 200) {
+
+
                 // Suponiendo que el modelo de datos de la inmobiliaria tiene campos 'userName' y 'photo'
                 setInmobiliariaData({
                     nombre: response.data.userName,
-                    coverUrl: response.data.photo || 'https://picsum.photos/701'
+                    coverUrl: response.data.photo || 'https://picsum.photos/701',
+                    id: inmobiliariaId,
                 });
             } else {
                 console.error('Error al obtener datos de la inmobiliaria:', response.data.message);
                 setInmobiliariaData({
-        
+
                     coverUrl: 'https://picsum.photos/701'
                 });
             }
@@ -47,7 +50,7 @@ const ViewPropertie2 = ({ route }) => {
             });
         }
     };
-    
+
 
     const fetchPropertyData = async () => {
         try {
@@ -80,9 +83,9 @@ const ViewPropertie2 = ({ route }) => {
     };
 
     const handleComents = () => {
-        //pantalla de comentarios de la inmobiliaria
+        const propertyId = inmobiliariaData.id;
         navigation.push(NavigatorConstant.HOME_USER_STACK.COMENTS_PROPERTIES, {
-            idInmobiliaria: inmobiliariaData.id,
+            idInmobiliaria: propertyId,
         });
     };
 

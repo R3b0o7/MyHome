@@ -27,11 +27,13 @@ const ViewPropertie = ({ route }) => {
         try {
             const response = await axios.get(`${SERVER_URL}/api/users/inmobiliaria/${inmobiliariaId}`);
             if (response.status === 200) {
+                
+                
                 // Suponiendo que el modelo de datos de la inmobiliaria tiene campos 'userName' y 'photo'
                 setInmobiliariaData({
                     nombre: response.data.userName,
                     coverUrl: response.data.photo || 'https://picsum.photos/701',
-                    id: response.data._id
+                    id: inmobiliariaId,
                 });
             } else {
                 console.error('Error al obtener datos de la inmobiliaria:', response.data.message);
@@ -57,6 +59,7 @@ const ViewPropertie = ({ route }) => {
             const response = await axios.get(`${SERVER_URL}/api/properties/${propertyId}`);
 
             if (response.status === 200) {
+                
                 setPropertyData(response.data);
                 fetchInmobiliariaData(response.data.owner);
             } else {
@@ -73,16 +76,16 @@ const ViewPropertie = ({ route }) => {
         }
     }, [isFocused]);
 
-    const handleReserv = () => {
+    const handleReserv = () => {        
         navigation.push(NavigatorConstant.SEARCH_.RESERVE_PROPERTIES, {
             propertyId: route.params.propertyId
         });
     };
 
     const handleComents = () => {
-        //pantalla de comentarios de la inmobiliaria
+        const propertyId = inmobiliariaData.id;
         navigation.push(NavigatorConstant.SEARCH_.COMENTS_PROPERTIES, {
-            idInmobiliaria: inmobiliariaData.id,
+            idInmobiliaria: propertyId,
         });
     };
 

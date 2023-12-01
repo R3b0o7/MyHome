@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     carouselContainer: {
-        flex: 1.5, // Ocupa el espacio superior
+        flex: 1.5,
         alignItems: 'center',
     },
     cardsContainer: {
@@ -230,6 +230,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 12,
         elevation: 3,
+        marginBottom: 5
     },
 });
 

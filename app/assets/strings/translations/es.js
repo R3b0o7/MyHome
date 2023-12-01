@@ -121,6 +121,7 @@ export default {
     selecProv:'Seleccionar Provincia',
     selecLoc: 'Seleccionar Localidad/Barrio',
     moneda: 'Moneda',
+    shifts: 'Turnos solicitados',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

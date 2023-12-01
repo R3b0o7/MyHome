@@ -9,7 +9,7 @@ import CustomTextInput from '../../../components/CustomTextInput';
 import ImageCustomButton from '../../../components/ImageCustomButton';
 import Stars from '../../../components/Stars';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import RatingStars from '../../../components/RatingStars';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
 
 const ProfileScreen = () => {
@@ -59,6 +59,10 @@ const ProfileScreen = () => {
     navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
   };
 
+  const handleShifts = () => {
+    navigation.push(NavigatorConstant.PROFILE_STACK.SHIFTS);
+  };
+
   const handleSettings = () => {
     navigation.push(NavigatorConstant.PROFILE_STACK.SETTINGS);
   };
@@ -77,7 +81,7 @@ const ProfileScreen = () => {
   return (
     <View>
       <ScrollView>
-        <View style={{ marginTop: 39, alignSelf: 'center' }}>
+        <View style={styles.mainContainter}>
           {
             userData.photo ?
               <Avatar.Image
@@ -93,7 +97,7 @@ const ProfileScreen = () => {
                 icon="account"
               />
           }
-          <Text variant="headlineMedium" style={{ marginTop: 20 }}>
+          <Text variant="headlineMedium" style={styles.userName}>
             {userData.userName}
           </Text>
         </View>
@@ -113,20 +117,25 @@ const ProfileScreen = () => {
           />
         </View>
 
-        <View style={{ marginTop: 10 }}>
-          <Stars />
+        <View style={styles.starsComponent}>
+          <RatingStars 
+            rating={4} 
+            starIconFilled={styles.starIconFilled}
+            starIcon={styles.starIcon}
+            />
         </View>
 
-        <View style={{
-          marginTop: 15,
-          marginLeft: 45,
-          marginRight: 45,
-        }}>
+        <View style={styles.buttonsContainer}>
           <ImageCustomButton
             style={styles.buttons}
             title={I18n.t('comments')}
             imageSource={require('../../../../assets/images/Icons/lightMode/message.png')}
             onPress={handleComents} />
+          <ImageCustomButton
+            style={styles.buttons}
+            title={I18n.t('shifts')}
+            imageSource={require('../../../../assets/images/Icons/lightMode/calendar.png')}
+            onPress={handleShifts} />
           <ImageCustomButton
             style={styles.buttons}
             title={I18n.t('settings')}
@@ -137,7 +146,6 @@ const ProfileScreen = () => {
             title={I18n.t('closeSesion')}
             imageSource={require('../../../../assets/images/Icons/lightMode/cancel.png')}
             onPress={() => pressHandler()} />
-            <Text/>
         </View>
       </ScrollView>
     </View>
@@ -145,8 +153,36 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  mainContainter: {
+    felex: 1,
+    justifyContent: 'flex-start',
+    alignContent: 'center',
+    paddingTop: 20,
+  },
+  buttonsContainer:{
+    padding: 10,
+  },
+  userName: {
+    alignSelf: 'center',
+    paddingTop: 15,
+  },
+  starsComponent:{
+    alignSelf: 'center',
+  },
+  starIconFilled: {
+    color: 'gold',
+    fontSize: 40,
+    marginLeft: 2,
+  },
+  starIcon: {
+    color: 'gray',
+    fontSize: 40,
+    marginLeft: 2,
+  },
   buttons: {
-    height: 50,
+    alignSelf: 'center',
+    width: '75%',
+    height: 40,
     marginTop: 25
   },
   shadow: {

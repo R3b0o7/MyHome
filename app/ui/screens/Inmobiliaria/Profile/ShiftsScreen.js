@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Text, Image } from 'react-native';
 import { Paragraph, Modal, Title } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -17,8 +17,11 @@ const ShiftsScreen = () => {
 
     const [visible, setVisible] = useState(false);
     const [selectedShift, setSelectedShift] = useState({
-        address: '',
-        user: '',
+        calle: '',
+        numero: '',
+        piso: '',
+        departamento: '',
+        username: '',
         message: '',
         photo: null,
         date: '',
@@ -62,45 +65,6 @@ const ShiftsScreen = () => {
         return unsubscribe;
     }, [navigation]);
 
-    //Cuando ejecutaria esto?
-
-    const [propertyData, setPropertyData] = useState({});
-
-    const fetchPropertyData = async () => {
-        try {
-            const propertyId = route.params.propertyId;
-
-            const response = await axios.get(`${SERVER_URL}/api/properties/${propertyId}`);
-
-            if (response.status === 200) {
-                setPropertyData(response.data);
-            } else {
-                console.error('Error al obtener los datos de la propiedad:', response.data.message);
-            }
-        } catch (error) {
-            console.error('Error al obtener los datos de la propiedad:', error);
-        }
-    };
-
-    const [userData, setUserData] = useState({}); // Estado para almacenar el user -> lo uso para username
-
-    const fetchUserData = async (userId) => {
-        
-        try {
-
-            //Falta endpoint para traer datos de userComun que no soy yo
-            const response = await axios.get(`${SERVER_URL}/api/userComun/${userId}`);
-
-            if (response.status === 200) {
-                setUserData(response.data);
-            } else {
-                console.error('Error al obtener los datos del usuario:', response.data.message);
-            }
-        } catch (error) {
-            console.error('Error al obtener los datos del usuario:', error);
-        }
-    };
-
 
 
     return (
@@ -110,7 +74,7 @@ const ShiftsScreen = () => {
                     <Image style={styles.ImageTitle} source={require('../../../../assets/images/Icons/lightMode/calendar.png')} />
                     <Text style={styles.Title}>{I18n.t('myContacts')}</Text>
                 </View>
-                {userContacts.length === 0 ? (
+                {userShifts.length === 0 ? (
                     <Text style={styles.noShiftsCreated}>
                         {I18n.t('noContactsCreated')}
                     </Text>
@@ -118,8 +82,8 @@ const ShiftsScreen = () => {
                     userShifts.map((data, index) => ( //Buscar como tomar los datos de la property
                         <CustomShiftsCard
                             key={index}
-                            address={data.address} //Tomar el address de la propiedad de una constante arriba
-                            username={userData.username} //Tomar nombre del usuario de una constante arriba
+                            address={data.calle + ' ' + data.numero + ' ' + data.piso + '° ' + data.departamento} //Tomar el address de la propiedad de una constante arriba
+                            username={data.username}
                             date={data.date}
                             time={
                                 data.mañana
@@ -147,14 +111,14 @@ const ShiftsScreen = () => {
                             <Image style={styles.imageStyle} source={{ uri: selectedShift.photo }} />
                         ) : null}
                         <View>
-                            <Title style={styles.addressStyle}>{selectedShift.address}</Title>
+                            <Title style={styles.addressStyle}>{selectedShift.calle + ' ' + selectedShift.numero + ' ' + selectedShift.piso + '° ' + selectedShift.departamento}</Title>
                             <Text style={styles.dateStyle}>
                             {selectedShift.date + ' - ' +
                                 (selectedShift.mañana
                                     ? 'Mañana'
                                     : selectedShift.tarde
                                     ? 'Tarde'
-                                    : '') // Parentheses to group the ternary operation
+                                    : '') 
                             }
                         </Text>
                         </View>

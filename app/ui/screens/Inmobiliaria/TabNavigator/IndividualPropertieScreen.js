@@ -168,13 +168,13 @@ const IndividualPropertieScreen = ({ route }) => {
 
                 <Divider style={styles.divider} />
 
-                <View>
-                    <Text style={{ fontSize: 30, alignSelf: 'center' }}>
-                        {propertyData.dolar ? 'US$' : '$'}
-                        {propertyData.precio}
+                <View style={styles.currencyContainer}>
+                    <Text style={styles.currency}>
+                        {propertyData.dolar ? 'U$S' : 'AR$'}
                     </Text>
-                    <Text style={{ fontSize: 15, alignSelf: 'center' }}>
-                        $ {propertyData.expensas} pesos/mes
+                    <Text style={styles.price}>
+                        {/* el 'en-US' deberia mostrar el separador de miles como . y no como , pero no funciona */}
+                        {Number(propertyData.precio).toLocaleString('en-US')}
                     </Text>
                 </View>
 
@@ -302,9 +302,6 @@ const styles = StyleSheet.create({
 
         bottom: 0,
         padding: 10,
-       //backgroundColor: '#e3e3e3',
-        //flex: 0.5, // Este contenedor ocupará 1/4 de la pantalla
-        //width: '100%',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -319,7 +316,42 @@ const styles = StyleSheet.create({
         height: 40,
         marginRight: 10,
         marginLeft: 10
-
+    },
+    //VISTA DE PRECIO Y MONEDA
+    currencyContainer: {
+        justifyContent: 'center',
+        alignContent: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: 10
+    },
+    currency: {
+        zIndex: 2,
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        borderRadius: 12,
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#E0E4F2',
+        backgroundColor: '#707787',
+        position: 'relative',
+        marginRight: 140,
+        width: 60,
+        height: 35
+    },
+    price: {
+        zIndex: 1,
+        textAlign: 'center',
+        paddingLeft: 50,
+        textAlignVertical: 'center',
+        borderRadius: 12,
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'black',
+        backgroundColor: '#ACB4CB',
+        position: 'absolute',
+        width: 200,
+        height: 35
     },
 });
 

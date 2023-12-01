@@ -21,6 +21,8 @@ const ProfileScreen = () => {
     email: '',
     visibleEmail: '',
     photo: '',
+    id: '',
+    calificacion: 0,
   });
 
   const fetchUserData = async () => {
@@ -42,6 +44,8 @@ const ProfileScreen = () => {
           email: userDataFromAPI.email,
           visibleEmail: userDataFromAPI.visibleEmail,
           photo: userDataFromAPI.photo,
+          id: userDataFromAPI._id,
+          calificacion: userDataFromAPI.calification,
         });
       }
     } catch (error) {
@@ -68,7 +72,9 @@ const ProfileScreen = () => {
   };
 
   const handleComents = () => {
-    navigation.push(NavigatorConstant.PROFILE_STACK.COMENTS);
+    navigation.push(NavigatorConstant.PROFILE_STACK.COMENTS,{
+        inmobiliariaId: userData.id
+    });
   };
 
   const pressHandler = () => {
@@ -119,7 +125,7 @@ const ProfileScreen = () => {
 
         <View style={styles.starsComponent}>
           <RatingStars 
-            rating={4} 
+            rating={userData.calificacion} 
             starIconFilled={styles.starIconFilled}
             starIcon={styles.starIcon}
             />

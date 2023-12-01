@@ -20,18 +20,21 @@ const ViewPropertie = ({ route }) => {
 
     const initialCharacteristics = {};
     const [propertyData, setPropertyData] = useState(initialCharacteristics);
-    const [inmobiliariaData, setInmobiliariaData] = useState({ nombre: '', coverUrl: 'https://picsum.photos/701', id:'' });
+    const [inmobiliariaData, setInmobiliariaData] = useState({ nombre: '', coverUrl: 'https://picsum.photos/701', id:'', calificacion: 0 });
 
 
     const fetchInmobiliariaData = async (inmobiliariaId) => {
         try {
             const response = await axios.get(`${SERVER_URL}/api/users/inmobiliaria/${inmobiliariaId}`);
             if (response.status === 200) {
+                
+                
                 // Suponiendo que el modelo de datos de la inmobiliaria tiene campos 'userName' y 'photo'
                 setInmobiliariaData({
                     nombre: response.data.userName,
                     coverUrl: response.data.photo || 'https://picsum.photos/701',
-                    id: response.data._id
+                    id: inmobiliariaId,
+                    calificacion: response.data.calification,
                 });
             } else {
                 console.error('Error al obtener datos de la inmobiliaria:', response.data.message);
@@ -57,6 +60,7 @@ const ViewPropertie = ({ route }) => {
             const response = await axios.get(`${SERVER_URL}/api/properties/${propertyId}`);
 
             if (response.status === 200) {
+                
                 setPropertyData(response.data);
                 fetchInmobiliariaData(response.data.owner);
             } else {
@@ -73,16 +77,16 @@ const ViewPropertie = ({ route }) => {
         }
     }, [isFocused]);
 
-    const handleReserv = () => {
+    const handleReserv = () => {        
         navigation.push(NavigatorConstant.SEARCH_.RESERVE_PROPERTIES, {
             propertyId: route.params.propertyId
         });
     };
 
     const handleComents = () => {
-        //pantalla de comentarios de la inmobiliaria
+        const propertyId = inmobiliariaData.id;
         navigation.push(NavigatorConstant.SEARCH_.COMENTS_PROPERTIES, {
-            idInmobiliaria: inmobiliariaData.id,
+            idInmobiliaria: propertyId,
         });
     };
 
@@ -239,7 +243,7 @@ const ViewPropertie = ({ route }) => {
                 <View style={{ alignSelf: 'center' }}>
                     <InmobiliariaCard
                         nombre={inmobiliariaData.nombre}
-                        rating={4} // Aquí puedes poner la calificación de la inmobiliaria si la tienes
+                        rating={inmobiliariaData.calificacion} // Aquí puedes poner la calificación de la inmobiliaria si la tienes
                         coverUrl={inmobiliariaData.coverUrl}
                         onPress={handleComents}
                     />

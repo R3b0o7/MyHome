@@ -140,7 +140,11 @@ const ShiftsScreen =  ( route ) => {
 const styles = StyleSheet.create({
     PrincipalContainer: {
         flex: 1,
-        alignItems: 'center'
+
+        alignItems: 'center',
+
+        justifyContent: 'flex-start',
+
     },
     TitleConteiner: {
         flexDirection: 'row',

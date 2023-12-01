@@ -1,57 +1,88 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, Dimensions, Alert, ScrollView, Image } from 'react-native';
-import { Chip, Divider, Text, Card } from 'react-native-paper';
+import { View, StyleSheet, FlatList, Dimensions, Alert, ScrollView } from 'react-native';
+import { Chip, Divider, Text } from 'react-native-paper';
 import ImagePop from '../../../components/ImagePop';
 import Carousel from 'react-native-snap-carousel';
 import I18n from '../../../../assets/strings/I18';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomButton from '../../../components/CustomButton';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
-import ImageCustomButton from '../../../components/ImageCustomButton';
-import InmobiliariaCard from '../../../components/InmobiliariaCard';
+import ImageCustomButton from '../../../components/ImageCustomButton'
 
 
-const ViewPropertie2 = ({ route }) => {
-
+const IndividualPropertieScreen2 = ({ route }) => {
     const navigation = useNavigation();
     const isFocused = useIsFocused();
 
-    const initialCharacteristics = {};
-    const [propertyData, setPropertyData] = useState(initialCharacteristics);
-    const [inmobiliariaData, setInmobiliariaData] = useState({ nombre: '', coverUrl: 'https://picsum.photos/701', id: '', calificacion: 0 });
+    const pressHandler = () => {
+        Alert.alert("Eliminar propiedad", "¿Estás seguro de que deseas eliminar la propiedad?", [
+            { text: "Sí", onPress: () => handleToDelete() },
+            { text: "No" }
+        ]);
+    }
 
+    const pressEdit = () => {
+        const propertyId = route.params.propertyId;
+        navigation.push(NavigatorConstant.PROPERTIES_STACK.PROPPERTIES_UPDATE, {
+            propertyId: propertyId,
+        });
+    }
 
-    const fetchInmobiliariaData = async (inmobiliariaId) => {
+    const handleToDelete = async () => {
         try {
-            const response = await axios.get(`${SERVER_URL}/api/users/inmobiliaria/${inmobiliariaId}`);
+            const propertyId = route.params.propertyId;
+            const authToken = await AsyncStorage.getItem('authToken');
+
+            if (!authToken) {
+                console.error('Token de autorización no encontrado en AsyncStorage');
+                return;
+            }
+
+            const response = await axios.delete(`${SERVER_URL}/api/properties/${propertyId}`, {
+                headers: {
+                    Authorization: authToken,
+                },
+            });
+
             if (response.status === 200) {
-
-
-                // Suponiendo que el modelo de datos de la inmobiliaria tiene campos 'userName' y 'photo'
-                setInmobiliariaData({
-                    nombre: response.data.userName,
-                    coverUrl: response.data.photo || 'https://picsum.photos/701',
-                    id: inmobiliariaId,
-                    calificacion: response.data.calification,
-                });
+                alert('Se borró la propiedad con éxito');
+                navigation.goBack();
             } else {
-                console.error('Error al obtener datos de la inmobiliaria:', response.data.message);
-                setInmobiliariaData({
-
-                    coverUrl: 'https://picsum.photos/701'
-                });
+                console.error('Error al eliminar la propiedad:', response.data.message);
             }
         } catch (error) {
-            console.error('Error al obtener datos de la inmobiliaria:', error);
-            setInmobiliariaData({
-                nombre: 'Nombre no disponible',
-                coverUrl: 'https://ruta-a-tu-imagen-por-defecto.com/default-image.png'
-            });
+            console.error('Error al eliminar la propiedad:', error);
+        }
+    };
+    const pressHandlerFavorite = async () => {
+        try {
+
+            // Obtener el token del usuario desde AsyncStorage
+            const token = await AsyncStorage.getItem('authToken');
+
+            // Configuración para la solicitud axios (headers con token)
+            const config = {
+                headers: { Authorization: token }
+            };
+
+            // Enviar solicitud para agregar/eliminar de favoritos
+            const response = await axios.put(`${SERVER_URL}/api/users/toggleFavorite`, {
+                propertyId: route.params.propertyId
+            }, config);
+
+            // Mostrar alerta con la respuesta del servidor
+            Alert.alert(response.data.message);
+        } catch (error) {
+            console.error('Error al modificar favoritos:', error);
+            Alert.alert('Error', 'No se pudo modificar la lista de favoritos');
         }
     };
 
+    const initialCharacteristics = {};
+    const [propertyData, setPropertyData] = useState(initialCharacteristics);
 
     const fetchPropertyData = async () => {
         try {
@@ -61,7 +92,6 @@ const ViewPropertie2 = ({ route }) => {
 
             if (response.status === 200) {
                 setPropertyData(response.data);
-                fetchInmobiliariaData(response.data.owner);
             } else {
                 console.error('Error al obtener los datos de la propiedad:', response.data.message);
             }
@@ -76,57 +106,13 @@ const ViewPropertie2 = ({ route }) => {
         }
     }, [isFocused]);
 
-
-    const handleReserv = () => {
-        navigation.push(NavigatorConstant.HOME_USER_STACK.RESERVE, {
-            propertyId: route.params.propertyId
-        });
-    };
-
-    const handleComents = () => {
-        const propertyId = inmobiliariaData.id;
-        navigation.push(NavigatorConstant.HOME_USER_STACK.COMENTS_PROPERTIES, {
-            idInmobiliaria: propertyId,
-        });
-    };
-
-    const pressHandlerFavorite = async () => {
-        try {
-
-            // Obtener el token del usuario desde AsyncStorage
-            const token = await AsyncStorage.getItem('authToken');
-
-            // Configuración para la solicitud axios (headers con token)
-            const config = {
-                headers: { Authorization: token }
-            };
-
-            // Enviar solicitud para agregar/eliminar de favoritos
-            const response = await axios.put(`${SERVER_URL}/api/usersComun/toggleFavorite`, {
-                propertyId: route.params.propertyId
-            }, config);
-
-            // Mostrar alerta con la respuesta del servidor
-            Alert.alert(response.data.message);
-        } catch (error) {
-            console.error('Error al modificar favoritos:', error);
-            Alert.alert('Error', 'No se pudo modificar la lista de favoritos');
-        }
-    };
-
-    const handleContact = () => {
-        navigation.push(NavigatorConstant.SEARCH_.CONTACT_PROPERTIES, {
-            propertyId: route.params.propertyId
-        });
-    };
-
-    const carouselItems = propertyData.photos
+    const carouselItems = propertyData.photos 
         ? propertyData.photos.map((photoUrl, index) => ({
             id: index,
             coverUrl: photoUrl,
         }))
         : [];
-
+    
     const chipsData = [
         { icon: require('../../../../assets/images/Icons/black/m2.png'), label: `${propertyData.m2cubiert}m2` },
         { icon: require('../../../../assets/images/Icons/black/ambientes.png'), label: `${propertyData.cantambient} amb.` },
@@ -163,7 +149,6 @@ const ViewPropertie2 = ({ route }) => {
         );
     };
 
-
     return (
 
         <View style={styles.container}>
@@ -178,20 +163,18 @@ const ViewPropertie2 = ({ route }) => {
                 </View>
 
                 <Text variant="headlineMedium" style={styles.title}>
-                    {propertyData.calle + ' ' + propertyData.numero + ' ' +
-                        propertyData.piso + '° ' + propertyData.departamento
-                    }
+                    {propertyData.calle} {propertyData.numero} {propertyData.piso} {propertyData.departamento}
                 </Text>
 
                 <Divider style={styles.divider} />
 
-                <View style={styles.currencyContainer}>
-                    <Text style={styles.currency}>
-                        {propertyData.dolar ? 'U$S' : 'AR$'}
+                <View>
+                    <Text style={{ fontSize: 30, alignSelf: 'center' }}>
+                        {propertyData.dolar ? 'US$' : '$'}
+                        {propertyData.precio}
                     </Text>
-                    <Text style={styles.price}>
-                        {/* el 'en-US' deberia mostrar el separador de miles como . y no como , pero no funciona */}
-                        {Number(propertyData.precio).toLocaleString('en-US')}
+                    <Text style={{ fontSize: 15, alignSelf: 'center' }}>
+                        $ {propertyData.expensas} pesos/mes
                     </Text>
                 </View>
 
@@ -202,9 +185,11 @@ const ViewPropertie2 = ({ route }) => {
 
                 </Text>
 
-                <ScrollView horizontal style={{ alignSelf: 'center' }}>
+
+                <ScrollView horizontal>
                     <FlatList
                         data={chipsData}
+                        style={{ alignSelf: 'center', marginLeft: 80, marginTop: 0 }}
                         renderItem={({ item }) => (
                             <Chip style={styles.chipStyle} icon={item.icon}>
                                 {item.label}
@@ -218,9 +203,10 @@ const ViewPropertie2 = ({ route }) => {
                     Amenities
                 </Text>
 
-                <ScrollView horizontal style={{ alignSelf: 'center' }}>
+                <ScrollView horizontal>
                     <FlatList
                         data={amenidadesFiltradas}
+                        style={{ alignSelf: 'center', marginLeft: 80, marginTop: 0 }}
                         renderItem={({ item }) => (
                             <Chip style={styles.chipStyle}>
                                 {item.label}
@@ -238,16 +224,8 @@ const ViewPropertie2 = ({ route }) => {
                     {propertyData.descripcion}
                 </Text>
 
-                <Divider style={styles.divider} />
+                <Text/>
 
-                <View style={{ alignSelf: 'center' }}>
-                    <InmobiliariaCard
-                        nombre={inmobiliariaData.nombre}
-                        rating={inmobiliariaData.calificacion} // Aquí puedes poner la calificación de la inmobiliaria si la tienes
-                        coverUrl={inmobiliariaData.coverUrl}
-                        onPress={handleComents}
-                    />
-                </View>
 
             </ScrollView>
 
@@ -256,34 +234,16 @@ const ViewPropertie2 = ({ route }) => {
             <View style={styles.lowerContainer}>
                 {/* Contenedor inferior (1/4 de la pantalla) */}
 
-                {/* Condición para renderizar el botón de reserva solo si 'venta' es falso */}
-                {!propertyData.venta && !propertyData.reservada && (
-                    <ImageCustomButton
-                        title={I18n.t('reserv')}
-                        imageSource={require('../../../../assets/images/Icons/lightMode/default.png')}
-                        onPress={handleReserv}
-                        style={styles.boton}
-                        imageStyle={styles.BotonImageStyle}
-                        textStyle={styles.ButonTextStyle}
-                    />
-                )}
+                
+
                 <ImageCustomButton
                     style={styles.ImageBoton}
-                    imageStyle={styles.ImageStyle}
                     imageSource={require('../../../../assets/images/Stars/starFull.png')}
-                    // title={I18n.t('favorite')}
+                // title={I18n.t('favorite')}
                     onPress={pressHandlerFavorite}
                 />
-                {!propertyData.reservada && (
-                    <ImageCustomButton
-                        title={I18n.t('contact')}
-                        imageSource={require('../../../../assets/images/Icons/lightMode/mail.png')}
-                        onPress={handleContact}
-                        style={styles.boton}
-                        imageStyle={{ width: 23, height: 18, marginRight: 5 }}
-                        textStyle={styles.ButonTextStyle}
-                    />
-                )}
+
+                
 
             </View>
         </View>
@@ -297,7 +257,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         margin: 5,
         borderRadius: 20,
-        width: 120
+        width: 110
     },
     carouselContainer: {
         marginTop: 20,
@@ -331,77 +291,28 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     lowerContainer: {
+
         bottom: 0,
         padding: 10,
-        //backgroundColor: '#e3e3e3',
+       //backgroundColor: '#e3e3e3',
         //flex: 0.5, // Este contenedor ocupará 1/4 de la pantalla
         //width: '100%',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    //BOTONES INFERIORES
     boton: {
-        width: 135,
-        height: 38,
+        width: 100,
         marginRight: 10,
         marginLeft: 10
-    },
-    BotonImageStyle: {
-        width: 20,
-        height: 20,
-        marginRight: 5
-    },
-    ButonTextStyle: {
-        fontSize: 18
     },
     ImageBoton: {
-        width: 40,
-        height: 38,
+        width: 50,
+        height: 40,
         marginRight: 10,
         marginLeft: 10
-    },
-    ImageStyle: {
-        marginLeft: -1,
-        height: 22,
-        width: 22,
-    },
-    //VISTA DE PRECIO Y MONEDA
-    currencyContainer: {
-        justifyContent: 'center',
-        alignContent: 'center',
-        flexDirection: 'row',
-        width: '100%',
-        marginTop: 10
-    },
-    currency: {
-        zIndex: 2,
-        textAlign: 'center',
-        textAlignVertical: 'center',
-        borderRadius: 12,
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#E0E4F2',
-        backgroundColor: '#707787',
-        position: 'relative',
-        marginRight: 140,
-        width: 60,
-        height: 35
-    },
-    price: {
-        zIndex: 1,
-        textAlign: 'center',
-        paddingLeft: 50,
-        textAlignVertical: 'center',
-        borderRadius: 12,
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: 'black',
-        backgroundColor: '#ACB4CB',
-        position: 'absolute',
-        width: 200,
-        height: 35
+
     },
 });
 
-export default ViewPropertie2;
+export default IndividualPropertieScreen2;

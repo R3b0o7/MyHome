@@ -84,8 +84,11 @@ const HomeScreen = () => {
 
     };
 
-    const handleCardPress = () => {
+    const handleCardPress = (propertyId) => {
+        navigation.push(NavigatorConstant.HOME_STACK.PROPERTIE_INM, {
+            propertyId,
 
+        });
 
     };
 

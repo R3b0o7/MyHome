@@ -89,7 +89,7 @@ const ComentsPropertie = ({ route }) => {
                         <Paragraph>{selectedComment.comment}</Paragraph>
                     </View>
                     <View style={styles.starsContainer}>
-                        <RatingStars rating={selectedComment.rating} />
+                        <RatingStars rating={selectedComment.calificacion} />
                     </View>
                 </View>
             </Modal>

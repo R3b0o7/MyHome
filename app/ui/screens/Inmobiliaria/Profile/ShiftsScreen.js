@@ -35,8 +35,7 @@ const ShiftsScreen = () => {
         setVisible(false);
     };
 
-      /*
-    const fetchUserContacts = async () => {
+    const fetchUserShifts = async () => {
         // Obtén el token de AsyncStorage
         const authToken = await AsyncStorage.getItem('authToken');
 
@@ -48,7 +47,7 @@ const ShiftsScreen = () => {
                 }
             });
             if (response.status === 200) {
-                setUserContacts(response.data);
+                setUserShifts(response.data);
             }
         } catch (error) {
             console.error('Error al obtener los turnos del usuario:', error);
@@ -58,13 +57,50 @@ const ShiftsScreen = () => {
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             // Este código se ejecutará cada vez que la pantalla esté en primer plano
-            fetchUserContacts();
+            fetchUserShifts();
         });
-
         return unsubscribe;
-    }, [navigation]); */
+    }, [navigation]);
 
-    //Crear noContactsCreated style
+    //Cuando ejecutaria esto?
+
+    const [propertyData, setPropertyData] = useState({});
+
+    const fetchPropertyData = async () => {
+        try {
+            const propertyId = route.params.propertyId;
+
+            const response = await axios.get(`${SERVER_URL}/api/properties/${propertyId}`);
+
+            if (response.status === 200) {
+                setPropertyData(response.data);
+            } else {
+                console.error('Error al obtener los datos de la propiedad:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Error al obtener los datos de la propiedad:', error);
+        }
+    };
+
+    const [userData, setUserData] = useState({}); // Estado para almacenar el user -> lo uso para username
+
+    const fetchUserData = async (userId) => {
+        
+        try {
+
+            //Falta endpoint para traer datos de userComun que no soy yo
+            const response = await axios.get(`${SERVER_URL}/api/userComun/${userId}`);
+
+            if (response.status === 200) {
+                setUserData(response.data);
+            } else {
+                console.error('Error al obtener los datos del usuario:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Error al obtener los datos del usuario:', error);
+        }
+    };
+
 
 
     return (
@@ -76,14 +112,14 @@ const ShiftsScreen = () => {
                 </View>
                 {userContacts.length === 0 ? (
                     <Text style={styles.noShiftsCreated}>
-                        {I18n.t('noShiftsCreated')}
+                        {I18n.t('noContactsCreated')}
                     </Text>
                 ) : (
                     userShifts.map((data, index) => ( //Buscar como tomar los datos de la property
                         <CustomShiftsCard
                             key={index}
-                            address={data.address}
-                            username={data.user} //Tomar nombre del usuario en una constante arriba
+                            address={data.address} //Tomar el address de la propiedad de una constante arriba
+                            username={userData.username} //Tomar nombre del usuario de una constante arriba
                             date={data.date}
                             time={
                                 data.mañana
@@ -201,6 +237,10 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
     },
+    noShiftsCreated: {
+        fontSize: 18,
+        textAlign: 'center',
+    }
 });
 
 export default ShiftsScreen;

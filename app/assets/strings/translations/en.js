@@ -92,6 +92,9 @@ export default {
     inmobiliaria: 'Real Estate',
     usuario: 'User',
     search: 'Search',
+    contacts: 'Dates',
+    myContacts: 'My Dates',
+    noContactsCreated: 'No dates were found',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

@@ -122,6 +122,9 @@ export default {
     selecLoc: 'Seleccionar Localidad/Barrio',
     moneda: 'Moneda',
     shifts: 'Turnos solicitados',
+    contacts: 'Turnos',
+    myContacts: 'Mis Turnos',
+    noContactsCreated: 'No se encontraron turnos',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

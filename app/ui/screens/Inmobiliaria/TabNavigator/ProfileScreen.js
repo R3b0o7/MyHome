@@ -22,6 +22,7 @@ const ProfileScreen = () => {
     visibleEmail: '',
     photo: '',
     id: '',
+    calificacion: 0,
   });
 
   const fetchUserData = async () => {
@@ -44,6 +45,7 @@ const ProfileScreen = () => {
           visibleEmail: userDataFromAPI.visibleEmail,
           photo: userDataFromAPI.photo,
           id: userDataFromAPI._id,
+          calificacion: userDataFromAPI.calification,
         });
       }
     } catch (error) {
@@ -123,7 +125,7 @@ const ProfileScreen = () => {
 
         <View style={styles.starsComponent}>
           <RatingStars 
-            rating={4} 
+            rating={userData.calificacion} 
             starIconFilled={styles.starIconFilled}
             starIcon={styles.starIcon}
             />

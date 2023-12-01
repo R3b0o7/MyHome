@@ -20,7 +20,7 @@ const ViewPropertie = ({ route }) => {
 
     const initialCharacteristics = {};
     const [propertyData, setPropertyData] = useState(initialCharacteristics);
-    const [inmobiliariaData, setInmobiliariaData] = useState({ nombre: '', coverUrl: 'https://picsum.photos/701', id:'' });
+    const [inmobiliariaData, setInmobiliariaData] = useState({ nombre: '', coverUrl: 'https://picsum.photos/701', id:'', calificacion: 0 });
 
 
     const fetchInmobiliariaData = async (inmobiliariaId) => {
@@ -34,6 +34,7 @@ const ViewPropertie = ({ route }) => {
                     nombre: response.data.userName,
                     coverUrl: response.data.photo || 'https://picsum.photos/701',
                     id: inmobiliariaId,
+                    calificacion: response.data.calification,
                 });
             } else {
                 console.error('Error al obtener datos de la inmobiliaria:', response.data.message);
@@ -242,7 +243,7 @@ const ViewPropertie = ({ route }) => {
                 <View style={{ alignSelf: 'center' }}>
                     <InmobiliariaCard
                         nombre={inmobiliariaData.nombre}
-                        rating={4} // Aquí puedes poner la calificación de la inmobiliaria si la tienes
+                        rating={inmobiliariaData.calificacion} // Aquí puedes poner la calificación de la inmobiliaria si la tienes
                         coverUrl={inmobiliariaData.coverUrl}
                         onPress={handleComents}
                     />

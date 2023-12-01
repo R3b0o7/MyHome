@@ -8,6 +8,7 @@ import PropertiesScreen from '../ui/screens/Inmobiliaria/TabNavigator/Properties
 import PropertiesStackNavigator from './PropertiesStackNavigator';
 import { Image } from 'react-native';
 import ProfileStackNavigator from './ProfileStackNavigator';
+import HomeNavigator from './HomeNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +31,7 @@ export default LandingStackNavigator = () => {
       />
       <Tab.Screen
         name={NavigatorConstant.LANDING_STACK.INMOBILIARIA_HOME}
-        component={HomeScreen}
+        component={HomeNavigator}
         options={{
           title: I18n.t('home'),
           headerShown: false,

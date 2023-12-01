@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
 
     MainContainer: {
         flex: 1,
-        //alignItems: 'center',
         justifyContent: 'flex-start',
     },
     TitleConteiner: {

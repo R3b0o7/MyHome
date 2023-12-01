@@ -9,7 +9,7 @@ import CustomShiftsCard from '../../../components/CustomShiftsCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const ShiftsScreen = () => {
+const ShiftsScreen =  ( route ) => {
 
     const navigation = useNavigation();
 
@@ -43,8 +43,11 @@ const ShiftsScreen = () => {
         const authToken = await AsyncStorage.getItem('authToken');
 
         // Realiza una solicitud GET para obtener las propiedades del usuario
+
+        const inmobiliariaId = route.params.inmobiliariaId
+
         try {
-            const response = await axios.get(`${SERVER_URL}/api/contact/getContactsByInmobiliaria`, {
+            const response = await axios.get(`${SERVER_URL}/api/contact/getContactsByInmobiliaria/${inmobiliariaId}`, {
                 headers: {
                     Authorization: authToken,
                 }

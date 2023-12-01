@@ -21,6 +21,7 @@ const ProfileScreen = () => {
     email: '',
     visibleEmail: '',
     photo: '',
+    id: '',
   });
 
   const fetchUserData = async () => {
@@ -42,6 +43,7 @@ const ProfileScreen = () => {
           email: userDataFromAPI.email,
           visibleEmail: userDataFromAPI.visibleEmail,
           photo: userDataFromAPI.photo,
+          id: userDataFromAPI._id,
         });
       }
     } catch (error) {
@@ -68,7 +70,9 @@ const ProfileScreen = () => {
   };
 
   const handleComents = () => {
-    navigation.push(NavigatorConstant.PROFILE_STACK.COMENTS);
+    navigation.push(NavigatorConstant.PROFILE_STACK.COMENTS,{
+        inmobiliariaId: userData.id
+    });
   };
 
   const pressHandler = () => {

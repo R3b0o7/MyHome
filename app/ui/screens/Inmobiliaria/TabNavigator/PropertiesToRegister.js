@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Image, TouchableOpacity  } from 'react-native';
-import CustomButton from '../../../components/CustomButton';
-import CustomTextInput from '../../../components/CustomTextInput';
-import { SelectList } from 'react-native-dropdown-select-list';
-import { useNavigation } from '@react-navigation/native';
-import { Title, Text } from 'react-native-paper';
-import I18n from '../../../../assets/strings/I18';
+import { Title, Text, Divider } from 'react-native-paper';
+
 import CheckBox from '@react-native-community/checkbox';
-import CustomSwitch from '../../../components/CustomSwitch';
-import UpdateImageModal from '../../../components/UpdateImageModal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import ImagePicker from 'react-native-image-crop-picker';
+import { SelectList } from 'react-native-dropdown-select-list';
+
+import { useNavigation } from '@react-navigation/native';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CLOUD_NAME } from '@env';
-import ImagePicker from 'react-native-image-crop-picker';
+
+import I18n from '../../../../assets/strings/I18';
+
+import CustomSwitch from '../../../components/CustomSwitch';
+import UpdateImageModal from '../../../components/UpdateImageModal';
+import CustomButton from '../../../components/CustomButton';
+import CustomTextInput from '../../../components/CustomTextInput';
+
 
 const PropertiesToRegister = () => {
     const navigation = useNavigation();
@@ -491,12 +496,18 @@ const PropertiesToRegister = () => {
 
     return (
         <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+            <ScrollView>
+
+{/* ---------- BLOQUE DE UBICACIÓN ---------- */}
+
                 <Title style={styles.title}>{I18n.t('location')}</Title>
+
+                {/* Text Inputs */}
 
                 <CustomTextInput
                     label={I18n.t('address')}
                     value={textInputData.calle}
+                    style={styles.textIputSyle}
                     onChangeText={(text) => {
                         // Convierte la primera letra en mayúscula y el resto en minúsculas
                         text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
@@ -528,6 +539,9 @@ const PropertiesToRegister = () => {
                     value={textInputData.departamento}
                     onChangeText={(text) => setUbicacionData({ ...textInputData, departamento: text })}
                 />
+
+                {/* Select Lists */}
+
                 <SelectList //Pais
                     boxStyles={styles.listBox}
                     dropdownStyles={styles.dropdown}
@@ -542,15 +556,7 @@ const PropertiesToRegister = () => {
                     notFoundText={"No se encontro resultado"}
                     save='value'
                 />
-                {/*<CustomTextInput
-                    label={I18n.t('country')}
-                    value={textInputData.pais}
-                    onChangeText={(text) => {
-                        // Convierte la primera letra en mayúscula y el resto en minúsculas
-                        text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-                        setUbicacionData({ ...textInputData, pais: text });
-                    }}
-                />*/}
+  
                 <SelectList //Provincia
                     boxStyles={styles.listBox}
                     dropdownStyles={styles.dropdown}
@@ -565,15 +571,7 @@ const PropertiesToRegister = () => {
                     notFoundText={"No se encontro resultado"}
                     save='value'
                 />
-                {/*<CustomTextInput
-                    label={I18n.t('state')}
-                    value={textInputData.provincia}
-                    onChangeText={(text) => {
-                        // Convierte la primera letra en mayúscula y el resto en minúsculas
-                        text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-                        setUbicacionData({ ...textInputData, provincia: text });
-                    }}
-                />*/}
+ 
                 <SelectList //Localidad-Barrio
                     boxStyles={styles.listBox}
                     dropdownStyles={styles.dropdown}
@@ -588,21 +586,18 @@ const PropertiesToRegister = () => {
                     notFoundText={"No se encontro resultado"}
                     save='value'
                 />
-                {/*<CustomTextInput
-                    label={I18n.t('city')}
-                    value={textInputData.localidad}
-                    onChangeText={(text) => {
-                        // Convierte la primera letra en mayúscula y el resto en minúsculas
-                        text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-                        setUbicacionData({ ...textInputData, localidad: text });
-                    }}
-                />*/}
+
+                {/* Text Input --> muestra latitud y longitud pero no hay que mostrarlo en la creación */}
+                
+                {/* 
                 <CustomTextInput
                     label={I18n.t('latLong')}
                     disabled={true}
                     value={textInputData.coordenadas}
                     onChangeText={(text) => setUbicacionData({ ...textInputData, coordenadas: text })}
-                />
+                /> */}
+
+{/* ----------  BLOQUE DE TIPO DE PROPIEDAD ---------- */}
 
                 <Title style={styles.title}>{I18n.t('kindOfProperty')}</Title>
 
@@ -617,7 +612,11 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
+{/* ----------  BLOQUE DE CARACTERISTICAS ---------- */}
+
                 <Title style={styles.title}>{I18n.t('characteristics')}</Title>
+
+                {/* Text Inputs */}
 
                 <CustomTextInput
                     label={I18n.t('m2cubiert')}
@@ -649,6 +648,9 @@ const PropertiesToRegister = () => {
                     }}
                     keyboardType="numeric"
                 />
+
+                {/* Select Lists */}
+
                 <SelectList //Ambientes
                     boxStyles={styles.listBox}
                     dropdownStyles={styles.dropdown}
@@ -663,16 +665,7 @@ const PropertiesToRegister = () => {
                     notFoundText={"No se encontro resultado"}
                     save='value'
                 />
-                {/*<CustomTextInput
-                    label={I18n.t('cantambient')}
-                    value={textInputData.cantambient}
-                    onChangeText={(text) => {
-                        // Filtra el texto para asegurarse de que solo contenga números
-                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
-                        setUbicacionData({ ...textInputData, cantambient: numericText });
-                    }}
-                    keyboardType="numeric"
-                />*/}
+
                 <SelectList //Dormitorios
                     boxStyles={styles.listBox}
                     dropdownStyles={styles.dropdown}
@@ -687,17 +680,6 @@ const PropertiesToRegister = () => {
                     notFoundText={"No se encontro resultado"}
                     save='value'
                 />
-
-                {/*<CustomTextInput
-                    label={I18n.t('cantcuartos')}
-                    value={textInputData.cantcuartos}
-                    onChangeText={(text) => {
-                        // Filtra el texto para asegurarse de que solo contenga números
-                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
-                        setUbicacionData({ ...textInputData, cantcuartos: numericText });
-                    }}
-                    keyboardType="numeric"
-                />*/}
 
                 <SelectList //Baños
                     boxStyles={styles.listBox}
@@ -714,19 +696,7 @@ const PropertiesToRegister = () => {
                     save='value'
                 />
 
-
-                {/*<CustomTextInput
-                    label={I18n.t('cantbaños')}
-                    value={textInputData.cantbaños}
-                    onChangeText={(text) => {
-                        // Filtra el texto para asegurarse de que solo contenga números
-                        const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
-                        setUbicacionData({ ...textInputData, cantbaños: numericText });
-                    }}
-                    keyboardType="numeric"
-                />*/}
-
-                <Text />
+                {/* Check Box */}
 
                 {Object.keys(characteristicsProp).map((characteristics) => (
                     <View style={styles.checkboxRow} key={characteristics}>
@@ -739,7 +709,7 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
-                <Text />
+                <Divider style={styles.invisibleDivider}/>   
 
                 {Object.keys(frenteTypes).map((type) => (
                     <View style={styles.checkboxRow} key={type}>
@@ -752,7 +722,7 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
-                <Text />
+                <Divider style={styles.invisibleDivider}/>  
 
                 {Object.keys(orientTypes).map((type) => (
                     <View style={styles.checkboxRow} key={type}>
@@ -765,7 +735,7 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
-                <Text />
+                {/* Text Input */}        
 
                 <CustomTextInput
                     label={I18n.t('antiguedad')}
@@ -777,6 +747,8 @@ const PropertiesToRegister = () => {
                     }}
                     keyboardType="numeric"
                 />
+
+{/* ----------  BLOQUE DE AMENITIES ---------- */}    
 
                 <Title style={styles.title}>{I18n.t('amenities')}</Title>
 
@@ -791,7 +763,7 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
-                <Text />
+{/* ---------- BLOQUE DE OTRAS PROPIEDADES --------- */}            
 
                 <CustomTextInput
                     label={I18n.t('description')}
@@ -802,10 +774,13 @@ const PropertiesToRegister = () => {
                         setUbicacionData({ ...textInputData, descripcion: text });
                     }}
                 />
-                <Text />
+
+                {/* Fotos y Videos */}   
 
                 <CustomButton title={I18n.t('uploadphoto')} onPress={handleUploadPhoto} style={styles.uploadphotoButton} />
+
                 <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
+
                 <Title style={styles.titleUpload}>{I18n.t('requeredPhoto')}</Title>
 
                 {
@@ -827,7 +802,9 @@ const PropertiesToRegister = () => {
                     }
 
                 <CustomButton title={I18n.t('uploadVideo')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
-                <Text />
+
+                {/* Text Input */}           
+
                 <CustomTextInput
                     label={I18n.t('precioVentaAlqui')}
                     value={textInputData.precio}
@@ -839,6 +816,8 @@ const PropertiesToRegister = () => {
                     keyboardType="numeric"
                 />
 
+                {/* Clip de opcines */}   
+
                 <Title style={styles.title}>
                     PESO
                     <CustomSwitch
@@ -847,6 +826,8 @@ const PropertiesToRegister = () => {
                     />
                     DOLAR
                 </Title>
+
+                {/* Text Input */}       
 
                 <CustomTextInput
                     label={I18n.t('expenses')}
@@ -858,6 +839,8 @@ const PropertiesToRegister = () => {
                     }}
                     keyboardType="numeric"
                 />
+
+{/* ---------- BLOQUE DE ESTADO --------- */}  
 
                 <Title style={styles.title}>{I18n.t('statePropertie')}</Title>
 
@@ -883,50 +866,59 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    scrollViewContent: {},
     title: {
         fontSize: 20,
-        marginVertical: 20,
-        marginTop: 20,
+        paddingTop:10,
+        paddingBottom: 5,
         textAlign: 'center',
     },
-    titleUpload: {
-        fontSize: 10,
-        textAlign: 'center',
+    invisibleDivider: {
+        alignSelf: 'center',
+        padding: 0.5,
+        margin: 5, 
+        width: '80%'
     },
+
+    // CheckBox
     checkboxRow: {
+        alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginLeft: 40,
-        marginRight: 40,
+        width: '80%',
     },
     checkboxText: {
         fontSize: 16,
     },
-    registerButton: {
-        marginTop: 100,
-        margin: 70,
-        marginLeft: 120,
-        marginRight: 120,
+
+    // SELECT LIST
+    listBox: {
+        alignSelf: 'center',
+        width: 300,
+        borderRadius: 100,
+        marginTop: 10,
+        marginBottom: 10,
+        backgroundColor: '#E0E4F2',
+        borderColor: '#E0E4F2',
     },
+    dropdown: {
+        alignSelf: 'center',
+        width: 300,
+        backgroundColor: '#E0E4F2',
+        borderColor: '#E0E4F2',
+    },
+    textDropList: {
+        color: 'black'
+    },
+    dropdownTextStyles: {
+        color: 'black'
+    },
+
+    // MANEJO DE IMAGENES Y VIDEO
     uploadphotoButton: {
-        marginLeft: 150,
-        marginRight: 150,
-    },
-    checkboxTitle: {
-        fontSize: 18,
-        marginVertical: 10,
-        marginLeft: 40,
-        marginRight: 40,
-        fontWeight: 'bold',
-    },
-    selectedImagesContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 10,
+        alignSelf: 'center',
+        width: 150,
+        height: 40,
+        margin: 10,
     },
     imageContainer: {
         width: 100,
@@ -939,23 +931,12 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
-    listBox: {
-        width: 300,
-        marginTop: 10,
-        marginBottom: 10,
-        backgroundColor: '#E0E4F2',
-        borderRadius: 100,
-        borderColor: '#E0E4F2',
-    },
-    dropdown: {
-        backgroundColor: '#E0E4F2',
-        borderColor: '#E0E4F2',
-    },
-    textDropList: {
-        color: 'black'
-    },
-    dropdownTextStyles: {
-        color: 'black'
+    selectedImagesContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
     },
     removeButton: {
         position: 'absolute',
@@ -967,6 +948,18 @@ const styles = StyleSheet.create({
     },
     removeButtonText: {
         color: 'white',
+    },
+    titleUpload: {
+        fontSize: 10,
+        textAlign: 'center',
+    },
+
+    // BOTON DE PUBLICAR
+    registerButton: {
+        alignSelf: 'center',
+        marginTop: 40,
+        marginBottom:30,
+        width: 200,
     },
 });
 

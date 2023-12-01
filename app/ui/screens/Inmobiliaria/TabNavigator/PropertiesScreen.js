@@ -100,6 +100,7 @@ const PropertiesScreen = () => {
             <View style={styles.lowerContainer}>
                 {/* Contenedor inferior (1/4 de la pantalla) */}
                 <CustomButton
+                    style={styles.button}
                     title={I18n.t('toRegister')}
                     onPress={handleToRegister}
                 />
@@ -116,6 +117,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
+        fontWeight: 'bold',
         marginVertical: 20,
         marginTop: 20,
     },
@@ -131,6 +133,9 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    button:{
+        width: 200
     },
 });
 

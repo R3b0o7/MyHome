@@ -4,7 +4,7 @@ import I18n from "../assets/strings/I18";
 import NavigatorConstant from "./NavigatorConstant";
 import ProfileUser from "../ui/screens/Users/Profile/ProfileUser";
 import SettingsUser from "../ui/screens/Users/Profile/SettingsUser";
-import ChangePaswordUser from "../ui/screens/Users/Profile/ChangePaswordUser";
+import ShiftsUserScreen from "../ui/screens/Users/Profile/ShiftsUserScreen"; 
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +19,11 @@ export default ProfileUserStackNavigator = () => {
             <Stack.Screen
                 name={NavigatorConstant.PROFILE_STACK.SETTINGS}
                 component={SettingsUser}
+                options={{ title: I18n.t('settings')}}
+            />
+            <Stack.Screen
+                name={NavigatorConstant.PROFILE_USER_STACK.SHIFTS_USER}
+                component={ShiftsUserScreen}
                 options={{ title: I18n.t('settings')}}
             />
         </Stack.Navigator >

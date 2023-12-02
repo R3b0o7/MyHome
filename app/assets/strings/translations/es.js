@@ -122,6 +122,7 @@ export default {
     selecLoc: 'Seleccionar Localidad/Barrio',
     moneda: 'Moneda',
     shifts: 'Turnos solicitados',
+    shiftsUser: 'Mis turnos',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

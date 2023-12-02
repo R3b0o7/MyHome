@@ -33,7 +33,7 @@ const ContactPropertie = ({ route }) => {
 
 
     //Input Date
-    const [inputDate, setInputDate] = React.useState(undefined)
+    const [inputDate, setInputDate] = useState(undefined)
 
     const handleSend = async () => {
 
@@ -79,9 +79,6 @@ const ContactPropertie = ({ route }) => {
 
                 navigation.goBack();
             }
-
-
-
 
         } catch (error) {
             // Muestra una alerta de error en la creacion

@@ -123,6 +123,9 @@ export default {
     moneda: 'Moneda',
     shifts: 'Turnos solicitados',
     shiftsUser: 'Mis turnos',
+    contacts: 'Turnos',
+    myContacts: 'Mis Turnos',
+    noContactsCreated: 'No se encontraron turnos',
     imageType: {
         svg: 'SVG File',
         png: 'PNG File',

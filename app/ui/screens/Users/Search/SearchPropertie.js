@@ -128,8 +128,8 @@ const SearchPropertie = () => {
                 cantcuartos: dormitoriosSeleccionados,
                 cantbaños: banosSeleccionados,
                 antiguedad: antiguedadSeleccionada,
-                precioMinimo: minSliderState,
-                precioMaximo: -maxSliderState, // Asumiendo que el valor máximo es negativo
+                precioMin: minSliderState,
+                precioMax: -maxSliderState, // Asumiendo que el valor máximo es negativo
                 sum: amenities.sum,
                 pool: amenities.pool,
                 quincho: amenities.quincho,

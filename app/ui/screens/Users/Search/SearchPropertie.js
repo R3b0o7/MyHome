@@ -53,129 +53,69 @@ const SearchPropertie = () => {
     }, [navigation]);
 
     const handleSearch = async () => {
-        try {
-            // Establecer los valores de 'venta' y 'alquiler' basándose en la selección
-            let venta = false;
-            let alquiler = false;
+    try {
+        let requestBody = {};
 
-            let house = false;
-            let ph = false;
-            let apartment = false;
-            let local = false;
-            let office = false;
-            let galpon = false;
-            let territory = false;
-            let dolar = false;
-
-            if (ventaAlquiler === 'Venta') {
-                venta = true;
-            } else if (ventaAlquiler === 'Alquiler') {
-                alquiler = true;
-            }
-
-            if (tipoPropiedad === 'Casa') {
-                house = true;
-            } else if (tipoPropiedad === 'Propiedad Horizontal') {
-                ph = true;
-            } else if (tipoPropiedad === 'Departamento') {
-                apartment = true;
-            } else if (tipoPropiedad === 'Local comercial') {
-                local = true;
-            } else if (tipoPropiedad === 'Oficina') {
-                office = true;
-            } else if (tipoPropiedad === 'Galpón') {
-                galpon = true;
-            } else if (tipoPropiedad === 'Terreno') {
-                territory = true;
-            }
-
-            if (monedaSeleccionada === 'Dolares') {
-                dolar = true;
-            }
-
-            if (tipoPropiedad === 'Casa') {
-                house = true;
-            } else if (tipoPropiedad === 'Propiedad Horizontal') {
-                ph = true;
-            } else if (tipoPropiedad === 'Departamento') {
-                apartment = true;
-            } else if (tipoPropiedad === 'Local comercial') {
-                local = true;
-            } else if (tipoPropiedad === 'Oficina') {
-                office = true;
-            } else if (tipoPropiedad === 'Galpón') {
-                galpon = true;
-            } else if (tipoPropiedad === 'Terreno') {
-                territory = true;
-            }
-
-
-            // Construir el cuerpo de la petición
-            const requestBody = {
-                venta: venta,
-                alquiler: alquiler,
-                house: house,
-                ph: ph,
-                apartment: apartment,
-                local: local,
-                office: office,
-                galpon: galpon,
-                territory: territory,
-                //  provincia: provinciaSeleccionada,
-                //  localidad: barrioSeleccionado,
-                dolar: dolar,
-                cantambient: ambientesSeleccionados,
-                cantcuartos: dormitoriosSeleccionados,
-                cantbaños: banosSeleccionados,
-                antiguedad: antiguedadSeleccionada,
-                precioMin: minSliderState,
-                precioMax: -maxSliderState, // Asumiendo que el valor máximo es negativo
-                sum: amenities.sum,
-                pool: amenities.pool,
-                quincho: amenities.quincho,
-                solarium: amenities.solarium,
-                sauna: amenities.sauna,
-                roomgames: amenities.roomgames,
-                calefaccion: amenities.calefaccion,
-                coworking: amenities.coworking,
-                microcine: amenities.microcine,
-                terraza: characteristicsProp.terraza,
-                balcon: characteristicsProp.balcon,
-                cochera: characteristicsProp.cochera,
-                baulera: characteristicsProp.baulera,
-                frete: frenteTypes.frente,
-                contrafrente: frenteTypes.contrafrente,
-                orientnorte: orientTypes.orientnorte,
-                orientsur: orientTypes.orientsur,
-                orienteste: orientTypes.orienteste,
-                orientOeste: orientTypes.orientOeste,
-
-            };
-
-            // Agregar provincia y localidad si no son las opciones por defecto
-            if (provinciaSeleccionada && provinciaSeleccionada !== 'Seleccionar Provincia') {
-                requestBody.provincia = provinciaSeleccionada;
-            }
-            if (barrioSeleccionado && barrioSeleccionado !== 'Seleccionar Barrio') {
-                requestBody.localidad = barrioSeleccionado;
-            }
-            
-
-            // Realizar la petición al servidor
-            const response = await axios.post(`${SERVER_URL}/api/properties/search`, requestBody);
-
-            if (response.status === 200) {
-                // Manejar la respuesta del servidor
-                navigation.push(NavigatorConstant.SEARCH_.RESULTS, {
-                    propertyIds: response.data
-                });
-            } else {
-                console.error('Respuesta no exitosa:', response);
-            }
-        } catch (error) {
-            console.error('Error en la petición de búsqueda:', error);
+        if (ventaAlquiler === 'Venta') {
+            requestBody.venta = true;
+        } else if (ventaAlquiler === 'Alquiler') {
+            requestBody.alquiler = true;
         }
-    };
+
+        if (monedaSeleccionada === 'Dolares') {
+            requestBody.dolar = true;
+        }
+
+        if (tipoPropiedad) {
+            requestBody[tipoPropiedad.toLowerCase()] = true;
+        }
+
+        if (provinciaSeleccionada && provinciaSeleccionada !== 'Seleccionar Provincia') {
+            requestBody.provincia = provinciaSeleccionada;
+        }
+
+        if (barrioSeleccionado && barrioSeleccionado !== 'Seleccionar Barrio') {
+            requestBody.localidad = barrioSeleccionado;
+        }
+
+        requestBody.cantambient = ambientesSeleccionados;
+        requestBody.cantcuartos = dormitoriosSeleccionados;
+        requestBody.cantbaños = banosSeleccionados;
+        requestBody.antiguedad = antiguedadSeleccionada;
+
+        requestBody.precioMin = minSliderState;
+        requestBody.precioMax = -maxSliderState;
+
+        // Agregar checkboxes si están marcados
+        const checkBoxProps = {
+            ...amenities,
+            ...characteristicsProp,
+            ...frenteTypes,
+            ...orientTypes,
+        };
+
+        for (const [key, value] of Object.entries(checkBoxProps)) {
+            if (value) {
+                requestBody[key] = value;
+            }
+        }
+
+        console.log('Request Body:', requestBody);
+
+        const response = await axios.post(`${SERVER_URL}/api/properties/search`, requestBody);
+
+        if (response.status === 200) {
+            // Manejar la respuesta del servidor
+            navigation.push(NavigatorConstant.SEARCH_.RESULTS, {
+                propertyIds: response.data
+            });
+        } else {
+            console.error('Respuesta no exitosa:', response);
+        }
+    } catch (error) {
+        console.error('Error en la petición de búsqueda:', error);
+    }
+};
 
     const estado = [
         { key: '', value: 'Seleccionar Operacion' },

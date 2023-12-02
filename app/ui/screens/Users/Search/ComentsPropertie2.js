@@ -36,8 +36,20 @@ const ComentsPropertie = ({ route }) => {
                 setComments(response.data);
             }
         } catch (error) {
-            console.error('Error al obtener los comentarios:', error);
-            // Manejar el error adecuadamente
+            if (error.response) {
+                // El servidor respondió con un estado fuera del rango 2xx
+                const errorMessage = error.response.data.message;
+                alert(errorMessage);
+            } else if (error.message === "Network Error") {
+                // Manejo de errores de red, como la ausencia de conexión a Internet
+                alert('No hay conexión a Internet. Por favor, verifica tu conexión.');
+            } else if (error.request) {
+                // La solicitud se realizó pero no se recibió respuesta
+                alert('No se recibió respuesta del servidor');
+            }  else {
+                // Algo ocurrió al configurar la solicitud que desencadenó un error
+                alert('Error al realizar la solicitud');
+            }
         }
     };
 
@@ -55,12 +67,15 @@ const ComentsPropertie = ({ route }) => {
 
     return (
         <View style={styles.PrincipalContainer}>
-            <ScrollView>
-                <View style={styles.TitleConteiner}>
-                    <Image style={styles.ImageTitle} source={require('../../../../assets/images/Icons/lightMode/message.png')} />
-                    <Text style={styles.Title}>Comentarios</Text>
-                </View>
-                {comments.map((comment, index) => (
+        <ScrollView>
+            <View style={styles.TitleConteiner}>
+                <Image style={styles.ImageTitle} source={require('../../../../assets/images/Icons/lightMode/message.png')} />
+                <Text style={styles.Title}>Comentarios</Text>
+            </View>
+            {comments.length === 0 ? (
+                <Text style={styles.noCommentsText}>No hay comentarios disponibles.</Text>
+            ) : (
+                comments.map((comment, index) => (
                     <CustomCommentsCard
                         key={index}
                         userName={comment.userName}
@@ -69,8 +84,9 @@ const ComentsPropertie = ({ route }) => {
                         rating={comment.calificacion}
                         onSelectComment={() => showModal(comment)}
                     />
-                ))}
-            </ScrollView>
+                ))
+            )}
+        </ScrollView>
 
             <Modal
                 visible={visible}
@@ -148,6 +164,12 @@ const styles = StyleSheet.create({
     starsContainer: {
         alignItems: 'flex-end',
         marginTop: 5,
+    },
+    noCommentsText: {
+        textAlign: 'center',
+        marginTop: 20,
+        fontSize: 16,
+        color: 'gray',
     },
 });
 

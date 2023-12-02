@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Text, Image } from 'react-native';
 import { Paragraph, Modal, Title } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import I18n from '../../../../assets/strings/I18';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
@@ -9,11 +9,12 @@ import CustomShiftsCard from '../../../components/CustomShiftsCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const ShiftsScreen =  ( route ) => {
+const ShiftsScreen = (route) => {
 
     const navigation = useNavigation();
+    const isFocused = useIsFocused();
 
-    const [userShifts, setUserShifts] = useState(['']); // Estado para almacenar los turnos del usuario
+    const [userShifts, setUserShifts] = useState([]); // Estado para almacenar los turnos del usuario
 
     const [visible, setVisible] = useState(false);
     const [selectedShift, setSelectedShift] = useState({
@@ -21,7 +22,7 @@ const ShiftsScreen =  ( route ) => {
         numero: '',
         piso: '',
         departamento: '',
-        username: '',
+        userName: '',
         message: '',
         photo: null,
         date: '',
@@ -30,7 +31,21 @@ const ShiftsScreen =  ( route ) => {
     });
 
     const showModal = (shift) => {
-        setSelectedShift(shift);
+        const date = new Date(shift.date); // Crear un objeto de fecha
+        const formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear(); // Formatear la fecha
+
+        setSelectedShift({
+            calle: shift.calle || '',
+            numero: shift.numero || '',
+            piso: shift.piso || '',
+            departamento: shift.departamento || '',
+            userName: shift.userName || '',
+            message: shift.message || '',
+            photo: shift.photo || 'https://picsum.photos/701', // Imagen predeterminada si no hay foto
+            date: formattedDate || '',
+            mañana: shift.mañana || false,
+            tarde: shift.tarde || false,
+        });
         setVisible(true);
     };
 
@@ -42,12 +57,8 @@ const ShiftsScreen =  ( route ) => {
         // Obtén el token de AsyncStorage
         const authToken = await AsyncStorage.getItem('authToken');
 
-        // Realiza una solicitud GET para obtener las propiedades del usuario
-
-        const inmobiliariaId = route.params.inmobiliariaId
-
         try {
-            const response = await axios.get(`${SERVER_URL}/api/contact/getContactsByInmobiliaria/${inmobiliariaId}`, {
+            const response = await axios.get(`${SERVER_URL}/api/contact/getContactsByInmobiliaria`, {
                 headers: {
                     Authorization: authToken,
                 }
@@ -80,24 +91,29 @@ const ShiftsScreen =  ( route ) => {
                         {I18n.t('noContactsCreated')}
                     </Text>
                 ) : (
-                    userShifts.map((data, index) => ( //Buscar como tomar los datos de la property
-                        <CustomShiftsCard
-                            key={index}
-                            address={data.calle + ' ' + data.numero + ' ' + data.piso + '° ' + data.departamento} //Tomar el address de la propiedad de una constante arriba
-                            username={data.username}
-                            date={data.date}
-                            time={
-                                data.mañana
-                                    ? 'Mañana'
-                                    : data.tarde
-                                    ? 'Tarde'
-                                    : '' // Añade una operación predeterminada si ninguna está en true
-                            }
-                            onPress={() => showModal(data)}
-                            coverUrl={data.photo} //poner url de verdad
-                            message={data.message}
-                        />
-                    ))
+                    userShifts.map((data, index) => {
+                        const date = new Date(data.date); // Crear un objeto de fecha
+                        const formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear(); // Formatear la fecha
+
+                        return (
+                            <CustomShiftsCard
+                                key={index}
+                                address={data.calle + ' ' + data.numero + ' ' + data.piso + '° ' + data.departamento}
+                                username={data.userName}
+                                date={formattedDate} // Usar la fecha formateada
+                                time={
+                                    data.mañana
+                                        ? 'Mañana'
+                                        : data.tarde
+                                            ? 'Tarde'
+                                            : ''
+                                }
+                                onPress={() => showModal(data)}
+                                coverUrl={data.photo}
+                                message={data.message}
+                            />
+                        );
+                    })
                 )}
             </ScrollView>
             <Modal
@@ -108,26 +124,26 @@ const ShiftsScreen =  ( route ) => {
             >
                 <View>
                     <View style={styles.topRow}>
-                        {selectedShift.photo !== null ? (
+                        {selectedShift.photo && (
                             <Image style={styles.imageStyle} source={{ uri: selectedShift.photo }} />
-                        ) : null}
+                        )}
                         <View>
                             <Title style={styles.addressStyle}>{selectedShift.calle + ' ' + selectedShift.numero + ' ' + selectedShift.piso + '° ' + selectedShift.departamento}</Title>
                             <Text style={styles.dateStyle}>
-                            {selectedShift.date + ' - ' +
-                                (selectedShift.mañana
-                                    ? 'Mañana'
-                                    : selectedShift.tarde
-                                    ? 'Tarde'
-                                    : '') 
-                            }
-                        </Text>
+                                {selectedShift.date + ' - ' +
+                                    (selectedShift.mañana
+                                        ? 'Mañana'
+                                        : selectedShift.tarde
+                                            ? 'Tarde'
+                                            : '')
+                                }
+                            </Text>
                         </View>
                     </View>
                     <View style={styles.messageDetails}>
                         <View style={styles.userContainer}>
                             <Image style={styles.imageUser} source={require('../../../../assets/images/Icons/lightMode/perfil.png')} />
-                            <Text style={styles.usernameStyle}>{selectedShift.user}</Text>
+                            <Text style={styles.usernameStyle}>{selectedShift.userName}</Text>
                         </View>
                         <Paragraph>{selectedShift.message}</Paragraph>
                     </View>

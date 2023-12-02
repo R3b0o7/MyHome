@@ -55,12 +55,16 @@ const ProfileUser = () => {
     }
   }, [isFocused]);
 
-  const handleLogOut = () => {
-    navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
+  const handleShifts = () => {
+    navigation.push(NavigatorConstant.PROFILE_USER_STACK.SHIFTS_USER);
   };
 
   const handleSettings = () => {
     navigation.push(NavigatorConstant.PROFILE_STACK.SETTINGS);
+  };
+
+  const handleLogOut = () => {
+    navigation.replace(NavigatorConstant.NAVIGATOR.LOGIN);
   };
 
   const pressHandler = () => {
@@ -113,9 +117,14 @@ const ProfileUser = () => {
 
           <ImageCustomButton
             style={styles.buttons}
+            title={I18n.t('shiftsUser')}
+            imageSource={require('../../../../assets/images/Icons/lightMode/calendar.png')}
+            onPress={handleShifts} />
+          <ImageCustomButton
+            style={styles.buttons}
             title={I18n.t('settings')}
             imageSource={require('../../../../assets/images/Icons/lightMode/settings.png')}
-            onPress={handleSettings} />
+            onPress={handleSettings} />            
           <ImageCustomButton
             style={styles.buttons}
             title={I18n.t('closeSesion')}

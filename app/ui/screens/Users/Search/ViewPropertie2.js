@@ -194,6 +194,9 @@ const ViewPropertie2 = ({ route }) => {
                         {Number(propertyData.precio).toLocaleString('en-US')}
                     </Text>
                 </View>
+                <Text style={{ fontSize: 15, alignSelf: 'center' }}>
+                    $ {propertyData.expensas} pesos/mes
+                </Text>
 
                 <Divider style={styles.divider} />
 

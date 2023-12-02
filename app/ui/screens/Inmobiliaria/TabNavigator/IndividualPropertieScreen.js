@@ -106,13 +106,13 @@ const IndividualPropertieScreen = ({ route }) => {
         }
     }, [isFocused]);
 
-    const carouselItems = propertyData.photos 
+    const carouselItems = propertyData.photos
         ? propertyData.photos.map((photoUrl, index) => ({
             id: index,
             coverUrl: photoUrl,
         }))
         : [];
-    
+
     const chipsData = [
         { icon: require('../../../../assets/images/Icons/black/m2.png'), label: `${propertyData.m2cubiert}m2` },
         { icon: require('../../../../assets/images/Icons/black/ambientes.png'), label: `${propertyData.cantambient} amb.` },
@@ -176,7 +176,11 @@ const IndividualPropertieScreen = ({ route }) => {
                         {/* el 'en-US' deberia mostrar el separador de miles como . y no como , pero no funciona */}
                         {Number(propertyData.precio).toLocaleString('en-US')}
                     </Text>
+
                 </View>
+                <Text style={{ fontSize: 15, alignSelf: 'center' }}>
+                    $ {propertyData.expensas} pesos/mes
+                </Text>
 
                 <Divider style={styles.divider} />
 
@@ -224,7 +228,7 @@ const IndividualPropertieScreen = ({ route }) => {
                     {propertyData.descripcion}
                 </Text>
 
-                <Text/>
+                <Text />
 
 
             </ScrollView>
@@ -243,7 +247,7 @@ const IndividualPropertieScreen = ({ route }) => {
                 <ImageCustomButton
                     style={styles.ImageBoton}
                     imageSource={require('../../../../assets/images/Stars/starFull.png')}
-                // title={I18n.t('favorite')}
+                    // title={I18n.t('favorite')}
                     onPress={pressHandlerFavorite}
                 />
 

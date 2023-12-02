@@ -97,10 +97,10 @@ const PropertiesUpdate = ({ route }) => {
                     cantambient: response.data.cantambient,
                     cantcuartos: response.data.cantcuartos,
                     cantbaños: response.data.cantbaños,
-                    antiguedad: response.data.antiguedad,
+                    antiguedad: response.data.antiguedad.toString(),
                     descripcion: response.data.descripcion,
-                    precio: response.data.precio,
-                    expensas: response.data.expensas,
+                    precio: response.data.precio.toString(),
+                    expensas: response.data.expensas.toString(),
                 });
 
                 // Actualiza los valores de los campos de selección
@@ -451,9 +451,9 @@ const PropertiesUpdate = ({ route }) => {
                 cantambient: textInputData.cantambient,
                 cantcuartos: textInputData.cantcuartos,
                 cantbaños: textInputData.cantbaños,
-                antiguedad: textInputData.antiguedad,
-                precio: textInputData.precio,
-                expensas: textInputData.expensas,
+                antiguedad: parseFloat(textInputData.antiguedad.replace(/,/g, '')),
+                precio: parseFloat(textInputData.precio.replace(/,/g, '')),
+                expensas: parseFloat(textInputData.expensas.replace(/,/g, '')),
                 house: propertyTypes.house,
                 ph: propertyTypes.ph,
                 apartment: propertyTypes.apartment,

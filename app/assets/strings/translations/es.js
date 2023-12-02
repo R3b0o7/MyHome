@@ -122,7 +122,6 @@ export default {
     selecLoc: 'Seleccionar Localidad/Barrio',
     moneda: 'Moneda',
     shifts: 'Turnos solicitados',
-    shiftsUser: 'Mis turnos',
     contacts: 'Turnos',
     myContacts: 'Mis Turnos',
     noContactsCreated: 'No se encontraron turnos',

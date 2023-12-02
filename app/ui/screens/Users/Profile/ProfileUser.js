@@ -117,7 +117,7 @@ const ProfileUser = () => {
 
           <ImageCustomButton
             style={styles.buttons}
-            title={I18n.t('shiftsUser')}
+            title={I18n.t('myContacts')}
             imageSource={require('../../../../assets/images/Icons/lightMode/calendar.png')}
             onPress={handleShifts} />
           <ImageCustomButton

@@ -58,7 +58,7 @@ const ShiftsUserScreen = (route) => {
         const authToken = await AsyncStorage.getItem('authToken');
 
         try {
-            const response = await axios.get(`${SERVER_URL}/api/contact/getContactsByInmobiliaria`, {
+            const response = await axios.get(`${SERVER_URL}/api/contact/getContactsByUser`, {
                 headers: {
                     Authorization: authToken,
                 }
@@ -66,6 +66,8 @@ const ShiftsUserScreen = (route) => {
             if (response.status === 200) {
                 setUserShifts(response.data);
             }
+
+            console.log(response.data);
         } catch (error) {
             console.error('Error al obtener los turnos del usuario:', error);
         }
@@ -156,8 +158,11 @@ const ShiftsUserScreen = (route) => {
 const styles = StyleSheet.create({
     PrincipalContainer: {
         flex: 1,
+
         alignItems: 'center',
+
         justifyContent: 'flex-start',
+
     },
     TitleConteiner: {
         flexDirection: 'row',

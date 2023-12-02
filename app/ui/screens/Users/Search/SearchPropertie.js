@@ -100,8 +100,6 @@ const SearchPropertie = () => {
             }
         }
 
-        console.log('Request Body:', requestBody);
-
         const response = await axios.post(`${SERVER_URL}/api/properties/search`, requestBody);
 
         if (response.status === 200) {

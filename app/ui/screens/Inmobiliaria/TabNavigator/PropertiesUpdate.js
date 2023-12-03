@@ -928,8 +928,10 @@ const styles = StyleSheet.create({
         marginRight: 120,
     },
     uploadphotoButton: {
-        marginLeft: 150,
-        marginRight: 150,
+        alignSelf: 'center',
+        width: 150,
+        height: 40,
+        margin: 10,
     },
     checkboxTitle: {
         fontSize: 18,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Title, Text, Divider } from 'react-native-paper';
 import Video from 'react-native-video';
 
@@ -27,6 +27,8 @@ const PropertiesToRegister = () => {
     const [videoUrls, setVideoUrls] = useState([]);
 
     const [updateImageModalVisible, setUpdateImageModalVisible] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+
 
     const openUpdateImageModal = () => {
         setUpdateImageModalVisible(true);
@@ -433,6 +435,7 @@ const PropertiesToRegister = () => {
     // Función para enviar la solicitud de registro
     const handleRegister = async () => {
         try {
+            setIsUploading(true);
 
             //validacion para que no este vacio
             const emptyFields = [];
@@ -537,12 +540,13 @@ const PropertiesToRegister = () => {
                     Authorization: token, // Incluye el token en la cabecera de la solicitud
                 },
             });
-
+            setIsUploading(false);
             // Muestra una alerta de registro exitoso
             alert('Propiedad creada exitosamente!');
 
             navigation.goBack();
         } catch (error) {
+            setIsUploading(false);
             if (error.response) {
                 // El servidor respondió con un estado fuera del rango 2xx
                 const errorMessage = error.response.data.message;
@@ -562,6 +566,12 @@ const PropertiesToRegister = () => {
 
     return (
         <View style={styles.container}>
+            {isUploading && (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                    <Text>Cargando, por favor espere...</Text>
+                </View>
+            )}
             <ScrollView showsVerticalScrollIndicator={false}>
 
                 {/* ---------- BLOQUE DE UBICACIÓN ---------- */}
@@ -1062,6 +1072,16 @@ const styles = StyleSheet.create({
     video: {
         width: '100%',
         height: '100%',
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        zIndex: 1, // Asegúrate de que se muestre sobre los demás elementos
     },
 
 });

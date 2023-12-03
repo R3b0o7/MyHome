@@ -179,11 +179,11 @@ const SettingsScreen = () => {
   };
 
   const uploadImages = async () => {
+    // Si no se seleccionó ninguna imagen nueva, retorna la URL actual
     if (imageUrls.length === 0) {
-      console.log("No hay imágenes para subir");
-      return null;
+      return userData.photo;
     }
-
+  
     const image = imageUrls[0]; // Toma la primera imagen
     const formData = new FormData();
     formData.append('file', {
@@ -192,7 +192,7 @@ const SettingsScreen = () => {
       name: image.name,
     });
     formData.append('upload_preset', 'Fotos_Perfil');
-
+  
     try {
       const uploadResponse = await axios.post(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
@@ -203,7 +203,7 @@ const SettingsScreen = () => {
           },
         }
       );
-
+  
       return uploadResponse.data.secure_url; // Retorna la URL de la imagen subida
     } catch (error) {
       console.log('Error al subir la imagen:', error);

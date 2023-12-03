@@ -21,6 +21,7 @@ const PropertiesUpdate = ({ route }) => {
     const isFocused = useIsFocused();
     const [isLoading, setIsLoading] = useState(true);
     const [videoUrls, setVideoUrls] = useState([]);
+    const [isUploading, setIsUploading] = useState(false);
 
     //API GOOGLE
 
@@ -451,7 +452,7 @@ const PropertiesUpdate = ({ route }) => {
 
     const handleUpdateProperty = async () => {
         try {
-
+            setIsUploading(true);
             //validacion para que no este vacio
             const emptyFields = [];
 
@@ -554,13 +555,14 @@ const PropertiesUpdate = ({ route }) => {
                     Authorization: token, // Incluye el token en la cabecera de la solicitud
                 },
             });
-
+            setIsUploading(false);
             // Muestra una alerta de actualización exitosa
             alert('Propiedad actualizada exitosamente!');
 
             // Redirige o realiza otras acciones necesarias después de la actualización
             navigation.goBack(); // Redirige a la pantalla anterior, por ejemplo
         } catch (error) {
+            setIsUploading(false);
             console.error('Error al actualizar la propiedad:', error);
             // Muestra una alerta de error en la actualización
             alert('Error al actualizar la propiedad');
@@ -701,6 +703,12 @@ const PropertiesUpdate = ({ route }) => {
 
     return (
         <View style={styles.container}>
+            {isUploading && (
+                <View style={styles.loadingContainer2}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                    <Text>Cargando, por favor espere...</Text>
+                </View>
+            )}
             {isLoading ? ( // Muestra el indicador de carga si isLoading es verdadero
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator size="large" color="#0000ff" />
@@ -1187,6 +1195,16 @@ const styles = StyleSheet.create({
     video: {
         width: '100%',
         height: '100%',
+    },
+    loadingContainer2: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        zIndex: 1, // Asegúrate de que se muestre sobre los demás elementos
     },
 });
 

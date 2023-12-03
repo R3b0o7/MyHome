@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, Dimensions, Alert, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, FlatList, Dimensions, Alert, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Chip, Divider, Text, Card } from 'react-native-paper';
+import Modal from 'react-native-modal';
+import Video from 'react-native-video';
 import ImagePop from '../../../components/ImagePop';
 import Carousel from 'react-native-snap-carousel';
 import I18n from '../../../../assets/strings/I18';
@@ -17,6 +19,13 @@ const ViewPropertie2 = ({ route }) => {
 
     const navigation = useNavigation();
     const isFocused = useIsFocused();
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
+    const openVideoModal = (url) => {
+        setSelectedVideoUrl(url);
+        setIsModalVisible(true);
+    };
 
     const initialCharacteristics = {};
     const [propertyData, setPropertyData] = useState(initialCharacteristics);
@@ -51,6 +60,7 @@ const ViewPropertie2 = ({ route }) => {
             });
         }
     };
+    const [carouselItems, setCarouselItems] = useState([]);
 
 
     const fetchPropertyData = async () => {
@@ -61,6 +71,10 @@ const ViewPropertie2 = ({ route }) => {
 
             if (response.status === 200) {
                 setPropertyData(response.data);
+                // Combinar fotos y videos en carouselItems
+                const photos = response.data.photos.map(url => ({ type: 'photo', url }));
+                const videos = response.data.videos.map(url => ({ type: 'video', url }));
+                setCarouselItems([...photos, ...videos]);
                 fetchInmobiliariaData(response.data.owner);
             } else {
                 console.error('Error al obtener los datos de la propiedad:', response.data.message);
@@ -120,12 +134,12 @@ const ViewPropertie2 = ({ route }) => {
         });
     };
 
-    const carouselItems = propertyData.photos
+    /*const carouselItems = propertyData.photos
         ? propertyData.photos.map((photoUrl, index) => ({
             id: index,
             coverUrl: photoUrl,
         }))
-        : [];
+        : [];*/
 
     const chipsData = [
         { icon: require('../../../../assets/images/Icons/black/m2.png'), label: `${propertyData.m2cubiert}m2` },
@@ -153,24 +167,63 @@ const ViewPropertie2 = ({ route }) => {
         .filter(([amenidad, valor]) => valor)
         .map(([amenidad, valor]) => ({ label: amenidad }));
 
-    const renderItem = ({ item, index }) => {
-        return (
-            <View style={styles.slide}>
-                <ImagePop
-                    coverUrl={item.coverUrl}
+    const otrasCaract = {
+        Balcon: propertyData.balcon,
+        Terraza: propertyData.terraza,
+        Baulera: propertyData.baulera,
+        Frente: propertyData.frente,
+        ContraFrente: propertyData.contrafrente,
+    }
+    const otrasCaractFiltradas = Object.entries(otrasCaract)
+        .filter(([caract, valor]) => valor)
+        .map(([caract, valor]) => ({ label: caract }));
+
+    const renderItem = ({ item }) => {
+        if (item.type === 'photo') {
+            return (
+                <View style={styles.slide}>
+                    <ImagePop coverUrl={item.url} />
+                </View>
+            );
+        } else if (item.type === 'video' && item.url) {
+            return (
+                <TouchableOpacity onPress={() => openVideoModal(item.url)}>
+                    <View style={styles.slide}>
+                        <Video
+                            source={{ uri: item.url }}
+                            style={styles.video}
+                        // Otras propiedades del video
+                        />
+                    </View>
+                </TouchableOpacity>
+            );
+        }
+        return null; // En caso de que no haya una URL válida
+    };
+
+    const renderVideoModal = () => (
+        <Modal isVisible={isModalVisible} onBackdropPress={() => setIsModalVisible(false)}>
+            <View style={styles.modalContent}>
+                <Video
+                    source={{ uri: selectedVideoUrl }}
+                    style={styles.fullScreenVideo}
+                    resizeMode="contain" // Asegúrate de que el video se ajuste correctamente
+                    controls // Agrega controles al video
+                // Otras propiedades del video que puedas necesitar
                 />
             </View>
-        );
-    };
+        </Modal>
+    );
 
 
     return (
 
         <View style={styles.container}>
-            <ScrollView 
+            {renderVideoModal()}
+            <ScrollView
                 contentContainerStyle={styles.scrollViewContent}
                 showsVerticalScrollIndicator={false}
-                >
+            >
                 <View style={styles.carouselContainer}>
                     <Carousel
                         data={carouselItems}
@@ -227,6 +280,22 @@ const ViewPropertie2 = ({ route }) => {
                 <ScrollView horizontal style={{ alignSelf: 'center' }}>
                     <FlatList
                         data={amenidadesFiltradas}
+                        renderItem={({ item }) => (
+                            <Chip style={styles.chipStyle}>
+                                {item.label}
+                            </Chip>
+                        )}
+                        numColumns={2} // Establece el número de columnas en 2
+                    />
+                </ScrollView>
+
+                <Text variant="headlineSmall" style={styles.subtitle}>
+                    Otras Caracteristicas
+                </Text>
+
+                <ScrollView horizontal style={{ alignSelf: 'center' }}>
+                    <FlatList
+                        data={otrasCaractFiltradas}
                         renderItem={({ item }) => (
                             <Chip style={styles.chipStyle}>
                                 {item.label}
@@ -408,6 +477,20 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: 200,
         height: 35
+    },
+    video: {
+        width: '100%', // Ajusta las dimensiones según tus necesidades
+        height: 200,   // Ajusta las dimensiones según tus necesidades
+        // Otros estilos necesarios para el video
+    },
+    modalContent: {
+
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    fullScreenVideo: {
+        width: '100%',
+        height: 300, // Ajusta la altura según tus necesidades
     },
 });
 

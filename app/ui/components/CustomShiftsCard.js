@@ -7,16 +7,16 @@ const CustomShiftsCard = ({ address, username, date, time, coverUrl, onPress }) 
     return (
         <TouchableOpacity onPress={onPress}>
             <View style={styles.container}>
-                <Avatar.Image
+                {/* <Avatar.Image
                     size={45}
                     source={{ uri: coverUrl }}
                     style={styles.avatar}
-                />
+                /> */}
                 <View style={styles.textContainer}>
                     <Title style={styles.address}>{address}</Title>
                     <Text style={styles.date}>{date + ' - ' + time}</Text>
                     <View style={styles.userContainer}>
-                        <Image style={styles.imageUser} source={require('../../assets/images/Icons/lightMode/perfil.png')} />
+                        <Image style={styles.imageUser} source={{ uri: coverUrl }} />
                         <Text style={styles.username}>{username}</Text>
                     </View>
                     <Text style={styles.expand}>{'Ver Mensaje...'}</Text>
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         backgroundColor: '#E0E4F2',
         elevation: 3,
+        paddingLeft: 5
     },
     textContainer: {
         marginLeft: 10,
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
     imageUser: {
         width: 20,
         height: 20,
+        borderRadius: 20,
     },
     userContainer: {
         flexDirection: 'row',

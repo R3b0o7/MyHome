@@ -294,6 +294,9 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Alinea elementos secundarios en el centro
         flexDirection: 'row',
     },
+    noPropertiesText:{
+        alignSelf:'center'
+    },
     icon: {
         width: 28,
         height: 28,

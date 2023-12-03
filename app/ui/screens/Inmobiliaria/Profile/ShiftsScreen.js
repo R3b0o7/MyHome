@@ -81,7 +81,7 @@ const ShiftsScreen = (route) => {
 
     return (
         <View style={styles.PrincipalContainer}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.TitleConteiner}>
                     <Image style={styles.ImageTitle} source={require('../../../../assets/images/Icons/lightMode/calendar.png')} />
                     <Text style={styles.Title}>{I18n.t('myContacts')}</Text>
@@ -156,11 +156,9 @@ const ShiftsScreen = (route) => {
 const styles = StyleSheet.create({
     PrincipalContainer: {
         flex: 1,
-
         alignItems: 'center',
-
         justifyContent: 'flex-start',
-
+        width: '100%'
     },
     TitleConteiner: {
         flexDirection: 'row',
@@ -169,7 +167,7 @@ const styles = StyleSheet.create({
     },
     ImageTitle: {
         width: 35,
-        height: 35,
+        height: 38,
         marginRight: 15,
     },
     Title: {
@@ -200,15 +198,18 @@ const styles = StyleSheet.create({
     addressStyle: {
         fontSize: 18,
         fontWeight: 'bold',
+        color: 'black',
     },
     dateStyle: {
         fontSize: 16,
         fontWeight: 'bold',
         marginTop: -4,
+        color: 'black',
     },
     usernameStyle: {
         fontSize: 15,
         marginLeft: 7,
+        color: 'black',
     },
     messageDetails: {
         marginTop: 15,
@@ -225,6 +226,7 @@ const styles = StyleSheet.create({
     noShiftsCreated: {
         fontSize: 18,
         textAlign: 'center',
+        color: 'black',
     }
 });
 

@@ -37,7 +37,7 @@ const ResultPropertie = ({ route }) => {
     };
 
     return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
 
             <View style={styles.headerContainer}>
                 <Image source={require('../../../../assets/images/Icons/propiedades.png')} style={styles.icon} />

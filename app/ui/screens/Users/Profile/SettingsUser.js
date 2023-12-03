@@ -215,7 +215,7 @@ const SettingsUser = () => {
 
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
           {

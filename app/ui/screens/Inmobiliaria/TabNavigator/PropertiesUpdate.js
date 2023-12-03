@@ -4,7 +4,7 @@ import CustomButton from '../../../components/CustomButton';
 import CustomTextInput from '../../../components/CustomTextInput';
 import Video from 'react-native-video';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
-import { Title, Text } from 'react-native-paper';
+import { Title, Text, Divider } from 'react-native-paper';
 import I18n from '../../../../assets/strings/I18';
 import CheckBox from '@react-native-community/checkbox';
 import CustomSwitch from '../../../components/CustomSwitch';
@@ -14,6 +14,7 @@ import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
 import ImagePicker from 'react-native-image-crop-picker';
 import { API_KEY, CLOUD_NAME, API_SECRET } from '@env';
+import { SelectList } from 'react-native-dropdown-select-list';
 
 const PropertiesUpdate = ({ route }) => {
 
@@ -566,6 +567,138 @@ const PropertiesUpdate = ({ route }) => {
         }
     };
 
+    const [provinciaSeleccionada, setProvinciaSeleccionada] = useState('');
+    const [barrioSeleccionado, setBarrioSeleccionado] = useState('');
+    const [paisSeleccionado, setPaisSeleccionado] = useState('');
+    const [ambientesSeleccionados, setAmbientesSeleccionados] = useState('');
+    const [dormitoriosSeleccionados, setDormitoriosSeleccionados] = useState('');
+    const [banosSeleccionados, setBanosSeleccionados] = useState('');
+
+    // Estado para manejar las opciones de Localidad/Barrio
+    const [localidadBarrioOpciones, setLocalidadBarrioOpciones] = useState(barrios);
+
+    // Manejador para el cambio de selección de provincia
+    const onProvinciaChange = (selectedProvincia) => {
+        setProvinciaSeleccionada(selectedProvincia);
+
+        if (selectedProvincia === 'Seleccionar Provincia') {
+            setLocalidadBarrioOpciones([]);
+            setBarrioSeleccionado(''); // Resetear la selección de barrio/localidad
+        } else if (selectedProvincia === 'CABA') {
+            setLocalidadBarrioOpciones(barrios);
+        } else if (selectedProvincia === 'Buenos Aires') {
+            setLocalidadBarrioOpciones(localidades);
+        } else {
+            setLocalidadBarrioOpciones([]);
+        }
+    };
+
+    const pais = [
+        { key: '1', value: 'Argentina' },
+    ]
+
+    const provincia = [
+        { key: '1', value: 'CABA' },
+        { key: '2', value: 'Buenos Aires' },
+    ]
+    const localidades = [
+        { key: '1', value: 'Almirante Brown' },
+        { key: '2', value: 'Avellaneda' },
+        { key: '3', value: 'Berazategui' },
+        { key: '4', value: 'Esteban Echeverría' },
+        { key: '5', value: 'Ezeiza' },
+        { key: '6', value: 'Florencio Varela' },
+        { key: '7', value: 'General San Martín' },
+        { key: '8', value: 'Hurlingham' },
+        { key: '9', value: 'Ituzaingó' },
+        { key: '10', value: 'José C. Paz' },
+        { key: '11', value: 'Lanús' },
+        { key: '12', value: 'La Matanza' },
+        { key: '13', value: 'Lomas de Zamora' },
+        { key: '14', value: 'Malvinas Argentinas' },
+        { key: '15', value: 'Merlo' },
+        { key: '16', value: 'Moreno' },
+        { key: '17', value: 'Morón' },
+        { key: '18', value: 'Pilar' },
+        { key: '19', value: 'Presidente Perón' },
+        { key: '20', value: 'Quilmes' },
+        { key: '21', value: 'San Fernando' },
+        { key: '22', value: 'San Isidro' },
+        { key: '23', value: 'San Miguel' },
+        { key: '24', value: 'Tigre' },
+        { key: '25', value: 'Tres de Febrero' },
+        { key: '26', value: 'Vicente López' },
+    ];
+    const barrios = [
+        { key: '1', value: 'Agronomía' },
+        { key: '2', value: 'Almagro' },
+        { key: '3', value: 'Balvanera' },
+        { key: '4', value: 'Barracas' },
+        { key: '5', value: 'Belgrano' },
+        { key: '6', value: 'Boedo' },
+        { key: '7', value: 'Caballito' },
+        { key: '8', value: 'Chacarita' },
+        { key: '9', value: 'Coghlan' },
+        { key: '10', value: 'Colegiales' },
+        { key: '11', value: 'Constitución' },
+        { key: '12', value: 'Flores' },
+        { key: '13', value: 'Floresta' },
+        { key: '14', value: 'La Boca' },
+        { key: '15', value: 'La Paternal' },
+        { key: '16', value: 'Liniers' },
+        { key: '17', value: 'Mataderos' },
+        { key: '18', value: 'Monte Castro' },
+        { key: '19', value: 'Nueva Pompeya' },
+        { key: '20', value: 'Núñez' },
+        { key: '21', value: 'Palermo' },
+        { key: '22', value: 'Parque Avellaneda' },
+        { key: '23', value: 'Parque Chacabuco' },
+        { key: '24', value: 'Parque Chas' },
+        { key: '25', value: 'Parque Patricios' },
+        { key: '26', value: 'Puerto Madero' },
+        { key: '27', value: 'Recoleta' },
+        { key: '28', value: 'Retiro' },
+        { key: '29', value: 'Saavedra' },
+        { key: '30', value: 'San Cristóbal' },
+        { key: '31', value: 'San Nicolás' },
+        { key: '32', value: 'San Telmo' },
+        { key: '33', value: 'Vélez Sársfield' },
+        { key: '34', value: 'Versalles' },
+        { key: '35', value: 'Villa Crespo' },
+        { key: '36', value: 'Villa del Parque' },
+        { key: '37', value: 'Villa Devoto' },
+        { key: '38', value: 'Villa General Mitre' },
+        { key: '39', value: 'Villa Lugano' },
+        { key: '40', value: 'Villa Luro' },
+        { key: '41', value: 'Villa Ortúzar' },
+        { key: '42', value: 'Villa Pueyrredón' },
+        { key: '43', value: 'Villa Real' },
+        { key: '44', value: 'Villa Riachuelo' },
+        { key: '45', value: 'Villa Santa Rita' },
+        { key: '46', value: 'Villa Soldati' },
+        { key: '47', value: 'Villa Urquiza' },
+    ]
+
+    const ambientes = [
+        { key: '1', value: '1' },
+        { key: '2', value: '2' },
+        { key: '3', value: '3' },
+        { key: '4', value: '4' },
+        { key: '5', value: '5' },
+    ]
+    const dormitorios = [
+        { key: '1', value: '1' },
+        { key: '2', value: '2' },
+        { key: '3', value: '3' },
+        { key: '4', value: '4' },
+        { key: '5', value: '5' },
+    ]
+    const baños = [
+        { key: '1', value: '1' },
+        { key: '2', value: '2' },
+        { key: '3', value: '3' },
+    ]
+
     return (
         <View style={styles.container}>
             {isLoading ? ( // Muestra el indicador de carga si isLoading es verdadero
@@ -610,33 +743,57 @@ const PropertiesUpdate = ({ route }) => {
                         value={textInputData.departamento}
                         onChangeText={(text) => setUbicacionData({ ...textInputData, departamento: text })}
                     />
-                    <CustomTextInput
-                        label={I18n.t('country')}
-                        value={textInputData.pais}
-                        onChangeText={(text) => {
-                            // Convierte la primera letra en mayúscula y el resto en minúsculas
-                            text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-                            setUbicacionData({ ...textInputData, pais: text });
-                        }}
+
+                    {/* Select Lists  */}
+
+                    <SelectList //Pais
+                        boxStyles={styles.listBox}
+                        dropdownStyles={styles.dropdown}
+                        inputStyles={styles.textDropList}
+                        dropdownTextStyles={styles.dropdownTextStyles}
+                        setSelected={setPaisSeleccionado}
+                        data={pais}
+                        defaultOption={textInputData.pais}
+                        search={false}
+                        maxHeight={100}
+                        placeholder={textInputData.pais}
+                        //searchPlaceholder={I18n.t('search')}
+                        //notFoundText={"No se encontro resultado"}
+                        save='value'
                     />
-                    <CustomTextInput
-                        label={I18n.t('state')}
-                        value={textInputData.provincia}
-                        onChangeText={(text) => {
-                            // Convierte la primera letra en mayúscula y el resto en minúsculas
-                            text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-                            setUbicacionData({ ...textInputData, provincia: text });
-                        }}
+
+                    <SelectList //Provincia
+                        boxStyles={styles.listBox}
+                        dropdownStyles={styles.dropdown}
+                        inputStyles={styles.textDropList}
+                        dropdownTextStyles={styles.dropdownTextStyles}
+                        setSelected={onProvinciaChange}
+                        data={provincia}
+                        defaultOption={textInputData.provincia}
+                        search={true}
+                        maxHeight={100}
+                        placeholder={textInputData.provincia}
+                        searchPlaceholder={I18n.t('search')}
+                        notFoundText={"No se encontro resultado"}
+                        save='value'
                     />
-                    <CustomTextInput
-                        label={I18n.t('city')}
-                        value={textInputData.localidad}
-                        onChangeText={(text) => {
-                            // Convierte la primera letra en mayúscula y el resto en minúsculas
-                            text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-                            setUbicacionData({ ...textInputData, localidad: text });
-                        }}
+
+                    <SelectList //Localidad-Barrio
+                        boxStyles={styles.listBox}
+                        dropdownStyles={styles.dropdown}
+                        inputStyles={styles.textDropList}
+                        dropdownTextStyles={styles.dropdownTextStyles}
+                        setSelected={setBarrioSeleccionado}
+                        data={localidadBarrioOpciones || []}
+                        defaultOption={textInputData.localidad}
+                        search={true}
+                        maxHeight={300}
+                        placeholder={textInputData.localidad}
+                        searchPlaceholder={I18n.t('search')}
+                        notFoundText={"No se encontro resultado"}
+                        save='value'
                     />
+
                     <CustomTextInput
                         label={I18n.t('latLong')}
                         disabled={true}
@@ -689,38 +846,54 @@ const PropertiesUpdate = ({ route }) => {
                         }}
                         keyboardType="numeric"
                     />
-                    <CustomTextInput
-                        label={I18n.t('cantambient')}
-                        value={textInputData.cantambient}
-                        onChangeText={(text) => {
-                            // Filtra el texto para asegurarse de que solo contenga números
-                            const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
-                            setUbicacionData({ ...textInputData, cantambient: numericText });
-                        }}
-                        keyboardType="numeric"
-                    />
-                    <CustomTextInput
-                        label={I18n.t('cantcuartos')}
-                        value={textInputData.cantcuartos}
-                        onChangeText={(text) => {
-                            // Filtra el texto para asegurarse de que solo contenga números
-                            const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
-                            setUbicacionData({ ...textInputData, cantcuartos: numericText });
-                        }}
-                        keyboardType="numeric"
-                    />
-                    <CustomTextInput
-                        label={I18n.t('cantbaños')}
-                        value={textInputData.cantbaños}
-                        onChangeText={(text) => {
-                            // Filtra el texto para asegurarse de que solo contenga números
-                            const numericText = text.replace(/[^0-9]/g, ''); // Esto eliminará cualquier carácter que no sea un número
-                            setUbicacionData({ ...textInputData, cantbaños: numericText });
-                        }}
-                        keyboardType="numeric"
+
+                    <SelectList //Ambientes
+                        boxStyles={styles.listBox}
+                        dropdownStyles={styles.dropdown}
+                        inputStyles={styles.textDropList}
+                        dropdownTextStyles={styles.dropdownTextStyles}
+                        setSelected={setAmbientesSeleccionados}
+                        data={ambientes}
+                        defaultOption={textInputData.cantambient}
+                        search={false}
+                        maxHeight={200}
+                        placeholder={textInputData.cantambient}
+                        searchPlaceholder={I18n.t('search')}
+                        notFoundText={"No se encontro resultado"}
+                        save='value'
                     />
 
-                    <Text />
+                    <SelectList //Dormitorios
+                        boxStyles={styles.listBox}
+                        dropdownStyles={styles.dropdown}
+                        inputStyles={styles.textDropList}
+                        dropdownTextStyles={styles.dropdownTextStyles}
+                        setSelected={setDormitoriosSeleccionados}
+                        data={dormitorios}
+                        defaultOption={textInputData.cantcuartos}
+                        search={false}
+                        maxHeight={200}
+                        placeholder={textInputData.cantcuartos}
+                        searchPlaceholder={I18n.t('search')}
+                        notFoundText={"No se encontro resultado"}
+                        save='value'
+                    />
+
+                    <SelectList //Baños
+                        boxStyles={styles.listBox}
+                        dropdownStyles={styles.dropdown}
+                        inputStyles={styles.textDropList}
+                        dropdownTextStyles={styles.dropdownTextStyles}
+                        setSelected={setBanosSeleccionados}
+                        data={baños}
+                        defaultOption={textInputData.cantbaños}
+                        search={false}
+                        maxHeight={120}
+                        placeholder={textInputData.cantbaños}
+                        searchPlaceholder={I18n.t('search')}
+                        notFoundText={"No se encontro resultado"}
+                        save='value'
+                    />
 
                     {Object.keys(characteristicsProp).map((characteristics) => (
                         <View style={styles.checkboxRow} key={characteristics}>
@@ -733,7 +906,7 @@ const PropertiesUpdate = ({ route }) => {
                         </View>
                     ))}
 
-                    <Text />
+                    <Divider style={styles.invisibleDivider} />
 
                     {Object.keys(frenteTypes).map((type) => (
                         <View style={styles.checkboxRow} key={type}>
@@ -746,7 +919,7 @@ const PropertiesUpdate = ({ route }) => {
                         </View>
                     ))}
 
-                    <Text />
+                    <Divider style={styles.invisibleDivider} />
 
                     {Object.keys(orientTypes).map((type) => (
                         <View style={styles.checkboxRow} key={type}>
@@ -785,8 +958,6 @@ const PropertiesUpdate = ({ route }) => {
                         </View>
                     ))}
 
-                    <Text />
-
                     <CustomTextInput
                         label={I18n.t('description')}
                         value={textInputData.descripcion}
@@ -796,8 +967,6 @@ const PropertiesUpdate = ({ route }) => {
                             setUbicacionData({ ...textInputData, descripcion: text });
                         }}
                     />
-
-                    <Text />
 
                     <CustomButton title={I18n.t('uploadphoto')} onPress={handleUploadPhoto} style={styles.uploadphotoButton} />
                     <UpdateImageModal visible={updateImageModalVisible} onClose={closeUpdateImageModal} />
@@ -900,50 +1069,59 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    scrollViewContent: {},
     title: {
         fontSize: 20,
-        marginVertical: 20,
-        marginTop: 20,
+        paddingTop: 10,
+        paddingBottom: 5,
         textAlign: 'center',
     },
-    titleUpload: {
-        fontSize: 10,
-        textAlign: 'center',
+    invisibleDivider: {
+        alignSelf: 'center',
+        padding: 0.5,
+        margin: 5,
+        width: '80%'
     },
+
+    // CheckBox
     checkboxRow: {
+        alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginLeft: 40,
-        marginRight: 40,
+        width: '80%',
     },
     checkboxText: {
         fontSize: 16,
     },
-    registerButton: {
-        marginTop: 100,
-        margin: 70,
-        marginLeft: 120,
-        marginRight: 120,
+
+    // SELECT LIST
+    listBox: {
+        alignSelf: 'center',
+        width: 300,
+        borderRadius: 100,
+        marginTop: 10,
+        marginBottom: 10,
+        backgroundColor: '#E0E4F2',
+        borderColor: '#E0E4F2',
     },
+    dropdown: {
+        alignSelf: 'center',
+        width: 300,
+        backgroundColor: '#E0E4F2',
+        borderColor: '#E0E4F2',
+    },
+    textDropList: {
+        color: 'black'
+    },
+    dropdownTextStyles: {
+        color: 'black'
+    },
+
+    // MANEJO DE IMAGENES Y VIDEO
     uploadphotoButton: {
-        marginLeft: 150,
-        marginRight: 150,
-    },
-    checkboxTitle: {
-        fontSize: 18,
-        marginVertical: 10,
-        marginLeft: 40,
-        marginRight: 40,
-        fontWeight: 'bold',
-    },
-    selectedImagesContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 10,
+        alignSelf: 'center',
+        width: 150,
+        height: 40,
+        margin: 10,
     },
     imageContainer: {
         width: 100,
@@ -956,6 +1134,20 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    selectedImagesContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    selectedVideosContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
     removeButton: {
         position: 'absolute',
         top: 5,
@@ -966,6 +1158,18 @@ const styles = StyleSheet.create({
     },
     removeButtonText: {
         color: 'white',
+    },
+    titleUpload: {
+        fontSize: 10,
+        textAlign: 'center',
+    },
+
+    // BOTON DE PUBLICAR
+    registerButton: {
+        alignSelf: 'center',
+        marginTop: 40,
+        marginBottom: 30,
+        width: 200,
     },
     videoContainer: {
         width: 100,
@@ -978,13 +1182,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
-    selectedVideosContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 10,
-    },
+
 });
 
 export default PropertiesUpdate;

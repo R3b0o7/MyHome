@@ -1022,6 +1022,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginVertical: 10,
     },
+    selectedVideosContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
     removeButton: {
         position: 'absolute',
         top: 5,
@@ -1056,13 +1063,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
-    selectedVideosContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 10,
-    },
+
 });
 
 export default PropertiesToRegister;

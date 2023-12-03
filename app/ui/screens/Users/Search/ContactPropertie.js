@@ -109,7 +109,7 @@ const ContactPropertie = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.insideContainer}>
+            <View style={styles.insideTopContainer}>
                 <Text variant="headlineSmall" style={styles.title}>
                     Mensaje de Contacto
                 </Text>
@@ -122,7 +122,8 @@ const ContactPropertie = () => {
                     style={styles.textInput}
                 />
                 <Text style={styles.characterCount}>{`${characterCount}/${maxCharacterLimit}`}</Text>
-
+            </View>
+            <View style={styles.insideMiddleContainer}>
                 <Divider style={styles.divider} />
 
                 <SelectList //Turno
@@ -148,7 +149,10 @@ const ContactPropertie = () => {
                     inputMode="start"
                     mode="outlined"
                     calendarIcon={require('../../../../assets/images/Icons/lightMode/calendar.png')}
+                    style={styles.datePicker}
                 />
+            </View>
+            <View style={styles.insideBottomContainer}>
                 <CustomButton 
                     style = {styles.button}
                     title={I18n.t('send')}
@@ -170,10 +174,9 @@ const styles = StyleSheet.create({
         marginTop: 50,
     },
     textInput: {
-        flex: 2,
+        flex: 1.5,
         alignSelf: 'center',
         marginTop: 10,
-        height: 300,
         width:'100%',
     },
     characterCount: {
@@ -189,24 +192,38 @@ const styles = StyleSheet.create({
         height: 2
     },
     button: {
-        margin: 50,
+        marginTop: 30,
         marginLeft: 120,
         marginRight: 120,
     },
-    insideContainer: {
-        flex: 3, // Este contenedor ocupará 3/4 de la pantalla
+    insideTopContainer: {
+        flex: 2, // Este contenedor ocupará 3/4 de la pantalla
+        width: '80%',
+        justifyContent: 'start',
+        alignItems: 'start',
+        // Puedes agregar estilos adicionales según tus necesidades
+    },
+    insideMiddleContainer: {
+        flex: 2, // Este contenedor ocupará 3/4 de la pantalla
+        width: '80%',
+        justifyContent: 'start',
+        alignItems: 'start',
+        // Puedes agregar estilos adicionales según tus necesidades
+    },
+    insideBottomContainer: {
+        flex: 0.8, // Este contenedor ocupará 3/4 de la pantalla
         width: '80%',
         justifyContent: 'start',
         alignItems: 'start',
         // Puedes agregar estilos adicionales según tus necesidades
     },
     listBox: {
-        width: 300,
-        marginTop: 10,
-        marginBottom: 10,
+        width: '100%',
+        marginTop: 30,
         backgroundColor: '#E0E4F2',
         borderRadius: 100,
         borderColor: '#E0E4F2',
+        alignSelf: 'center',
     },
     dropdown: {
         backgroundColor: '#E0E4F2',
@@ -218,7 +235,10 @@ const styles = StyleSheet.create({
     dropdownTextStyles: {
         color: 'black'
     },
-
+    datePicker: {
+        marginTop: -50,
+        color: 'black'
+    },
 });
 
 export default ContactPropertie;

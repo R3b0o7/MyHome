@@ -170,6 +170,8 @@ const styles = StyleSheet.create({
         marginTop: 50,
     },
     textInput: {
+        flex: 2,
+        alignSelf: 'center',
         marginTop: 10,
         height: 300,
         width:'100%',

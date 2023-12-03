@@ -706,7 +706,7 @@ const PropertiesUpdate = ({ route }) => {
                     <ActivityIndicator size="large" color="#0000ff" />
                 </View>
             ) : (
-                <ScrollView contentContainerStyle={styles.scrollViewContent}>
+                <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                     <Title style={styles.title}>{I18n.t('location')}</Title>
 
                     <CustomTextInput

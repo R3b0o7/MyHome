@@ -76,7 +76,7 @@ const ProfileUser = () => {
 
   return (
     <View>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           {
             userData.photo ?

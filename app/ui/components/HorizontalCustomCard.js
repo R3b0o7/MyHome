@@ -8,7 +8,7 @@ const HorizontalCustomCard = ({ address, operation, coverUrl, onPress }) => {
             <View style={styles.container}>
                 <View style={styles.content}>
                     <View style={styles.textContainer}>
-                        <Title style={styles.address}>{address}</Title>
+                        <Title numberOfLines={1} ellipsizeMode='tail' style={styles.address}>{address}</Title>
                         <Text style={styles.operation}>{operation}</Text>
                     </View>
                     <Avatar.Image

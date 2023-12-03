@@ -562,7 +562,7 @@ const PropertiesToRegister = () => {
 
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
 
                 {/* ---------- BLOQUE DE UBICACIÓN ---------- */}
 

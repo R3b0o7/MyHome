@@ -83,7 +83,7 @@ const ShiftsUserScreen = (route) => {
 
     return (
         <View style={styles.PrincipalContainer}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.TitleConteiner}>
                     <Image style={styles.ImageTitle} source={require('../../../../assets/images/Icons/lightMode/calendar.png')} />
                     <Text style={styles.Title}>{I18n.t('myContacts')}</Text>

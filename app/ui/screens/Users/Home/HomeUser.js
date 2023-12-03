@@ -222,7 +222,7 @@ const HomeUser = () => {
 
     return (
 
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.headerContainer}>
                 <Image source={require('../../../../assets/images/Icons/lightMode/gps.png')} style={styles.icon} />
                 <Title style={styles.title}>Propiedades cercanas</Title>

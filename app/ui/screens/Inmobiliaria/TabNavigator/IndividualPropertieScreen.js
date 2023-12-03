@@ -152,7 +152,10 @@ const IndividualPropertieScreen = ({ route }) => {
     return (
 
         <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+            <ScrollView 
+                contentContainerStyle={styles.scrollViewContent} 
+                showsVerticalScrollIndicator={false}
+                >
                 <View style={styles.carouselContainer}>
                     <Carousel
                         data={carouselItems}
@@ -222,7 +225,7 @@ const IndividualPropertieScreen = ({ route }) => {
                     Descripción
                 </Text>
 
-                <Text style={styles.subtitle}>
+                <Text style={styles.description}>
                     {propertyData.descripcion}
                 </Text>
 
@@ -285,8 +288,9 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 14,
         marginTop: 5,
-        marginLeft: 40,
-        marginRight: 40
+        alignSelf: 'center',
+        textAlign: 'justify',
+        width: '80%',
     },
     divider: {
         marginTop: 10,

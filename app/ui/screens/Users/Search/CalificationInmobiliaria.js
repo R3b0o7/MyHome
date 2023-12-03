@@ -73,43 +73,41 @@ const CalificationInmobiliaria = ({route}) => {
 
     return (
         <View style={styles.mainConteiner}>
+                {/* <View style={styles.RalStateCard}>
+                    <InmobiliariaCard  //HARCODEADO!!!
+                        nombre= "Inmobiliara SRL"
+                        rating={4} 
+                        coverUrl= 'https://picsum.photos/701'
+                        onPress={handleComents}
+                    /> 
+                </View>     */}
 
-            {/* <View style={styles.RalStateCard}>
-                <InmobiliariaCard  //HARCODEADO!!!
-                    nombre= "Inmobiliara SRL"
-                    rating={4} 
-                    coverUrl= 'https://picsum.photos/701'
-                    onPress={handleComents}
-                /> 
-            </View>     */}
+                <Text style={[styles.Titles, {marginTop: 20}]}> Comentario </Text>
 
-            <Text style={[styles.Titles, {marginTop: 20}]}> Comentario </Text>
+                <TextInput
+                        mode='outlined'
+                        value={text}
+                        onChangeText={handleTextChange}
+                        multiline={true}
+                        maxLength={maxCharacterLimit}
+                        outlineColor= {'black'}
+                        activeOutlineColor= {'#4363AC'}
+                        style={styles.textInput}
+                        outlineStyle= {{borderRadius: 20}}
+                    />
+                <Text style={styles.characterCount}>{`${characterCount}/${maxCharacterLimit}`}</Text>
 
-            <TextInput
-                    mode='outlined'
-                    value={text}
-                    onChangeText={handleTextChange}
-                    multiline={true}
-                    maxLength={maxCharacterLimit}
-                    outlineColor= {'black'}
-                    activeOutlineColor= {'#4363AC'}
-                    style={styles.textInput}
-                    outlineStyle= {{borderRadius: 20}}
+                <Divider style={styles.divider} />
+
+                <Text style={styles.Titles}> Calificar </Text>
+
+                <InteractiveRatingStars 
+                    onChange={handleRatingChange}
+                    starIconFilled={styles.starIconFilled}
+                    starIcon={styles.starIcon}
                 />
-            <Text style={styles.characterCount}>{`${characterCount}/${maxCharacterLimit}`}</Text>
 
-            <Divider style={styles.divider} />
-
-            <Text style={styles.Titles}> Calificar </Text>
-
-            <InteractiveRatingStars 
-                onChange={handleRatingChange}
-                starIconFilled={styles.starIconFilled}
-                starIcon={styles.starIcon}
-            />
-
-            <CustomButton title='GUARDAR' color="blue" onPress={handleSave} style={styles.SaveButton} />
-
+                <CustomButton title='GUARDAR' color="blue" onPress={handleSave} style={styles.SaveButton} />
         </View>
         
     );

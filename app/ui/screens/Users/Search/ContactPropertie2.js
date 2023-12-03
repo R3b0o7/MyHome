@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { TextInput, Divider } from 'react-native-paper';
 import { DatePickerInput, registerTranslation } from 'react-native-paper-dates';
 import { useNavigation } from '@react-navigation/native';
@@ -33,7 +33,7 @@ const ContactPropertie2 = ({ route }) => {
 
 
     //Input Date
-    const [inputDate, setInputDate] = React.useState(undefined)
+    const [inputDate, setInputDate] = useState(undefined)
 
     const handleSend = async () => {
 
@@ -80,9 +80,6 @@ const ContactPropertie2 = ({ route }) => {
                 navigation.goBack();
             }
 
-
-
-
         } catch (error) {
             // Muestra una alerta de error en la creacion
             alert('Error al crear el contacto');
@@ -92,8 +89,8 @@ const ContactPropertie2 = ({ route }) => {
 
 
     return (
-        <View style={styles.container}>
-            <View style={styles.insideContainer}>
+        <View style={styles.mainConteiner}>
+             <ScrollView showsVerticalScrollIndicator={false}>
                 <Text variant="headlineSmall" style={styles.title}>
                     Mensaje de Contacto
                 </Text>
@@ -104,6 +101,9 @@ const ContactPropertie2 = ({ route }) => {
                     multiline={true}
                     maxLength={maxCharacterLimit}
                     style={styles.textInput}
+                    outlineStyle= {{borderRadius: 20}}
+                    outlineColor= {'black'}
+                    activeOutlineColor= {'#4363AC'}
                 />
                 <Text style={styles.characterCount}>{`${characterCount}/${maxCharacterLimit}`}</Text>
 
@@ -125,6 +125,7 @@ const ContactPropertie2 = ({ route }) => {
                 />
 
                 <DatePickerInput
+                    style= {{width: '80%', marginTop: 20}}
                     //locale={I18n.locale}
                     label={I18n.t('date')}
                     value={inputDate}
@@ -133,64 +134,59 @@ const ContactPropertie2 = ({ route }) => {
                     mode="outlined"
                     calendarIcon={require('../../../../assets/images/Icons/lightMode/calendar.png')}
                 />
+
                 <CustomButton
                     style={styles.button}
                     title={I18n.t('send')}
                     onPress={handleSend}
                 />
-            </View>
+            </ScrollView>  
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    mainConteiner:{
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
     },
     title: {
         fontSize: 13,
         marginTop: 50,
+        paddingLeft: 5,
+        color: 'black'
     },
     textInput: {
+        flex: 2,
+        alignSelf: 'center',
         marginTop: 10,
         height: 300,
         width: '100%',
+        color: 'black'
     },
     characterCount: {
         alignSelf: 'flex-end',
+        paddingRight: 5,
         marginTop: 5,
         color: 'gray',
     },
     divider: {
-        marginTop: 20,
-        marginLeft: 5,
-        marginRight: 5,
-        marginBottom: 20,
-        height: 2
-    },
-    button: {
-        margin: 50,
-        marginLeft: 120,
-        marginRight: 120,
-    },
-    insideContainer: {
-        flex: 3, // Este contenedor ocupará 3/4 de la pantalla
-        width: '80%',
-        justifyContent: 'start',
-        alignItems: 'start',
-        // Puedes agregar estilos adicionales según tus necesidades
+        width: '88%',
+        padding: 0.5,
+        margin: 20,
     },
     listBox: {
+        alignSelf: 'center',
         width: 300,
         marginTop: 10,
-        marginBottom: 10,
         backgroundColor: '#E0E4F2',
         borderRadius: 100,
         borderColor: '#E0E4F2',
     },
     dropdown: {
+        alignSelf: 'center',
+        width: 300,
         backgroundColor: '#E0E4F2',
         borderColor: '#E0E4F2',
     },
@@ -199,6 +195,16 @@ const styles = StyleSheet.create({
     },
     dropdownTextStyles: {
         color: 'black'
+    },
+    dateStyle: {
+        flex: 1,
+        alignSelf: 'center',
+        width: 200
+    },
+    button: {
+        alignSelf: 'center',
+        margin: 50,
+        width: 200,
     },
 
 });

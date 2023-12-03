@@ -69,7 +69,7 @@ const PropertiesScreen = () => {
         <View style={styles.container}>
             <View style={styles.upperContainer}>
                 <Title style={styles.title}>{I18n.t('myProperties')}</Title>
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     {userProperties.length === 0 ? (
                         <Text style={styles.noPropertiesText}>
                             {I18n.t('noPropertiesCreated')}

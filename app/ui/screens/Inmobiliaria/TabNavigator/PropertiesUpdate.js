@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator, StyleSheet, ScrollView, Image, TouchableOpacity  } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
 import CustomTextInput from '../../../components/CustomTextInput';
+import Video from 'react-native-video';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { Title, Text } from 'react-native-paper';
 import I18n from '../../../../assets/strings/I18';
@@ -18,6 +19,7 @@ const PropertiesUpdate = ({ route }) => {
 
     const isFocused = useIsFocused();
     const [isLoading, setIsLoading] = useState(true);
+    const [videoUrls, setVideoUrls] = useState([]);
 
     //API GOOGLE
 
@@ -71,6 +73,13 @@ const PropertiesUpdate = ({ route }) => {
                 } else {
                     // Si no hay fotos o el formato es diferente, establece el estado a un array vacío
                     setImageUrls([]);
+                }
+
+                // Manejo de videos
+                if (Array.isArray(propertyData.videos)) {
+                    setVideoUrls(propertyData.videos.map(videoUrl => ({ uri: videoUrl })));
+                } else {
+                    setVideoUrls([]);
                 }
 
                 // Accede a las coordenadas
@@ -387,8 +396,56 @@ const PropertiesUpdate = ({ route }) => {
 
 
     const handleUploadVideo = () => {
-
+        ImagePicker.openPicker({
+            mediaType: 'video',
+            multiple: true,
+        }).then(selectedVideos => {
+            const newVideoInfo = selectedVideos.map(video => ({
+                uri: video.path,
+                type: video.mime,
+                name: video.filename || `video-${Date.now()}`
+            }));
+            setVideoUrls(prevVideos => [...prevVideos, ...newVideoInfo]);
+        }).catch(error => {
+            console.log('Error al seleccionar videos:', error);
+        });
     };
+    const removeVideo = (indexToRemove) => {
+        setVideoUrls(prevVideos => prevVideos.filter((_, index) => index !== indexToRemove));
+    };
+    const uploadVideos = async () => {
+        const uploadedUrls = [];
+
+        for (const video of videoUrls) {
+            const formData = new FormData();
+            formData.append('file', {
+                uri: video.uri,
+                type: video.type,
+                name: video.name,
+            });
+            formData.append('upload_preset', 'Videos-properties');
+
+            try {
+                const uploadResponse = await axios.post(
+                    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/video/upload`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                );
+
+                uploadedUrls.push(uploadResponse.data.secure_url);
+            } catch (error) {
+                console.log('Error al subir el video:', error);
+                throw error; // Si un video falla, puedes decidir si continuar o detener todo el proceso
+            }
+        }
+
+        return uploadedUrls;
+    };
+
 
 
     const handleUpdateProperty = async () => {
@@ -422,6 +479,7 @@ const PropertiesUpdate = ({ route }) => {
             const coordinates = `${coordinatesdata.latitude}, ${coordinatesdata.longitude}`;
 
             let photoUrls = [];
+            let videoUrlsUploaded = videoUrls.some(video => video.type) ? await uploadVideos() : videoUrls.map(video => video.uri);
 
             // Si hay nuevas fotos seleccionadas (asumiendo que las nuevas fotos tienen 'type')
             if (imageUrls.some(image => image.type)) {
@@ -481,6 +539,7 @@ const PropertiesUpdate = ({ route }) => {
                 microcine: amenities.microcine,
                 descripcion: textInputData.descripcion,
                 photos: photoUrls, // Asegúrate de que esto sea un array de URLs
+                videos: videoUrlsUploaded,
                 alquiler: stateTypes.alquiler,
                 venta: stateTypes.venta,
                 reservada: stateTypes.reservada,
@@ -762,8 +821,29 @@ const PropertiesUpdate = ({ route }) => {
                         )
                     }
 
-                    < CustomButton title={I18n.t('uploadVideo')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
-                    <Text />
+                    < CustomButton title={I18n.t('uploadVideo')} onPress={handleUploadVideo} style={styles.uploadphotoButton} />
+                    {
+                        videoUrls.length > 0 && (
+                            <View style={styles.selectedVideosContainer}>
+                                {videoUrls.map((video, index) => (
+                                    video.uri ? (
+                                        <View key={index} style={styles.videoContainer}>
+                                            <Video
+                                                source={{ uri: video.uri }}
+                                                style={styles.video}
+                                            // otras propiedades como repeat, resizeMode, etc.
+                                            />
+                                            <TouchableOpacity onPress={() => removeVideo(index)} style={styles.removeButton}>
+                                                <Text style={styles.removeButtonText}>Eliminar</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    ) : null
+                                ))}
+                            </View>
+                        )
+                    }
+
+                    <Text></Text>
                     <CustomTextInput
                         label={I18n.t('precioVentaAlqui')}
                         value={textInputData.precio}
@@ -886,6 +966,24 @@ const styles = StyleSheet.create({
     },
     removeButtonText: {
         color: 'white',
+    },
+    videoContainer: {
+        width: 100,
+        height: 100,
+        margin: 5,
+        borderRadius: 10,
+        overflow: 'hidden',
+    },
+    video: {
+        width: '100%',
+        height: '100%',
+    },
+    selectedVideosContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
     },
 });
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, Image, TouchableOpacity  } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Title, Text, Divider } from 'react-native-paper';
+import Video from 'react-native-video';
 
 import CheckBox from '@react-native-community/checkbox';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -22,6 +23,8 @@ import CustomTextInput from '../../../components/CustomTextInput';
 
 const PropertiesToRegister = () => {
     const navigation = useNavigation();
+
+    const [videoUrls, setVideoUrls] = useState([]);
 
     const [updateImageModalVisible, setUpdateImageModalVisible] = useState(false);
 
@@ -365,6 +368,7 @@ const PropertiesToRegister = () => {
                 );
 
                 uploadedUrls.push(uploadResponse.data.secure_url);
+
             } catch (error) {
                 console.log('Error al subir la imagen:', error);
                 throw error; // Si una imagen falla, puedes decidir si continuar o detener todo el proceso
@@ -373,10 +377,58 @@ const PropertiesToRegister = () => {
 
         return uploadedUrls;
     };
-
-    const handleUploadVideo = () => {
-
+    const removeVideo = (indexToRemove) => {
+        setVideoUrls(prevVideos => prevVideos.filter((_, index) => index !== indexToRemove));
     };
+    const handleUploadVideo = () => {
+        ImagePicker.openPicker({
+            mediaType: 'video',
+            multiple: true,
+        }).then(selectedVideos => {
+            const newVideoInfo = selectedVideos.map(video => ({
+                uri: video.path,
+                type: video.mime,
+                name: video.filename || `video-${Date.now()}`
+            }));
+            setVideoUrls(prevVideos => [...prevVideos, ...newVideoInfo]);
+        }).catch(error => {
+            console.log('Error al seleccionar el video:', error);
+        });
+    };
+
+    const uploadVideos = async () => {
+        const uploadedUrls = [];
+
+        for (const video of videoUrls) {
+            const formData = new FormData();
+            formData.append('file', {
+                uri: video.uri,
+                type: video.type,
+                name: video.name,
+            });
+            formData.append('upload_preset', 'Videos-properties');
+
+            try {
+                const uploadResponse = await axios.post(
+                    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/video/upload`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                );
+
+                uploadedUrls.push(uploadResponse.data.secure_url);
+            } catch (error) {
+                console.log('Error al subir el video:', error);
+                throw error; // Si un video falla, puedes decidir si continuar o detener todo el proceso
+            }
+        }
+
+        return uploadedUrls;
+    };
+
 
     // Función para enviar la solicitud de registro
     const handleRegister = async () => {
@@ -415,6 +467,8 @@ const PropertiesToRegister = () => {
 
             //Sube las fotos a cloudinary
             const photoUrls = await uploadImages();
+            const videoUrls = await uploadVideos();
+
 
 
             // Define los datos a enviar en la solicitud
@@ -465,7 +519,7 @@ const PropertiesToRegister = () => {
                 microcine: amenities.microcine,
                 descripcion: textInputData.descripcion,
                 photos: photoUrls,
-                videos: '',
+                videos: videoUrls,
                 precio: parseFloat(textInputData.precio.replace(/,/g, '')),
                 dolar: isDollar,
                 expensas: parseFloat(textInputData.expensas.replace(/,/g, '')),
@@ -476,6 +530,7 @@ const PropertiesToRegister = () => {
 
             };
 
+        
             // Realiza la solicitud POST al servidor
             const response = await axios.post(apiUrl, propertyData, {
                 headers: {
@@ -488,9 +543,20 @@ const PropertiesToRegister = () => {
 
             navigation.goBack();
         } catch (error) {
-            //console.error('Error al registrar la propiedad:', error);
-            // Muestra una alerta de error en el registro
-            alert('Error al registrar la propiedad');
+            if (error.response) {
+                // El servidor respondió con un estado fuera del rango 2xx
+                const errorMessage = error.response.data.message;
+                alert(errorMessage);
+            } else if (error.message === "Network Error") {
+                // Manejo de errores de red, como la ausencia de conexión a Internet
+                alert('No hay conexión a Internet. Por favor, verifica tu conexión.');
+            } else if (error.request) {
+                // La solicitud se realizó pero no se recibió respuesta
+                alert('No se recibió respuesta del servidor');
+            }  else {
+                // Algo ocurrió al configurar la solicitud que desencadenó un error
+                alert('Error al realizar la solicitud');
+            }
         }
     };
 
@@ -498,7 +564,7 @@ const PropertiesToRegister = () => {
         <View style={styles.container}>
             <ScrollView>
 
-{/* ---------- BLOQUE DE UBICACIÓN ---------- */}
+                {/* ---------- BLOQUE DE UBICACIÓN ---------- */}
 
                 <Title style={styles.title}>{I18n.t('location')}</Title>
 
@@ -556,7 +622,7 @@ const PropertiesToRegister = () => {
                     notFoundText={"No se encontro resultado"}
                     save='value'
                 />
-  
+
                 <SelectList //Provincia
                     boxStyles={styles.listBox}
                     dropdownStyles={styles.dropdown}
@@ -571,7 +637,7 @@ const PropertiesToRegister = () => {
                     notFoundText={"No se encontro resultado"}
                     save='value'
                 />
- 
+
                 <SelectList //Localidad-Barrio
                     boxStyles={styles.listBox}
                     dropdownStyles={styles.dropdown}
@@ -588,7 +654,7 @@ const PropertiesToRegister = () => {
                 />
 
                 {/* Text Input --> muestra latitud y longitud pero no hay que mostrarlo en la creación */}
-                
+
                 {/* 
                 <CustomTextInput
                     label={I18n.t('latLong')}
@@ -597,7 +663,7 @@ const PropertiesToRegister = () => {
                     onChangeText={(text) => setUbicacionData({ ...textInputData, coordenadas: text })}
                 /> */}
 
-{/* ----------  BLOQUE DE TIPO DE PROPIEDAD ---------- */}
+                {/* ----------  BLOQUE DE TIPO DE PROPIEDAD ---------- */}
 
                 <Title style={styles.title}>{I18n.t('kindOfProperty')}</Title>
 
@@ -612,7 +678,7 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
-{/* ----------  BLOQUE DE CARACTERISTICAS ---------- */}
+                {/* ----------  BLOQUE DE CARACTERISTICAS ---------- */}
 
                 <Title style={styles.title}>{I18n.t('characteristics')}</Title>
 
@@ -709,7 +775,7 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
-                <Divider style={styles.invisibleDivider}/>   
+                <Divider style={styles.invisibleDivider} />
 
                 {Object.keys(frenteTypes).map((type) => (
                     <View style={styles.checkboxRow} key={type}>
@@ -722,7 +788,7 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
-                <Divider style={styles.invisibleDivider}/>  
+                <Divider style={styles.invisibleDivider} />
 
                 {Object.keys(orientTypes).map((type) => (
                     <View style={styles.checkboxRow} key={type}>
@@ -735,7 +801,7 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
-                {/* Text Input */}        
+                {/* Text Input */}
 
                 <CustomTextInput
                     label={I18n.t('antiguedad')}
@@ -748,7 +814,7 @@ const PropertiesToRegister = () => {
                     keyboardType="numeric"
                 />
 
-{/* ----------  BLOQUE DE AMENITIES ---------- */}    
+                {/* ----------  BLOQUE DE AMENITIES ---------- */}
 
                 <Title style={styles.title}>{I18n.t('amenities')}</Title>
 
@@ -763,7 +829,7 @@ const PropertiesToRegister = () => {
                     </View>
                 ))}
 
-{/* ---------- BLOQUE DE OTRAS PROPIEDADES --------- */}            
+                {/* ---------- BLOQUE DE OTRAS PROPIEDADES --------- */}
 
                 <CustomTextInput
                     label={I18n.t('description')}
@@ -775,7 +841,7 @@ const PropertiesToRegister = () => {
                     }}
                 />
 
-                {/* Fotos y Videos */}   
+                {/* Fotos y Videos */}
 
                 <CustomButton title={I18n.t('uploadphoto')} onPress={handleUploadPhoto} style={styles.uploadphotoButton} />
 
@@ -784,26 +850,44 @@ const PropertiesToRegister = () => {
                 <Title style={styles.titleUpload}>{I18n.t('requeredPhoto')}</Title>
 
                 {
-                        imageUrls.length > 0 && (
-                            <View style={styles.selectedImagesContainer}>
-                                {imageUrls.map((image, index) => (
-                                    <View key={index} style={styles.imageContainer}>
-                                        <Image
-                                            source={{ uri: image.uri }}
-                                            style={styles.image}
-                                        />
-                                        <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeButton}>
-                                            <Text style={styles.removeButtonText}>Eliminar</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                ))}
-                            </View>
-                        )
-                    }
+                    imageUrls.length > 0 && (
+                        <View style={styles.selectedImagesContainer}>
+                            {imageUrls.map((image, index) => (
+                                <View key={index} style={styles.imageContainer}>
+                                    <Image
+                                        source={{ uri: image.uri }}
+                                        style={styles.image}
+                                    />
+                                    <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeButton}>
+                                        <Text style={styles.removeButtonText}>Eliminar</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            ))}
+                        </View>
+                    )
+                }
 
-                <CustomButton title={I18n.t('uploadVideo')} onPress={openUpdateImageModal} style={styles.uploadphotoButton} />
+                <CustomButton title={I18n.t('uploadVideo')} onPress={handleUploadVideo} style={styles.uploadphotoButton} />
 
-                {/* Text Input */}           
+                {
+                    videoUrls.length > 0 && (
+                        <View style={styles.selectedVideosContainer}>
+                            {videoUrls.map((video, index) => (
+                                <View key={index} style={styles.videoContainer}>
+                                    <Video
+                                        source={{ uri: video.uri }}
+                                        style={styles.video}
+                                    // otras propiedades como repeat, resizeMode, etc.
+                                    />
+                                    <TouchableOpacity onPress={() => removeVideo(index)} style={styles.removeButton}>
+                                        <Text style={styles.removeButtonText}>Eliminar</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            ))}
+                        </View>
+                    )
+                }
+
 
                 <CustomTextInput
                     label={I18n.t('precioVentaAlqui')}
@@ -816,7 +900,7 @@ const PropertiesToRegister = () => {
                     keyboardType="numeric"
                 />
 
-                {/* Clip de opcines */}   
+                {/* Clip de opcines */}
 
                 <Title style={styles.title}>
                     PESO
@@ -827,7 +911,7 @@ const PropertiesToRegister = () => {
                     DOLAR
                 </Title>
 
-                {/* Text Input */}       
+                {/* Text Input */}
 
                 <CustomTextInput
                     label={I18n.t('expenses')}
@@ -840,7 +924,7 @@ const PropertiesToRegister = () => {
                     keyboardType="numeric"
                 />
 
-{/* ---------- BLOQUE DE ESTADO --------- */}  
+                {/* ---------- BLOQUE DE ESTADO --------- */}
 
                 <Title style={styles.title}>{I18n.t('statePropertie')}</Title>
 
@@ -868,14 +952,14 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        paddingTop:10,
+        paddingTop: 10,
         paddingBottom: 5,
         textAlign: 'center',
     },
     invisibleDivider: {
         alignSelf: 'center',
         padding: 0.5,
-        margin: 5, 
+        margin: 5,
         width: '80%'
     },
 
@@ -958,8 +1042,26 @@ const styles = StyleSheet.create({
     registerButton: {
         alignSelf: 'center',
         marginTop: 40,
-        marginBottom:30,
+        marginBottom: 30,
         width: 200,
+    },
+    videoContainer: {
+        width: 100,
+        height: 100,
+        margin: 5,
+        borderRadius: 10,
+        overflow: 'hidden',
+    },
+    video: {
+        width: '100%',
+        height: '100%',
+    },
+    selectedVideosContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
     },
 });
 

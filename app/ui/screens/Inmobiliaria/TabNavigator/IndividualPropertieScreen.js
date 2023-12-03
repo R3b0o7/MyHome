@@ -186,10 +186,9 @@ const IndividualPropertieScreen = ({ route }) => {
                 </Text>
 
 
-                <ScrollView horizontal>
+                <ScrollView horizontal style={{ alignSelf: 'center' }}>
                     <FlatList
                         data={chipsData}
-                        style={{ alignSelf: 'center', marginLeft: 80, marginTop: 0 }}
                         renderItem={({ item }) => (
                             <Chip style={styles.chipStyle} icon={item.icon}>
                                 {item.label}
@@ -203,10 +202,9 @@ const IndividualPropertieScreen = ({ route }) => {
                     Amenities
                 </Text>
 
-                <ScrollView horizontal>
+                <ScrollView horizontal style={{ alignSelf: 'center' }}>
                     <FlatList
                         data={amenidadesFiltradas}
-                        style={{ alignSelf: 'center', marginLeft: 80, marginTop: 0 }}
                         renderItem={({ item }) => (
                             <Chip style={styles.chipStyle}>
                                 {item.label}

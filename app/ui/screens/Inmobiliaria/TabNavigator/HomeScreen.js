@@ -209,6 +209,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    noPropertiesText:{
+        alignSelf:'center'
+    },
     icon: {
         width: 24, // Set the desired width for your icon
         height: 24, // Set the desired height for your icon

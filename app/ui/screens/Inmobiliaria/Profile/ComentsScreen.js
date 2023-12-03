@@ -55,7 +55,7 @@ const ComentsScreen = ({ route }) => {
 
     return (
         <View style={styles.PrincipalContainer}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.TitleConteiner}>
                     <Image style={styles.ImageTitle} source={require('../../../../assets/images/Icons/lightMode/message.png')} />
                     <Text style={styles.Title}>Comentarios</Text>
@@ -100,7 +100,8 @@ const ComentsScreen = ({ route }) => {
 const styles = StyleSheet.create({
     PrincipalContainer: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '100%'
     },
     TitleConteiner: {
         flexDirection: 'row',

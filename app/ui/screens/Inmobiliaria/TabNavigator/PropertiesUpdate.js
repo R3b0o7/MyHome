@@ -1108,7 +1108,7 @@ const styles = StyleSheet.create({
         width: 300,
         backgroundColor: '#E0E4F2',
         borderColor: '#E0E4F2',
-
+    },
     uploadphotoButton: {
         alignSelf: 'center',
         width: 150,
@@ -1188,7 +1188,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
-
 });
 
 export default PropertiesUpdate;

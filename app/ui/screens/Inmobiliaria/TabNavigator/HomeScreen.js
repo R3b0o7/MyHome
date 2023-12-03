@@ -145,7 +145,7 @@ const HomeScreen = () => {
                         </View>
                     )
                     : <Text style={styles.noPropertiesText}>
-                        No tienes propiedades favoritas.
+                        No tienes propiedades destacadas.
                     </Text>
             }
 

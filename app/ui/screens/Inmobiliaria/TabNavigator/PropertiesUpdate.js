@@ -1108,6 +1108,12 @@ const styles = StyleSheet.create({
         width: 300,
         backgroundColor: '#E0E4F2',
         borderColor: '#E0E4F2',
+
+    uploadphotoButton: {
+        alignSelf: 'center',
+        width: 150,
+        height: 40,
+        margin: 10,
     },
     textDropList: {
         color: 'black'

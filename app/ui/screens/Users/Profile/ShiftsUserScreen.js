@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
     },
     noShiftsCreated: {
         fontSize: 18,
+        color: 'black',
         textAlign: 'center',
     }
 });

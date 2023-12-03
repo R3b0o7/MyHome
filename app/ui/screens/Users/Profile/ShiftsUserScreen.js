@@ -126,9 +126,9 @@ const ShiftsUserScreen = (route) => {
             >
                 <View>
                     <View style={styles.topRow}>
-                        {selectedShift.photo && (
+                        {/* {selectedShift.photo && (
                             <Image style={styles.imageStyle} source={{ uri: selectedShift.photo }} />
-                        )}
+                        )} */}
                         <View>
                             <Title style={styles.addressStyle}>{selectedShift.calle + ' ' + selectedShift.numero + ' ' + selectedShift.piso + '° ' + selectedShift.departamento}</Title>
                             <Text style={styles.dateStyle}>
@@ -144,7 +144,10 @@ const ShiftsUserScreen = (route) => {
                     </View>
                     <View style={styles.messageDetails}>
                         <View style={styles.userContainer}>
-                            <Image style={styles.imageUser} source={require('../../../../assets/images/Icons/lightMode/perfil.png')} />
+                            {selectedShift.photo && (
+                                <Image style={styles.imageUser} source={{ uri: selectedShift.photo }} />
+                            )}
+                            {/* <Image style={styles.imageUser} source={require('../../../../assets/images/Icons/lightMode/perfil.png')} /> */}
                             <Text style={styles.usernameStyle}>{selectedShift.userName}</Text>
                         </View>
                         <Paragraph>{selectedShift.message}</Paragraph>
@@ -180,14 +183,17 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     modalContainer: {
+        alignSelf: 'center',
         backgroundColor: '#E0E4F2',
-        padding: 20,
-        margin: 50,
+        padding: 10,
+        paddingLeft: 20,
+        width: '80%',
+        // margin: 50,
         borderRadius: 10,
     },
     modalContent: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
     },
     topRow: {
         flexDirection: 'row',
@@ -202,15 +208,18 @@ const styles = StyleSheet.create({
     addressStyle: {
         fontSize: 18,
         fontWeight: 'bold',
+        color: 'black',
     },
     dateStyle: {
         fontSize: 16,
         fontWeight: 'bold',
         marginTop: -4,
+        color: 'black',
     },
     usernameStyle: {
         fontSize: 15,
         marginLeft: 7,
+        color: 'black',
     },
     messageDetails: {
         marginTop: 15,
@@ -223,6 +232,7 @@ const styles = StyleSheet.create({
     imageUser: {
         width: 20,
         height: 20,
+        borderRadius: 20,
     },
     noShiftsCreated: {
         fontSize: 18,

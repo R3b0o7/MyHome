@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Text, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Text, Image, Alert } from 'react-native';
 import { Paragraph, Modal, Title } from 'react-native-paper';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
+import CustomButton from '../../../components/CustomButtonWhite';
 import I18n from '../../../../assets/strings/I18';
 import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
@@ -14,7 +15,18 @@ const ShiftsUserScreen = (route) => {
     const navigation = useNavigation();
     const isFocused = useIsFocused();
 
-    const [userShifts, setUserShifts] = useState([]); // Estado para almacenar los turnos del usuario
+    const [userShifts, setUserShifts] = useState([{
+        calle: 'Cordoba',
+        numero: '1372',
+        piso: '3',
+        departamento: 'B',
+        userName: 'Matias',
+        message: 'Test Test Test Test',
+        photo: null,
+        date: '27/12/2023',
+        mañana: true,
+        tarde: false,}
+    ]); // Estado para almacenar los turnos del usuario
 
     const [visible, setVisible] = useState(false);
     const [selectedShift, setSelectedShift] = useState({
@@ -79,6 +91,39 @@ const ShiftsUserScreen = (route) => {
         }
     }, [isFocused]);
 
+    const pressHandler = () => {
+        Alert.alert("Cancelar Turno", "¿Estás seguro de que deseas cancelar el turno?", [
+            { text: "Sí", onPress: () => handleCancel() },
+            { text: "No" }
+        ]);
+    };
+
+    const handleCancel = async () => {
+        try {
+            const shiftId = selectedShift._id;
+            const authToken = await AsyncStorage.getItem('authToken');
+
+            if (!authToken) {
+                console.error('Token de autorización no encontrado en AsyncStorage');
+                return;
+            }
+
+            const response = await axios.delete(`${SERVER_URL}/api/contact/${shiftId}`, {
+                headers: {
+                    Authorization: authToken,
+                },
+            });
+
+            if (response.status === 200) {
+                alert('Se borró el turno con éxito');
+                navigation.goBack();
+            } else {
+                console.error('Error al eliminar el turno:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Error al eliminar el turno:', error);
+        }
+    };
 
 
     return (
@@ -151,6 +196,13 @@ const ShiftsUserScreen = (route) => {
                             <Text style={styles.usernameStyle}>{selectedShift.userName}</Text>
                         </View>
                         <Paragraph>{selectedShift.message}</Paragraph>
+                    </View>
+                    <View style={styles.bottomRow}>
+                        <CustomButton
+                            style={styles.cancelButton}
+                            title={I18n.t('cancel')}
+                            onPress={pressHandler}
+                        />
                     </View>
                 </View>
             </Modal>
@@ -238,7 +290,16 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'black',
         textAlign: 'center',
-    }
+    },
+    bottomRow:{
+        flexDirection: 'row',
+        marginTop: 20,
+        marginBottom: 20,
+    },
+    cancelButton: {
+        width: '100%',
+        justifyContent:'center',
+    },
 });
 
 export default ShiftsUserScreen;

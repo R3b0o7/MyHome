@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import { View, StyleSheet, Text} from 'react-native';
-import { TextInput, Divider} from 'react-native-paper';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { TextInput, Divider } from 'react-native-paper';
 import { DatePickerInput, registerTranslation } from 'react-native-paper-dates';
 import { useNavigation } from '@react-navigation/native';
 import I18n from '../../../../assets/strings/I18';
@@ -8,13 +8,13 @@ import axios from 'axios';
 import { SERVER_URL } from '../../../../config/config';
 import CustomButton from '../../../components/CustomButton';
 import { SelectList } from 'react-native-dropdown-select-list';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const ContactPropertie = () => {
-
-
-    const navigation = useNavigation();
+const ContactPropertie = ({ route }) => {
     
+    const navigation = useNavigation();
+
     const [text, setText] = React.useState("");
     const [characterCount, setCharacterCount] = useState(0);
     const maxCharacterLimit = 500;
@@ -24,44 +24,21 @@ const ContactPropertie = () => {
         { key: '2', value: 'Tarde' },
     ];
 
-    const [turno, setTurno] = useState(''); 
+    const [turno, setTurno] = useState('');
 
     const handleTextChange = (inputText) => {
-      setText(inputText);
-      setCharacterCount(inputText.length);
+        setText(inputText);
+        setCharacterCount(inputText.length);
     };
 
-    //Get user id
-
-    const [userId, setUserId] = useState('');
-    
-    const fetchUserData = async () => {
-        try {
-          // Obtiene el token de AsyncStorage
-          const token = await AsyncStorage.getItem('authToken');
-    
-          // Realiza una solicitud GET para obtener los datos del usuario desde tu backend
-          const response = await axios.get(`${SERVER_URL}/api/usersComun/me`, {
-            headers: {
-              Authorization: token,
-            },
-          });
-    
-          if (response.status === 200) {
-            setUserId(response.data.id);
-          }
-        } catch (error) {
-          console.error('Error al obtener los datos del usuario:', error);
-        }
-    };
-    
 
     //Input Date
-    const [inputDate, setInputDate] = React.useState(undefined)
+    const [inputDate, setInputDate] = useState(undefined)
 
     const handleSend = async () => {
 
         try {
+
             const apiUrl = `${SERVER_URL}/api/contact/create`;
 
             // Obtiene el token de AsyncStorage
@@ -77,15 +54,16 @@ const ContactPropertie = () => {
                 tarde = true;
             }
 
+
             // Construir el cuerpo de la petición
-            const requestBody = {
+            const contactData = {
                 message: text,
                 mañana: mañana,
                 tarde: tarde,
                 date: inputDate,
                 property: route.params.propertyId,
-                user: userId,
             };
+
 
             // Realiza la solicitud POST al servidor
             const response = await axios.post(apiUrl, contactData, {
@@ -94,22 +72,26 @@ const ContactPropertie = () => {
                 },
             });
 
-            // Muestra una alerta de registro exitoso
-            alert('Contacto creado exitosamente!');
+            if (response.status === 200) {
 
-            navigation.goBack();
+                // Muestra una alerta de registro exitoso
+                alert('Turno creado exitosamente!');
+
+                navigation.goBack();
+            }
 
         } catch (error) {
             // Muestra una alerta de error en la creacion
             alert('Error al crear el contacto');
         }
-       
+
     };
 
 
     return (
-        <View style={styles.container}>
-            <View style={styles.insideTopContainer}>
+        <View style={styles.mainConteiner}>
+            <View style={styles.insideConteiner}>
+             <ScrollView showsVerticalScrollIndicator={false}>
                 <Text variant="headlineSmall" style={styles.title}>
                     Mensaje de Contacto
                 </Text>
@@ -120,10 +102,12 @@ const ContactPropertie = () => {
                     multiline={true}
                     maxLength={maxCharacterLimit}
                     style={styles.textInput}
+                    outlineStyle= {{borderRadius: 20}}
+                    outlineColor= {'black'}
+                    activeOutlineColor= {'#4363AC'}
                 />
                 <Text style={styles.characterCount}>{`${characterCount}/${maxCharacterLimit}`}</Text>
-            </View>
-            <View style={styles.insideMiddleContainer}>
+
                 <Divider style={styles.divider} />
 
                 <SelectList //Turno
@@ -135,97 +119,84 @@ const ContactPropertie = () => {
                     data={turnos}
                     search={false} //Habilita o no el buscador
                     maxHeight={100} //50 por cada item que haya
-                    placeholder={"Turno"} //Texto a mostrar antes de la selección
+                    placeholder={"Seleccionar Turno"} //Texto a mostrar antes de la selección
                     searchPlaceholder={"Buscar"}
                     notFoundText={"No se encontro resultado"} //Texto si no encuentra resultados el buscador
                     save='value' //Guarda el value o la key de la lista
                 />
 
                 <DatePickerInput
-                    locale={I18n.locale}
+                    style= {{width: '80%', marginTop: 20}}
+                    //locale={I18n.locale}
                     label={I18n.t('date')}
                     value={inputDate}
                     onChange={(d) => setInputDate(d)}
                     inputMode="start"
                     mode="outlined"
                     calendarIcon={require('../../../../assets/images/Icons/lightMode/calendar.png')}
-                    style={styles.datePicker}
                 />
-            </View>
-            <View style={styles.insideBottomContainer}>
-                <CustomButton 
-                    style = {styles.button}
+
+                <CustomButton
+                    style={styles.button}
                     title={I18n.t('send')}
                     onPress={handleSend}
                 />
+            </ScrollView>
             </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    mainConteiner:{
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
+    },
+    insideConteiner: {
+        flex: 1,
+        width: '80%',
+        justifyContent: 'start',
+        alignItems: 'start',
     },
     title: {
         fontSize: 13,
         marginTop: 50,
+        paddingLeft: 5,
+        color: 'black'
     },
     textInput: {
-        flex: 1.5,
+        flex: 2,
         alignSelf: 'center',
         marginTop: 10,
-        width:'100%',
+        height: 300,
+        width: '100%',
+        color: 'black'
     },
     characterCount: {
         alignSelf: 'flex-end',
+        paddingRight: 5,
         marginTop: 5,
         color: 'gray',
     },
     divider: {
-        marginTop: 20,
-        marginLeft: 5,
-        marginRight: 5,
-        marginBottom: 20,
-        height: 2
-    },
-    button: {
-        marginTop: 30,
-        marginLeft: 120,
-        marginRight: 120,
-    },
-    insideTopContainer: {
-        flex: 2, // Este contenedor ocupará 3/4 de la pantalla
-        width: '80%',
-        justifyContent: 'start',
-        alignItems: 'start',
-        // Puedes agregar estilos adicionales según tus necesidades
-    },
-    insideMiddleContainer: {
-        flex: 2, // Este contenedor ocupará 3/4 de la pantalla
-        width: '80%',
-        justifyContent: 'start',
-        alignItems: 'start',
-        // Puedes agregar estilos adicionales según tus necesidades
-    },
-    insideBottomContainer: {
-        flex: 0.8, // Este contenedor ocupará 3/4 de la pantalla
-        width: '80%',
-        justifyContent: 'start',
-        alignItems: 'start',
-        // Puedes agregar estilos adicionales según tus necesidades
+        width: '88%',
+        padding: 0.5,
+        margin: 20,
+        height: 2,
+        color: 'black',
     },
     listBox: {
-        width: '100%',
-        marginTop: 30,
+        alignSelf: 'center',
+        width: 300,
+        marginTop: 10,
         backgroundColor: '#E0E4F2',
         borderRadius: 100,
         borderColor: '#E0E4F2',
-        alignSelf: 'center',
     },
     dropdown: {
+        alignSelf: 'center',
+        width: 300,
         backgroundColor: '#E0E4F2',
         borderColor: '#E0E4F2',
     },
@@ -235,10 +206,17 @@ const styles = StyleSheet.create({
     dropdownTextStyles: {
         color: 'black'
     },
-    datePicker: {
-        marginTop: -50,
-        color: 'black'
+    dateStyle: {
+        flex: 1,
+        alignSelf: 'center',
+        width: 200
     },
+    button: {
+        alignSelf: 'center',
+        margin: 50,
+        width: 200,
+    },
+
 });
 
 export default ContactPropertie;

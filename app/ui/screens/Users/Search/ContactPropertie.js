@@ -87,6 +87,9 @@ const ContactPropertie = ({ route }) => {
 
     };
 
+    const getCurrentDate=()=>{
+        return new Date();
+    }
 
     return (
         <View style={styles.mainConteiner}>
@@ -134,6 +137,10 @@ const ContactPropertie = ({ route }) => {
                         inputMode="start"
                         mode="outlined"
                         calendarIcon={require('../../../../assets/images/Icons/lightMode/calendar.png')}
+                        validRange={{
+                            startDate: getCurrentDate(),
+                            endDate: undefined,
+                        }} //No permite que puedan elegir fechas anteriores al actual
                     />
 
                     <CustomButton

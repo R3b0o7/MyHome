@@ -263,15 +263,19 @@ const IndividualPropertieScreen = ({ route }) => {
                 </Text>
 
                 <ScrollView horizontal style={{ alignSelf: 'center' }}>
-                    <FlatList
-                        data={amenidadesFiltradas}
-                        renderItem={({ item }) => (
-                            <Chip style={styles.chipStyle}>
-                                {item.label}
-                            </Chip>
-                        )}
-                        numColumns={2} // Establece el número de columnas en 2
-                    />
+                    {amenidadesFiltradas.length === 0 ? (
+                        <Text style={styles.noAmenitiesText}>Esta propiedad no tiene Amenities</Text>
+                    ) : (
+                        <FlatList
+                            data={amenidadesFiltradas}
+                            renderItem={({ item }) => (
+                                <Chip style={styles.chipStyle}>
+                                    {item.label}
+                                </Chip>
+                            )}
+                            numColumns={2} // Establece el número de columnas en 2
+                        />
+                    )}
                 </ScrollView>
                 <Text variant="headlineSmall" style={styles.subtitle}>
                     Otras Caracteristicas
@@ -441,6 +445,10 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 300, // Ajusta la altura según tus necesidades
     },
+    noAmenitiesText: {
+        color: 'black',
+        marginTop: 10,
+    }
 });
 
 export default IndividualPropertieScreen;

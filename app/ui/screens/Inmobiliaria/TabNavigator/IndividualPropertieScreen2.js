@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import Modal from 'react-native-modal';
+
 import { View, StyleSheet, FlatList, Dimensions, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import { Chip, Divider, Text } from 'react-native-paper';
-import Modal from 'react-native-modal';
-import Video from 'react-native-video';
 import ImagePop from '../../../components/ImagePop';
 import Carousel from 'react-native-snap-carousel';
+import Video from 'react-native-video';
 import I18n from '../../../../assets/strings/I18';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
@@ -12,8 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../../../components/CustomButton';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
-import ImageCustomButtonDestacada from '../../../components/ImageCustomButtonDestacada'
-
+import ImageCustomButton from '../../../components/ImageCustomButton';
 
 const IndividualPropertieScreen2 = ({ route }) => {
     const navigation = useNavigation();
@@ -85,8 +85,8 @@ const IndividualPropertieScreen2 = ({ route }) => {
             // Mostrar alerta con la respuesta del servidor
             Alert.alert(response.data.message);
         } catch (error) {
-            console.error('Error al modificar favoritos:', error);
-            Alert.alert('Error', 'No se pudo modificar la lista de favoritos');
+            console.error('Error al modificar Mis Destacadas:', error);
+            Alert.alert('Error', 'No se pudo modificar la lista de destacadas');
         }
     };
 
@@ -232,7 +232,11 @@ const IndividualPropertieScreen2 = ({ route }) => {
                         {/* el 'en-US' deberia mostrar el separador de miles como . y no como , pero no funciona */}
                         {Number(propertyData.precio).toLocaleString('en-US')}
                     </Text>
+
                 </View>
+                <Text style={{ fontSize: 15, alignSelf: 'center' }}>
+                    $ {propertyData.expensas} pesos/mes
+                </Text>
 
                 <Divider style={styles.divider} />
 
@@ -273,7 +277,7 @@ const IndividualPropertieScreen2 = ({ route }) => {
                         />
                     )}
                 </ScrollView>
-
+                
                 <Text variant="headlineSmall" style={styles.subtitle}>
                     Otras Caracteristicas
                 </Text>
@@ -307,25 +311,25 @@ const IndividualPropertieScreen2 = ({ route }) => {
 
             <View style={styles.lowerContainer}>
                 {/* Contenedor inferior (1/4 de la pantalla) */}
-                {/* 
+
                 <CustomButton
                     style={styles.boton}
                     title={I18n.t('edit')}
                     onPress={pressEdit}
-                /> */}
+                />
 
-                <ImageCustomButtonDestacada
+                <ImageCustomButton
                     style={styles.ImageBoton}
+                    imageStyle={styles.ImageStyle}
                     imageSource={require('../../../../assets/images/Icons/destacado.png')}
-                    // title={I18n.t('favorite')}
                     onPress={pressHandlerFavorite}
                 />
 
-                {/* <CustomButton
+                <CustomButton
                     style={styles.boton}
                     title={I18n.t('deletePropertie')}
                     onPress={pressHandler}
-                /> */}
+                />
 
             </View>
         </View>
@@ -391,6 +395,12 @@ const styles = StyleSheet.create({
         height: 40,
         marginRight: 10,
         marginLeft: 10
+    },
+    ImageStyle: {
+        alignItems: 'center',
+        marginLeft: 5,
+        height: 24,
+        width: 20,
     },
     //VISTA DE PRECIO Y MONEDA
     currencyContainer: {

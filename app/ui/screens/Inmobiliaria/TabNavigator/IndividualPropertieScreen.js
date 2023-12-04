@@ -13,8 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../../../components/CustomButton';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
-import ImageCustomButtonDestacada from '../../../components/ImageCustomButtonDestacada'
-
+import ImageCustomButton from '../../../components/ImageCustomButton';
 
 const IndividualPropertieScreen = ({ route }) => {
     const navigation = useNavigation();
@@ -319,10 +318,10 @@ const IndividualPropertieScreen = ({ route }) => {
                     onPress={pressEdit}
                 />
 
-                <ImageCustomButtonDestacada
+                <ImageCustomButton
                     style={styles.ImageBoton}
+                    imageStyle={styles.ImageStyle}
                     imageSource={require('../../../../assets/images/Icons/destacado.png')}
-                    // title={I18n.t('favorite')}
                     onPress={pressHandlerFavorite}
                 />
 
@@ -396,6 +395,12 @@ const styles = StyleSheet.create({
         height: 40,
         marginRight: 10,
         marginLeft: 10
+    },
+    ImageStyle: {
+        alignItems: 'center',
+        marginLeft: 5,
+        height: 24,
+        width: 20,
     },
     //VISTA DE PRECIO Y MONEDA
     currencyContainer: {

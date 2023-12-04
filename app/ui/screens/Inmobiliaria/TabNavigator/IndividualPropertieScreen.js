@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../../../components/CustomButton';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
-import ImageCustomButton from '../../../components/ImageCustomButton'
+import ImageCustomButtonDestacada from '../../../components/ImageCustomButtonDestacada'
 
 
 const IndividualPropertieScreen = ({ route }) => {
@@ -86,8 +86,8 @@ const IndividualPropertieScreen = ({ route }) => {
             // Mostrar alerta con la respuesta del servidor
             Alert.alert(response.data.message);
         } catch (error) {
-            console.error('Error al modificar favoritos:', error);
-            Alert.alert('Error', 'No se pudo modificar la lista de favoritos');
+            console.error('Error al modificar Mis Destacadas:', error);
+            Alert.alert('Error', 'No se pudo modificar la lista de destacadas');
         }
     };
 
@@ -314,9 +314,9 @@ const IndividualPropertieScreen = ({ route }) => {
                     onPress={pressEdit}
                 />
 
-                <ImageCustomButton
+                <ImageCustomButtonDestacada
                     style={styles.ImageBoton}
-                    imageSource={require('../../../../assets/images/Stars/starFull.png')}
+                    imageSource={require('../../../../assets/images/Icons/destacado.png')}
                     // title={I18n.t('favorite')}
                     onPress={pressHandlerFavorite}
                 />

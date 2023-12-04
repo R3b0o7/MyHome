@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, Dimensions, Alert, ScrollView } from 'react-native';
+import Modal from 'react-native-modal';
+import { View, StyleSheet, FlatList, Dimensions, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import { Chip, Divider, Text } from 'react-native-paper';
 import ImagePop from '../../../components/ImagePop';
 import Carousel from 'react-native-snap-carousel';
+import Video from 'react-native-video';
 import I18n from '../../../../assets/strings/I18';
 import { SERVER_URL } from '../../../../config/config';
 import axios from 'axios';
@@ -10,12 +12,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../../../components/CustomButton';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import NavigatorConstant from '../../../../navigation/NavigatorConstant';
-import ImageCustomButton from '../../../components/ImageCustomButton'
+import ImageCustomButtonDestacada from '../../../components/ImageCustomButtonDestacada'
 
 
 const IndividualPropertieScreen = ({ route }) => {
     const navigation = useNavigation();
     const isFocused = useIsFocused();
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
+    const openVideoModal = (url) => {
+        setSelectedVideoUrl(url);
+        setIsModalVisible(true);
+    };
 
     const pressHandler = () => {
         Alert.alert("Eliminar propiedad", "¿Estás seguro de que deseas eliminar la propiedad?", [
@@ -58,30 +67,45 @@ const IndividualPropertieScreen = ({ route }) => {
         }
     };
     const pressHandlerFavorite = async () => {
-        alert('Se agrego a tus destacadas');
+        try {
+
+            // Obtener el token del usuario desde AsyncStorage
+            const token = await AsyncStorage.getItem('authToken');
+
+            // Configuración para la solicitud axios (headers con token)
+            const config = {
+                headers: { Authorization: token }
+            };
+
+            // Enviar solicitud para agregar/eliminar de favoritos
+            const response = await axios.put(`${SERVER_URL}/api/users/toggleFavorite`, {
+                propertyId: route.params.propertyId
+            }, config);
+
+            // Mostrar alerta con la respuesta del servidor
+            Alert.alert(response.data.message);
+        } catch (error) {
+            console.error('Error al modificar Mis Destacadas:', error);
+            Alert.alert('Error', 'No se pudo modificar la lista de destacadas');
+        }
     };
 
     const initialCharacteristics = {};
     const [propertyData, setPropertyData] = useState(initialCharacteristics);
+    const [carouselItems, setCarouselItems] = useState([]);
 
     const fetchPropertyData = async () => {
         try {
             const propertyId = route.params.propertyId;
-            const authToken = await AsyncStorage.getItem('authToken');
 
-            if (!authToken) {
-                console.error('Token de autorización no encontrado en AsyncStorage');
-                return;
-            }
-
-            const response = await axios.get(`${SERVER_URL}/api/properties/${propertyId}`, {
-                headers: {
-                    Authorization: authToken,
-                }
-            });
+            const response = await axios.get(`${SERVER_URL}/api/properties/${propertyId}`);
 
             if (response.status === 200) {
                 setPropertyData(response.data);
+                // Combinar fotos y videos en carouselItems
+                const photos = response.data.photos.map(url => ({ type: 'photo', url }));
+                const videos = response.data.videos.map(url => ({ type: 'video', url }));
+                setCarouselItems([...photos, ...videos]);
             } else {
                 console.error('Error al obtener los datos de la propiedad:', response.data.message);
             }
@@ -96,21 +120,12 @@ const IndividualPropertieScreen = ({ route }) => {
         }
     }, [isFocused]);
 
-    const carouselItems = [
-        {
-            id: 1,
-            coverUrl: 'https://picsum.photos/700',
-        },
-        {
-            id: 2,
-            coverUrl: 'https://picsum.photos/701',
-        },
-        {
-            id: 3,
-            coverUrl: 'https://picsum.photos/702',
-        },
-        // Agrega más tarjetas si es necesario
-    ];
+    /*const carouselItems = propertyData.photos
+        ? propertyData.photos.map((photoUrl, index) => ({
+            id: index,
+            coverUrl: photoUrl,
+        }))
+        : [];*/
 
     const chipsData = [
         { icon: require('../../../../assets/images/Icons/black/m2.png'), label: `${propertyData.m2cubiert}m2` },
@@ -138,20 +153,62 @@ const IndividualPropertieScreen = ({ route }) => {
         .filter(([amenidad, valor]) => valor)
         .map(([amenidad, valor]) => ({ label: amenidad }));
 
-    const renderItem = ({ item, index }) => {
-        return (
-            <View style={styles.slide}>
-                <ImagePop
-                    coverUrl={item.coverUrl}
+    const otrasCaract = {
+        Balcon: propertyData.balcon,
+        Terraza: propertyData.terraza,
+        Baulera: propertyData.baulera,
+        Frente: propertyData.frente,
+        ContraFrente: propertyData.contrafrente,
+    }
+    const otrasCaractFiltradas = Object.entries(otrasCaract)
+        .filter(([caract, valor]) => valor)
+        .map(([caract, valor]) => ({ label: caract }));
+
+    const renderItem = ({ item }) => {
+        if (item.type === 'photo') {
+            return (
+                <View style={styles.slide}>
+                    <ImagePop coverUrl={item.url} />
+                </View>
+            );
+        } else if (item.type === 'video' && item.url) {
+            return (
+                <TouchableOpacity onPress={() => openVideoModal(item.url)}>
+                    <View style={styles.slide}>
+                        <Video
+                            source={{ uri: item.url }}
+                            style={styles.video}
+                        // Otras propiedades del video
+                        />
+                    </View>
+                </TouchableOpacity>
+            );
+        }
+        return null; // En caso de que no haya una URL válida
+    };
+
+    const renderVideoModal = () => (
+        <Modal isVisible={isModalVisible} onBackdropPress={() => setIsModalVisible(false)}>
+            <View style={styles.modalContent}>
+                <Video
+                    source={{ uri: selectedVideoUrl }}
+                    style={styles.fullScreenVideo}
+                    resizeMode="contain" // Asegúrate de que el video se ajuste correctamente
+                    controls // Agrega controles al video
+                // Otras propiedades del video que puedas necesitar
                 />
             </View>
-        );
-    };
+        </Modal>
+    );
 
     return (
 
         <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+            {renderVideoModal()}
+            <ScrollView
+                contentContainerStyle={styles.scrollViewContent}
+                showsVerticalScrollIndicator={false}
+            >
                 <View style={styles.carouselContainer}>
                     <Carousel
                         data={carouselItems}
@@ -167,15 +224,19 @@ const IndividualPropertieScreen = ({ route }) => {
 
                 <Divider style={styles.divider} />
 
-                <View>
-                    <Text style={{ fontSize: 30, alignSelf: 'center' }}>
-                        {propertyData.dolar ? 'US$' : '$'}
-                        {propertyData.precio}
+                <View style={styles.currencyContainer}>
+                    <Text style={styles.currency}>
+                        {propertyData.dolar ? 'U$S' : 'AR$'}
                     </Text>
-                    <Text style={{ fontSize: 15, alignSelf: 'center' }}>
-                        $ {propertyData.expensas} pesos/mes
+                    <Text style={styles.price}>
+                        {/* el 'en-US' deberia mostrar el separador de miles como . y no como , pero no funciona */}
+                        {Number(propertyData.precio).toLocaleString('en-US')}
                     </Text>
+
                 </View>
+                <Text style={{ fontSize: 15, alignSelf: 'center' }}>
+                    $ {propertyData.expensas} pesos/mes
+                </Text>
 
                 <Divider style={styles.divider} />
 
@@ -185,10 +246,9 @@ const IndividualPropertieScreen = ({ route }) => {
                 </Text>
 
 
-                <ScrollView horizontal>
+                <ScrollView horizontal style={{ alignSelf: 'center' }}>
                     <FlatList
                         data={chipsData}
-                        style={{ alignSelf: 'center', marginLeft: 80, marginTop: 0 }}
                         renderItem={({ item }) => (
                             <Chip style={styles.chipStyle} icon={item.icon}>
                                 {item.label}
@@ -202,10 +262,24 @@ const IndividualPropertieScreen = ({ route }) => {
                     Amenities
                 </Text>
 
-                <ScrollView horizontal>
+                <ScrollView horizontal style={{ alignSelf: 'center' }}>
                     <FlatList
                         data={amenidadesFiltradas}
-                        style={{ alignSelf: 'center', marginLeft: 80, marginTop: 0 }}
+                        renderItem={({ item }) => (
+                            <Chip style={styles.chipStyle}>
+                                {item.label}
+                            </Chip>
+                        )}
+                        numColumns={2} // Establece el número de columnas en 2
+                    />
+                </ScrollView>
+                <Text variant="headlineSmall" style={styles.subtitle}>
+                    Otras Caracteristicas
+                </Text>
+
+                <ScrollView horizontal style={{ alignSelf: 'center' }}>
+                    <FlatList
+                        data={otrasCaractFiltradas}
                         renderItem={({ item }) => (
                             <Chip style={styles.chipStyle}>
                                 {item.label}
@@ -219,11 +293,11 @@ const IndividualPropertieScreen = ({ route }) => {
                     Descripción
                 </Text>
 
-                <Text style={styles.subtitle}>
+                <Text style={styles.description}>
                     {propertyData.descripcion}
                 </Text>
 
-                <Text/>
+                <Text />
 
 
             </ScrollView>
@@ -239,10 +313,10 @@ const IndividualPropertieScreen = ({ route }) => {
                     onPress={pressEdit}
                 />
 
-                <ImageCustomButton
+                <ImageCustomButtonDestacada
                     style={styles.ImageBoton}
-                    imageSource={require('../../../../assets/images/Stars/starFull.png')}
-                // title={I18n.t('favorite')}
+                    imageSource={require('../../../../assets/images/Icons/destacado.png')}
+                    // title={I18n.t('favorite')}
                     onPress={pressHandlerFavorite}
                 />
 
@@ -282,8 +356,9 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 14,
         marginTop: 5,
-        marginLeft: 40,
-        marginRight: 40
+        alignSelf: 'center',
+        textAlign: 'justify',
+        width: '80%',
     },
     divider: {
         marginTop: 10,
@@ -301,9 +376,6 @@ const styles = StyleSheet.create({
 
         bottom: 0,
         padding: 10,
-       //backgroundColor: '#e3e3e3',
-        //flex: 0.5, // Este contenedor ocupará 1/4 de la pantalla
-        //width: '100%',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -318,7 +390,56 @@ const styles = StyleSheet.create({
         height: 40,
         marginRight: 10,
         marginLeft: 10
+    },
+    //VISTA DE PRECIO Y MONEDA
+    currencyContainer: {
+        justifyContent: 'center',
+        alignContent: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: 10
+    },
+    currency: {
+        zIndex: 2,
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        borderRadius: 12,
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#E0E4F2',
+        backgroundColor: '#707787',
+        position: 'relative',
+        marginRight: 140,
+        width: 60,
+        height: 35
+    },
+    price: {
+        zIndex: 1,
+        textAlign: 'center',
+        paddingLeft: 50,
+        textAlignVertical: 'center',
+        borderRadius: 12,
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'black',
+        backgroundColor: '#ACB4CB',
+        position: 'absolute',
+        width: 200,
+        height: 35
+    },
+    video: {
+        width: '100%', // Ajusta las dimensiones según tus necesidades
+        height: 200,   // Ajusta las dimensiones según tus necesidades
+        // Otros estilos necesarios para el video
+    },
+    modalContent: {
 
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    fullScreenVideo: {
+        width: '100%',
+        height: 300, // Ajusta la altura según tus necesidades
     },
 });
 

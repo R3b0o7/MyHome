@@ -90,57 +90,59 @@ const ContactPropertie2 = ({ route }) => {
 
     return (
         <View style={styles.mainConteiner}>
-             <ScrollView showsVerticalScrollIndicator={false}>
-                <Text variant="headlineSmall" style={styles.title}>
-                    Mensaje de Contacto
-                </Text>
-                <TextInput
-                    mode='outlined'
-                    value={text}
-                    onChangeText={handleTextChange}
-                    multiline={true}
-                    maxLength={maxCharacterLimit}
-                    style={styles.textInput}
-                    outlineStyle= {{borderRadius: 20}}
-                    outlineColor= {'black'}
-                    activeOutlineColor= {'#4363AC'}
-                />
-                <Text style={styles.characterCount}>{`${characterCount}/${maxCharacterLimit}`}</Text>
+            <View style={styles.insideConteiner}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <Text variant="headlineSmall" style={styles.title}>
+                        Mensaje de Contacto
+                    </Text>
+                    <TextInput
+                        mode='outlined'
+                        value={text}
+                        onChangeText={handleTextChange}
+                        multiline={true}
+                        maxLength={maxCharacterLimit}
+                        style={styles.textInput}
+                        outlineStyle= {{borderRadius: 20}}
+                        outlineColor= {'black'}
+                        activeOutlineColor= {'#4363AC'}
+                    />
+                    <Text style={styles.characterCount}>{`${characterCount}/${maxCharacterLimit}`}</Text>
 
-                <Divider style={styles.divider} />
+                    <Divider style={styles.divider} />
 
-                <SelectList //Turno
-                    boxStyles={styles.listBox} //Asigna estilo al box
-                    dropdownStyles={styles.dropdown} //Asigna estilo al dropdown
-                    inputStyles={styles.textDropList} //Asigna estilo al texto del contenido
-                    dropdownTextStyles={styles.dropdownTextStyles} //Asigna estilo al texto del dropdown
-                    setSelected={setTurno}
-                    data={turnos}
-                    search={false} //Habilita o no el buscador
-                    maxHeight={100} //50 por cada item que haya
-                    placeholder={"Turno"} //Texto a mostrar antes de la selección
-                    searchPlaceholder={"Buscar"}
-                    notFoundText={"No se encontro resultado"} //Texto si no encuentra resultados el buscador
-                    save='value' //Guarda el value o la key de la lista
-                />
+                    <SelectList //Turno
+                        boxStyles={styles.listBox} //Asigna estilo al box
+                        dropdownStyles={styles.dropdown} //Asigna estilo al dropdown
+                        inputStyles={styles.textDropList} //Asigna estilo al texto del contenido
+                        dropdownTextStyles={styles.dropdownTextStyles} //Asigna estilo al texto del dropdown
+                        setSelected={setTurno}
+                        data={turnos}
+                        search={false} //Habilita o no el buscador
+                        maxHeight={100} //50 por cada item que haya
+                        placeholder={"Seleccionar Turno"} //Texto a mostrar antes de la selección
+                        searchPlaceholder={"Buscar"}
+                        notFoundText={"No se encontro resultado"} //Texto si no encuentra resultados el buscador
+                        save='value' //Guarda el value o la key de la lista
+                    />
 
-                <DatePickerInput
-                    style= {{width: '80%', marginTop: 20}}
-                    //locale={I18n.locale}
-                    label={I18n.t('date')}
-                    value={inputDate}
-                    onChange={(d) => setInputDate(d)}
-                    inputMode="start"
-                    mode="outlined"
-                    calendarIcon={require('../../../../assets/images/Icons/lightMode/calendar.png')}
-                />
+                    <DatePickerInput
+                        style= {{width: '80%', marginTop: 20}}
+                        //locale={I18n.locale}
+                        label={I18n.t('date')}
+                        value={inputDate}
+                        onChange={(d) => setInputDate(d)}
+                        inputMode="start"
+                        mode="outlined"
+                        calendarIcon={require('../../../../assets/images/Icons/lightMode/calendar.png')}
+                    />
 
-                <CustomButton
-                    style={styles.button}
-                    title={I18n.t('send')}
-                    onPress={handleSend}
-                />
-            </ScrollView>  
+                    <CustomButton
+                        style={styles.button}
+                        title={I18n.t('send')}
+                        onPress={handleSend}
+                    />
+                </ScrollView>
+            </View>
         </View>
     );
 };
@@ -150,6 +152,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
+    },
+    insideConteiner: {
+        flex: 1,
+        width: '80%',
+        justifyContent: 'start',
+        alignItems: 'start',
     },
     title: {
         fontSize: 13,
@@ -175,6 +183,8 @@ const styles = StyleSheet.create({
         width: '88%',
         padding: 0.5,
         margin: 20,
+        height: 2,
+        color: 'black',
     },
     listBox: {
         alignSelf: 'center',

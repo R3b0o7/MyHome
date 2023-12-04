@@ -53,67 +53,71 @@ const SearchPropertie = () => {
     }, [navigation]);
 
     const handleSearch = async () => {
-    try {
-        let requestBody = {};
+        try {
+            let requestBody = {};
 
-        if (ventaAlquiler === 'Venta') {
-            requestBody.venta = true;
-        } else if (ventaAlquiler === 'Alquiler') {
-            requestBody.alquiler = true;
-        }
-
-        if (monedaSeleccionada === 'Dolares') {
-            requestBody.dolar = true;
-        }
-
-        if (tipoPropiedad) {
-            requestBody[tipoPropiedad.toLowerCase()] = true;
-        }
-
-        if (provinciaSeleccionada && provinciaSeleccionada !== 'Seleccionar Provincia') {
-            requestBody.provincia = provinciaSeleccionada;
-        }
-
-        if (barrioSeleccionado && barrioSeleccionado !== 'Seleccionar Barrio') {
-            requestBody.localidad = barrioSeleccionado;
-        }
-
-        requestBody.cantambient = ambientesSeleccionados;
-        requestBody.cantcuartos = dormitoriosSeleccionados;
-        requestBody.cantbaños = banosSeleccionados;
-        requestBody.antiguedad = antiguedadSeleccionada;
-
-        requestBody.precioMin = minSliderState;
-        requestBody.precioMax = -maxSliderState;
-
-        // Agregar checkboxes si están marcados
-        const checkBoxProps = {
-            ...amenities,
-            ...characteristicsProp,
-            ...frenteTypes,
-            ...orientTypes,
-        };
-
-        for (const [key, value] of Object.entries(checkBoxProps)) {
-            if (value) {
-                requestBody[key] = value;
+            if (ventaAlquiler === 'Venta') {
+                requestBody.venta = true;
+            } else if (ventaAlquiler === 'Alquiler') {
+                requestBody.alquiler = true;
             }
-        }
 
-        const response = await axios.post(`${SERVER_URL}/api/properties/search`, requestBody);
+            if (monedaSeleccionada === 'Dolares') {
+                requestBody.dolar = true;
+            }
 
-        if (response.status === 200) {
-            // Manejar la respuesta del servidor
-            navigation.push(NavigatorConstant.SEARCH_.RESULTS, {
-                propertyIds: response.data
-            });
-        } else {
-            console.error('Respuesta no exitosa:', response);
+            if (tipoPropiedad) {
+                // Convierte la selección del usuario en un campo booleano para el backend
+                const backendField = tipoPropiedadMapping[tipoPropiedad];
+                if (backendField) {
+                    requestBody[backendField] = true;
+                }
+            }
+
+            if (provinciaSeleccionada && provinciaSeleccionada !== 'Seleccionar Provincia') {
+                requestBody.provincia = provinciaSeleccionada;
+            }
+
+            if (barrioSeleccionado && barrioSeleccionado !== 'Seleccionar Barrio') {
+                requestBody.localidad = barrioSeleccionado;
+            }
+
+            requestBody.cantambient = ambientesSeleccionados;
+            requestBody.cantcuartos = dormitoriosSeleccionados;
+            requestBody.cantbaños = banosSeleccionados;
+            requestBody.antiguedad = antiguedadSeleccionada;
+
+            requestBody.precioMin = minSliderState;
+            requestBody.precioMax = -maxSliderState;
+
+            // Agregar checkboxes si están marcados
+            const checkBoxProps = {
+                ...amenities,
+                ...characteristicsProp,
+                ...frenteTypes,
+                ...orientTypes,
+            };
+
+            for (const [key, value] of Object.entries(checkBoxProps)) {
+                if (value) {
+                    requestBody[key] = value;
+                }
+            }
+            console.log(requestBody);
+            const response = await axios.post(`${SERVER_URL}/api/properties/search`, requestBody);
+
+            if (response.status === 200) {
+                // Manejar la respuesta del servidor
+                navigation.push(NavigatorConstant.SEARCH_.RESULTS, {
+                    propertyIds: response.data
+                });
+            } else {
+                console.error('Respuesta no exitosa:', response);
+            }
+        } catch (error) {
+            console.error('Error en la petición de búsqueda:', error);
         }
-    } catch (error) {
-        console.error('Error en la petición de búsqueda:', error);
-    }
-};
+    };
 
     const estado = [
         { key: '', value: 'Seleccionar Operacion' },
@@ -129,6 +133,16 @@ const SearchPropertie = () => {
         { key: '6', value: 'Galpón' },
         { key: '7', value: 'Terreno' },
     ]
+    const tipoPropiedadMapping = {
+        'Casa': 'house',
+        'Propiedad Horizontal': 'ph',
+        'Departamento': 'apartment',
+        'Local comercial': 'local',
+        'Oficina': 'office',
+        'Galpón': 'galpon',
+        'Terreno': 'territory'
+    };
+
     const provincia = [
         { key: '0', value: 'Seleccionar Provincia' },
         { key: '1', value: 'CABA' },
@@ -213,7 +227,7 @@ const SearchPropertie = () => {
         { key: '46', value: 'Villa Santa Rita' },
         { key: '47', value: 'Villa Soldati' },
         { key: '48', value: 'Villa Urquiza' },
-      ];
+    ];
     const moneda = [
         { key: '1', value: 'Pesos' },
         { key: '2', value: 'Dolares' },
@@ -398,7 +412,7 @@ const SearchPropertie = () => {
                     notFoundText={"No se encontro resultado"}
                     save='value'
                 />
-                
+
                 {/* BLOQUE DE SLIDERS */}
 
                 <Text style={{ fontSize: 20 }}>Mínimo, expresado en miles</Text>
@@ -415,14 +429,14 @@ const SearchPropertie = () => {
                     maximumTrackTintColor="#233460"
                 />
 
-            {/* const [minSliderState, setMinSliderState] = useState(0);
+                {/* const [minSliderState, setMinSliderState] = useState(0);
                 const [maxSliderState, setMaxSliderState] = useState(-1000000); */}
 
                 <TextInput
                     style={styles.textImput}
-                    mode= 'outlined'
-                    outlineStyle= {{borderRadius: 20}}
-                    activeOutlineColor= '#4363AC'
+                    mode='outlined'
+                    outlineStyle={{ borderRadius: 20 }}
+                    activeOutlineColor='#4363AC'
                     value={minSliderState.toFixed(0)}
                     onChangeText={(value) => setMinSliderState(Number(value))}
                     // onChangeText={(value) => {
@@ -454,11 +468,11 @@ const SearchPropertie = () => {
 
                 <TextInput
                     style={styles.textImput}
-                    mode= 'outlined'
-                    outlineStyle= {{borderRadius: 20}}
-                    activeOutlineColor= '#4363AC'
+                    mode='outlined'
+                    outlineStyle={{ borderRadius: 20 }}
+                    activeOutlineColor='#4363AC'
                     value={Math.abs(maxSliderState).toFixed(0)}
-                    onChangeText={(value) => setMaxSliderState(Number(value)* -1)}
+                    onChangeText={(value) => setMaxSliderState(Number(value) * -1)}
                     // onChangeText={(value) => {
                     //     const numericValue = Number(value);
                     //         if (!isNaN(numericValue) && numericValue <= 0 && numericValue >= -minSliderState) {
@@ -561,7 +575,7 @@ const SearchPropertie = () => {
                         />
                     </View>
                 ))}
-                
+
                 <Divider style={styles.divider} />
 
                 {Object.keys(frenteTypes).map((type) => (
